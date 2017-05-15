@@ -134,7 +134,7 @@ class ButterBean_Manager {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @var    array()
+	 * @var array
 	 */
 	public $json = array();
 

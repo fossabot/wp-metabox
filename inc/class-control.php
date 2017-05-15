@@ -176,9 +176,9 @@ class ButterBean_Control {
 	/**
 	 * Stores the JSON data for the control.
 	 *
-	 * @since  1.0.0
+	 * @since 1.0.0
 	 * @access public
-	 * @var    array()
+	 * @var array
 	 */
 	public $json = array();
 
