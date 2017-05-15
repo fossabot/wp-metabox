@@ -185,6 +185,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			require_once( $this->dir_path . 'inc/settings/class-setting-multiple.php' );
 			require_once( $this->dir_path . 'inc/settings/class-setting-datetime.php' );
 			require_once( $this->dir_path . 'inc/settings/class-setting-array.php'    );
+			require_once( $this->dir_path . 'inc/settings/class-setting-serialize.php');
 
 			// Load functions.
 			require_once( $this->dir_path . 'inc/functions-core.php' );
@@ -628,6 +629,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			$this->register_setting_type( 'multiple', 'ButterBean_Setting_Multiple' );
 			$this->register_setting_type( 'array',    'ButterBean_Setting_Array'    );
 			$this->register_setting_type( 'datetime', 'ButterBean_Setting_Datetime' );
+			$this->register_setting_type( 'serialize','ButterBean_Setting_Serialize');
 		}
 
 		/**
