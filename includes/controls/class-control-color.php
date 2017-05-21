@@ -51,7 +51,7 @@ class ButterBean_Control_Color extends ButterBean_Control {
 	public function enqueue() {
 
 		wp_enqueue_script( 'wp-color-picker' );
-		wp_enqueue_style(  'wp-color-picker' );
+		wp_enqueue_style( 'wp-color-picker' );
 	}
 
 	/**
@@ -79,7 +79,7 @@ class ButterBean_Control_Color extends ButterBean_Control {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  string  $setting
+	 * @param  string $setting
 	 * @return mixed
 	 */
 	public function get_value( $setting = 'default' ) {

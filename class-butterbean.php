@@ -142,7 +142,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		private function setup() {
 
 			$this->dir_path  = apply_filters( 'butterbean_dir_path', trailingslashit( plugin_dir_path( __FILE__ ) ) );
-			$this->dir_uri   = apply_filters( 'butterbean_dir_uri',  trailingslashit( plugin_dir_url(  __FILE__ ) ) );
+			$this->dir_uri   = apply_filters( 'butterbean_dir_uri',  trailingslashit( plugin_dir_url( __FILE__ ) ) );
 
 			$this->tmpl_path = trailingslashit( $this->dir_path . 'tmpl' );
 		}
@@ -157,38 +157,39 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		private function includes() {
 
 			// If not in the admin, bail.
-			if ( ! is_admin() )
+			if ( ! is_admin() ) {
 				return;
+			}
 
 			// Load base classes.
-			require_once( $this->dir_path . 'inc/class-manager.php' );
-			require_once( $this->dir_path . 'inc/class-section.php' );
-			require_once( $this->dir_path . 'inc/class-control.php' );
-			require_once( $this->dir_path . 'inc/class-setting.php' );
+			require_once( $this->dir_path . 'includes/class-manager.php' );
+			require_once( $this->dir_path . 'includes/class-section.php' );
+			require_once( $this->dir_path . 'includes/class-control.php' );
+			require_once( $this->dir_path . 'includes/class-setting.php' );
 
 			// Load control sub-classes.
-			require_once( $this->dir_path . 'inc/controls/class-control-checkboxes.php'    );
-			require_once( $this->dir_path . 'inc/controls/class-control-color.php'         );
-			require_once( $this->dir_path . 'inc/controls/class-control-datetime.php'      );
-			require_once( $this->dir_path . 'inc/controls/class-control-image.php'         );
-			require_once( $this->dir_path . 'inc/controls/class-control-palette.php'       );
-			require_once( $this->dir_path . 'inc/controls/class-control-radio.php'         );
-			require_once( $this->dir_path . 'inc/controls/class-control-radio-image.php'   );
-			require_once( $this->dir_path . 'inc/controls/class-control-select-group.php'  );
-			require_once( $this->dir_path . 'inc/controls/class-control-textarea.php'      );
+			require_once( $this->dir_path . 'includes/controls/class-control-checkboxes.php' );
+			require_once( $this->dir_path . 'includes/controls/class-control-color.php' );
+			require_once( $this->dir_path . 'includes/controls/class-control-datetime.php' );
+			require_once( $this->dir_path . 'includes/controls/class-control-image.php' );
+			require_once( $this->dir_path . 'includes/controls/class-control-palette.php' );
+			require_once( $this->dir_path . 'includes/controls/class-control-radio.php' );
+			require_once( $this->dir_path . 'includes/controls/class-control-radio-image.php' );
+			require_once( $this->dir_path . 'includes/controls/class-control-select-group.php' );
+			require_once( $this->dir_path . 'includes/controls/class-control-textarea.php' );
 
-			require_once( $this->dir_path . 'inc/controls/class-control-excerpt.php'       );
-			require_once( $this->dir_path . 'inc/controls/class-control-multi-avatars.php' );
-			require_once( $this->dir_path . 'inc/controls/class-control-parent.php'        );
+			require_once( $this->dir_path . 'includes/controls/class-control-excerpt.php' );
+			require_once( $this->dir_path . 'includes/controls/class-control-multi-avatars.php' );
+			require_once( $this->dir_path . 'includes/controls/class-control-parent.php' );
 
 			// Load setting sub-classes.
-			require_once( $this->dir_path . 'inc/settings/class-setting-multiple.php' );
-			require_once( $this->dir_path . 'inc/settings/class-setting-datetime.php' );
-			require_once( $this->dir_path . 'inc/settings/class-setting-array.php'    );
-			require_once( $this->dir_path . 'inc/settings/class-setting-serialize.php');
+			require_once( $this->dir_path . 'includes/settings/class-setting-multiple.php' );
+			require_once( $this->dir_path . 'includes/settings/class-setting-datetime.php' );
+			require_once( $this->dir_path . 'includes/settings/class-setting-array.php' );
+			require_once( $this->dir_path . 'includes/settings/class-setting-serialize.php' );
 
 			// Load functions.
-			require_once( $this->dir_path . 'inc/functions-core.php' );
+			require_once( $this->dir_path . 'includes/functions-core.php' );
 		}
 
 		/**
@@ -201,7 +202,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		private function setup_actions() {
 
 			// Call the register function.
-			add_action( 'load-post.php',     array( $this, 'register' ), 95 );
+			add_action( 'load-post.php', array( $this, 'register' ), 95 );
 			add_action( 'load-post-new.php', array( $this, 'register' ), 95 );
 
 			// Register default types.
@@ -222,8 +223,9 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		public function register() {
 
 			// If this is a new post, set the new post boolean.
-			if ( 'load-post-new.php' === current_action() )
+			if ( 'load-post-new.php' === current_action() ) {
 				$this->is_new_post = true;
+			}
 
 			// Get the current post type.
 			$post_type = get_current_screen()->post_type;
@@ -235,7 +237,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			foreach ( $this->managers as $manager ) {
 
 				// If we found a matching post type, add our actions/filters.
-				if ( ! in_array( $post_type, (array) $manager->post_type ) ) {
+				if ( ! in_array( $post_type, (array) $manager->post_type, true ) ) {
 					$this->unregister_manager( $manager->name );
 					continue;
 				}
@@ -246,8 +248,9 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			}
 
 			// If no managers registered, bail.
-			if ( ! $this->managers )
+			if ( ! $this->managers ) {
 				return;
+			}
 
 			// Add meta boxes.
 			add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 5 );
@@ -257,11 +260,11 @@ if ( ! class_exists( 'ButterBean' ) ) {
 
 			// Load scripts and styles.
 			add_action( 'admin_enqueue_scripts',      array( $this, 'enqueue_scripts' ) );
-			add_action( 'butterbean_enqueue_scripts', array( $this, 'enqueue'         ) );
+			add_action( 'butterbean_enqueue_scripts', array( $this, 'enqueue' ) );
 
 			// Localize scripts and Undescore templates.
 			add_action( 'admin_footer', array( $this, 'localize_scripts' ) );
-			add_action( 'admin_footer', array( $this, 'print_templates'  ) );
+			add_action( 'admin_footer', array( $this, 'print_templates' ) );
 
 			// Renders our Backbone views.
 			add_action( 'admin_print_footer_scripts', array( $this, 'render_views' ), 95 );
@@ -272,8 +275,8 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 *
 		 * @since  1.0.0
 		 * @access public
-		 * @param  object|string  $manager
-		 * @param  array          $args
+		 * @param  object|string $manager
+		 * @param  array         $args
 		 * @return void
 		 */
 		public function register_manager( $manager, $args = array() ) {
@@ -285,8 +288,9 @@ if ( ! class_exists( 'ButterBean' ) ) {
 				$manager = new $type( $manager, $args );
 			}
 
-			if ( ! $this->manager_exists( $manager->name ) )
+			if ( ! $this->manager_exists( $manager->name ) ) {
 				$this->managers[ $manager->name ] = $manager;
+			}
 
 			return $manager;
 		}
@@ -296,13 +300,14 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 *
 		 * @since  1.0.0
 		 * @access public
-		 * @param  string  $name
+		 * @param  string $name
 		 * @return void
 		 */
 		public function unregister_manager( $name ) {
 
-			if ( $this->manager_exists( $name ) )
+			if ( $this->manager_exists( $name ) ) {
 				unset( $this->managers[ $name ] );
+			}
 		}
 
 		/**
@@ -310,7 +315,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 *
 		 * @since  1.0.0
 		 * @access public
-		 * @param  string  $name
+		 * @param  string $name
 		 * @return object|bool
 		 */
 		public function get_manager( $name ) {
@@ -323,7 +328,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 *
 		 * @since  1.0.0
 		 * @access public
-		 * @param  string  $name
+		 * @param  string $name
 		 * @return bool
 		 */
 		public function manager_exists( $name ) {
@@ -338,14 +343,15 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 *
 		 * @since  1.0.0
 		 * @access public
-		 * @param  string  $type
-		 * @param  string  $class
+		 * @param  string $type
+		 * @param  string $class
 		 * @return void
 		 */
 		public function register_manager_type( $type, $class ) {
 
-			if ( ! $this->manager_type_exists( $type ) )
+			if ( ! $this->manager_type_exists( $type ) ) {
 				$this->manager_types[ $type ] = $class;
+			}
 		}
 
 		/**
@@ -353,13 +359,14 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 *
 		 * @since  1.0.0
 		 * @access public
-		 * @param  string  $type
+		 * @param  string $type
 		 * @return void
 		 */
 		public function unregister_manager_type( $type ) {
 
-			if ( $this->manager_type_exists( $type ) )
+			if ( $this->manager_type_exists( $type ) ) {
 				unset( $this->manager_types[ $type ] );
+			}
 		}
 
 		/**
@@ -367,12 +374,12 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 *
 		 * @since  1.0.0
 		 * @access public
-		 * @param  string  $type
+		 * @param  string $type
 		 * @return string
 		 */
 		public function get_manager_type( $type ) {
 
-			return $this->manager_type_exists( $type ) ? $this->manager_types[ $type ] : $this->manager_types[ 'default' ];
+			return $this->manager_type_exists( $type ) ? $this->manager_types[ $type ] : $this->manager_types['default'];
 		}
 
 		/**
@@ -380,7 +387,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 *
 		 * @since  1.0.0
 		 * @access public
-		 * @param  string  $type
+		 * @param  string $type
 		 * @return bool
 		 */
 		public function manager_type_exists( $type ) {
@@ -395,14 +402,15 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 *
 		 * @since  1.0.0
 		 * @access public
-		 * @param  string  $type
-		 * @param  string  $class
+		 * @param  string $type
+		 * @param  string $class
 		 * @return void
 		 */
 		public function register_section_type( $type, $class ) {
 
-			if ( ! $this->section_type_exists( $type ) )
+			if ( ! $this->section_type_exists( $type ) ) {
 				$this->section_types[ $type ] = $class;
+			}
 		}
 
 		/**
@@ -410,13 +418,14 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 *
 		 * @since  1.0.0
 		 * @access public
-		 * @param  string  $type
+		 * @param  string $type
 		 * @return void
 		 */
 		public function unregister_section_type( $type ) {
 
-			if ( $this->section_type_exists( $type ) )
+			if ( $this->section_type_exists( $type ) ) {
 				unset( $this->section_types[ $type ] );
+			}
 		}
 
 		/**
@@ -424,12 +433,12 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 *
 		 * @since  1.0.0
 		 * @access public
-		 * @param  string  $type
+		 * @param  string $type
 		 * @return string
 		 */
 		public function get_section_type( $type ) {
 
-			return $this->section_type_exists( $type ) ? $this->section_types[ $type ] : $this->section_types[ 'default' ];
+			return $this->section_type_exists( $type ) ? $this->section_types[ $type ] : $this->section_types['default'];
 		}
 
 		/**
@@ -437,7 +446,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 *
 		 * @since  1.0.0
 		 * @access public
-		 * @param  string  $type
+		 * @param  string $type
 		 * @return bool
 		 */
 		public function section_type_exists( $type ) {
@@ -452,14 +461,15 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 *
 		 * @since  1.0.0
 		 * @access public
-		 * @param  string  $type
-		 * @param  string  $class
+		 * @param  string $type
+		 * @param  string $class
 		 * @return void
 		 */
 		public function register_control_type( $type, $class ) {
 
-			if ( ! $this->control_type_exists( $type ) )
+			if ( ! $this->control_type_exists( $type ) ) {
 				$this->control_types[ $type ] = $class;
+			}
 		}
 
 		/**
@@ -467,13 +477,14 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 *
 		 * @since  1.0.0
 		 * @access public
-		 * @param  string  $type
+		 * @param  string $type
 		 * @return void
 		 */
 		public function unregister_control_type( $type ) {
 
-			if ( $this->control_type_exists( $type ) )
+			if ( $this->control_type_exists( $type ) ) {
 				unset( $this->control_types[ $type ] );
+			}
 		}
 
 		/**
@@ -481,12 +492,12 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 *
 		 * @since  1.0.0
 		 * @access public
-		 * @param  string  $type
+		 * @param  string $type
 		 * @return string
 		 */
 		public function get_control_type( $type ) {
 
-			return $this->control_type_exists( $type ) ? $this->control_types[ $type ] : $this->control_types[ 'default' ];
+			return $this->control_type_exists( $type ) ? $this->control_types[ $type ] : $this->control_types['default'];
 		}
 
 		/**
@@ -494,7 +505,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 *
 		 * @since  1.0.0
 		 * @access public
-		 * @param  string  $type
+		 * @param  string $type
 		 * @return bool
 		 */
 		public function control_type_exists( $type ) {
@@ -509,14 +520,15 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 *
 		 * @since  1.0.0
 		 * @access public
-		 * @param  string  $type
-		 * @param  string  $class
+		 * @param  string $type
+		 * @param  string $class
 		 * @return void
 		 */
 		public function register_setting_type( $type, $class ) {
 
-			if ( ! $this->setting_type_exists( $type ) )
+			if ( ! $this->setting_type_exists( $type ) ) {
 				$this->setting_types[ $type ] = $class;
+			}
 		}
 
 		/**
@@ -524,13 +536,14 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 *
 		 * @since  1.0.0
 		 * @access public
-		 * @param  string  $type
+		 * @param  string $type
 		 * @return void
 		 */
 		public function unregister_setting_type( $type ) {
 
-			if ( $this->setting_type_exists( $type ) )
+			if ( $this->setting_type_exists( $type ) ) {
 				unset( $this->setting_types[ $type ] );
+			}
 		}
 
 		/**
@@ -538,12 +551,12 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 *
 		 * @since  1.0.0
 		 * @access public
-		 * @param  string  $type
+		 * @param  string $type
 		 * @return string
 		 */
 		public function get_setting_type( $type ) {
 
-			return $this->setting_type_exists( $type ) ? $this->setting_types[ $type ] : $this->setting_types[ 'default' ];
+			return $this->setting_type_exists( $type ) ? $this->setting_types[ $type ] : $this->setting_types['default'];
 		}
 
 		/**
@@ -551,7 +564,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 *
 		 * @since  1.0.0
 		 * @access public
-		 * @param  string  $type
+		 * @param  string $type
 		 * @return bool
 		 */
 		public function setting_type_exists( $type ) {
@@ -598,19 +611,19 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 */
 		public function register_control_types() {
 
-			$this->register_control_type( 'default',       'ButterBean_Control'               );
-			$this->register_control_type( 'checkboxes',    'ButterBean_Control_Checkboxes'    );
-			$this->register_control_type( 'color',         'ButterBean_Control_Color'         );
-			$this->register_control_type( 'datetime',      'ButterBean_Control_Datetime'      );
-			$this->register_control_type( 'excerpt',       'ButterBean_Control_Excerpt'       );
-			$this->register_control_type( 'image',         'ButterBean_Control_Image'         );
-			$this->register_control_type( 'palette',       'ButterBean_Control_Palette'       );
-			$this->register_control_type( 'radio',         'ButterBean_Control_Radio'         );
-			$this->register_control_type( 'radio-image',   'ButterBean_Control_Radio_Image'   );
-			$this->register_control_type( 'select-group',  'ButterBean_Control_Select_Group'  );
-			$this->register_control_type( 'textarea',      'ButterBean_Control_Textarea'      );
+			$this->register_control_type( 'default',       'ButterBean_Control' );
+			$this->register_control_type( 'checkboxes',    'ButterBean_Control_Checkboxes' );
+			$this->register_control_type( 'color',         'ButterBean_Control_Color' );
+			$this->register_control_type( 'datetime',      'ButterBean_Control_Datetime' );
+			$this->register_control_type( 'excerpt',       'ButterBean_Control_Excerpt' );
+			$this->register_control_type( 'image',         'ButterBean_Control_Image' );
+			$this->register_control_type( 'palette',       'ButterBean_Control_Palette' );
+			$this->register_control_type( 'radio',         'ButterBean_Control_Radio' );
+			$this->register_control_type( 'radio-image',   'ButterBean_Control_Radio_Image' );
+			$this->register_control_type( 'select-group',  'ButterBean_Control_Select_Group' );
+			$this->register_control_type( 'textarea',      'ButterBean_Control_Textarea' );
 			$this->register_control_type( 'multi-avatars', 'ButterBean_Control_Multi_Avatars' );
-			$this->register_control_type( 'parent',        'ButterBean_Control_Parent'        );
+			$this->register_control_type( 'parent',        'ButterBean_Control_Parent' );
 		}
 
 		/**
@@ -624,12 +637,12 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 */
 		public function register_setting_types() {
 
-			$this->register_setting_type( 'default',  'ButterBean_Setting'          );
-			$this->register_setting_type( 'single',   'ButterBean_Setting'          );
+			$this->register_setting_type( 'default',  'ButterBean_Setting' );
+			$this->register_setting_type( 'single',   'ButterBean_Setting' );
 			$this->register_setting_type( 'multiple', 'ButterBean_Setting_Multiple' );
-			$this->register_setting_type( 'array',    'ButterBean_Setting_Array'    );
+			$this->register_setting_type( 'array',    'ButterBean_Setting_Array' );
 			$this->register_setting_type( 'datetime', 'ButterBean_Setting_Datetime' );
-			$this->register_setting_type( 'serialize','ButterBean_Setting_Serialize');
+			$this->register_setting_type( 'serialize','ButterBean_Setting_Serialize' );
 		}
 
 		/**
@@ -655,21 +668,23 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 			// Enqueue the main plugin script.
-			wp_enqueue_script( 'butterbean', $this->dir_uri . "js/butterbean{$min}.js", array( 'backbone', 'wp-util' ), '', true );
+			wp_enqueue_script( 'butterbean', $this->dir_uri . "assets/js/butterbean{$min}.js", array( 'backbone', 'wp-util' ), '', true );
 
 			// Enqueue the main plugin style.
-			wp_enqueue_style( 'butterbean', $this->dir_uri . "css/butterbean{$min}.css" );
+			wp_enqueue_style( 'butterbean', $this->dir_uri . "assets/css/butterbean{$min}.css" );
 
 			// Loop through the manager and its controls and call each control's `enqueue()` method.
 			foreach ( $this->managers as $manager ) {
 
 				$manager->enqueue();
 
-				foreach ( $manager->sections as $section )
+				foreach ( $manager->sections as $section ) {
 					$section->enqueue();
+				}
 
-				foreach ( $manager->controls as $control )
+				foreach ( $manager->controls as $control ) {
 					$control->enqueue();
+				}
 			}
 		}
 
@@ -679,7 +694,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 *
 		 * @since  1.0.0
 		 * @access public
-		 * @param  string  $post_type
+		 * @param  string $post_type
 		 * @return void
 		 */
 		public function add_meta_boxes( $post_type ) {
@@ -696,7 +711,9 @@ if ( ! class_exists( 'ButterBean' ) ) {
 						$post_type,
 						$manager->context,
 						$manager->priority,
-						array( 'manager' => $manager )
+						array(
+							'manager' => $manager,
+						)
 					);
 				}
 			}
@@ -709,8 +726,8 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 *
 		 * @since  1.0.0
 		 * @access public
-		 * @param  object  $post
-		 * @param  array   $metabox
+		 * @param  object $post
+		 * @param  array  $metabox
 		 * @return void
 		 */
 		public function meta_box( $post, $metabox ) {
@@ -732,12 +749,15 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 */
 		public function localize_scripts() {
 
-			$json = array( 'managers' => array() );
+			$json = array(
+				'managers' => array(),
+			);
 
 			foreach ( $this->managers as $manager ) {
 
-				if ( $manager->check_capabilities() )
+				if ( $manager->check_capabilities() ) {
 					$json['managers'][] = $manager->get_json();
+				}
 			}
 
 			wp_localize_script( 'butterbean', 'butterbean_data', $json );
@@ -762,8 +782,9 @@ if ( ! class_exists( 'ButterBean' ) ) {
 
 			<?php foreach ( $this->managers as $manager ) {
 
-				if ( ! $manager->check_capabilities() )
+				if ( ! $manager->check_capabilities() ) {
 					continue;
+				}
 
 				if ( ! in_array( $manager->type, $m_templates ) ) {
 					$m_templates[] = $manager->type;
@@ -788,7 +809,7 @@ if ( ! class_exists( 'ButterBean' ) ) {
 						$control->print_template();
 					}
 				}
-			}
+}
 		}
 
 		/**
@@ -800,7 +821,8 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 * @access public
 		 * @return void
 		 */
-		public function render_views() { ?>
+		public function render_views() {
+	?>
 
 			<script type="text/javascript">
 				( function( api ) {
@@ -824,13 +846,15 @@ if ( ! class_exists( 'ButterBean' ) ) {
 			$is_autosave = wp_is_post_autosave( $post_id );
 			$is_revision = wp_is_post_revision( $post_id );
 
-			if ( $do_autosave || $is_autosave || $is_revision )
+			if ( $do_autosave || $is_autosave || $is_revision ) {
 				return;
+			}
 
 			foreach ( $this->managers as $manager ) {
 
-				if ( $manager->check_capabilities() )
+				if ( $manager->check_capabilities() ) {
 					$manager->save( $post_id );
+				}
 			}
 		}
 
@@ -839,14 +863,15 @@ if ( ! class_exists( 'ButterBean' ) ) {
 		 *
 		 * @since  1.0.0
 		 * @access protected
-		 * @param  object     $a
-		 * @param  object     $b
+		 * @param  object $a
+		 * @param  object $b
 		 * @return int
 		 */
 		protected function priority_sort( $a, $b ) {
 
-			if ( $a->priority === $b->priority )
+			if ( $a->priority === $b->priority ) {
 				return $a->instance_number - $b->instance_number;
+			}
 
 			return $a->priority - $b->priority;
 		}
@@ -866,4 +891,4 @@ if ( ! class_exists( 'ButterBean' ) ) {
 
 	// Let's do this thang!
 	butterbean();
-}
+}// End if().

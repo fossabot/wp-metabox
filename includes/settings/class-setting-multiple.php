@@ -43,7 +43,7 @@ class ButterBean_Setting_Multiple extends ButterBean_Setting {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  array   $value
+	 * @param  array $value
 	 * @return array
 	 */
 	public function sanitize( $values ) {
@@ -58,7 +58,7 @@ class ButterBean_Setting_Multiple extends ButterBean_Setting {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  mixed  $value
+	 * @param  mixed $value
 	 * @return mixed
 	 */
 	public function map( $value ) {
@@ -75,19 +75,20 @@ class ButterBean_Setting_Multiple extends ButterBean_Setting {
 	 */
 	public function save() {
 
-		if ( ! $this->check_capabilities() )
+		if ( ! $this->check_capabilities() ) {
 			return;
+		}
 
 		$old_values = $this->get_value();
 		$new_values = $this->get_posted_value();
 
 		// If there's an array of posted values, set them.
-		if ( is_array( $new_values ) )
+		if ( is_array( $new_values ) ) {
 			$this->set_values( $new_values, $old_values );
-
-		// If no array of posted values but we have old values, delete them.
-		else if ( $old_values )
+		} // End if().
+		elseif ( $old_values ) {
 			$this->delete_values();
+		}
 	}
 
 	/**
@@ -95,22 +96,24 @@ class ButterBean_Setting_Multiple extends ButterBean_Setting {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  array   $new_values
-	 * @param  array   $old_values
+	 * @param  array $new_values
+	 * @param  array $old_values
 	 * @return void
 	 */
 	public function set_values( $new_values, $old_values ) {
 
 		foreach ( $new_values as $new ) {
 
-			if ( ! in_array( $new, $old_values ) )
+			if ( ! in_array( $new, $old_values ) ) {
 				$this->add_value( $new );
+			}
 		}
 
 		foreach ( $old_values as $old ) {
 
-			if ( ! in_array( $old, $new_values ) )
+			if ( ! in_array( $old, $new_values ) ) {
 				$this->remove_value( $old );
+			}
 		}
 	}
 
@@ -131,7 +134,7 @@ class ButterBean_Setting_Multiple extends ButterBean_Setting {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  mixed   $value
+	 * @param  mixed $value
 	 * @return bool
 	 */
 	public function add_value( $value ) {
@@ -144,7 +147,7 @@ class ButterBean_Setting_Multiple extends ButterBean_Setting {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  mixed   $value
+	 * @param  mixed $value
 	 * @return bool
 	 */
 	public function remove_value( $value ) {

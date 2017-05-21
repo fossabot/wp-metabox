@@ -42,13 +42,15 @@ class ButterBean_Control_Multi_Avatars extends ButterBean_Control {
 		$this->json['value']   = is_array( $this->get_value() ) ? array_map( 'absint', $this->get_value() ) : array();
 		$this->json['choices'] = array();
 
-		$users = get_users( array( 'role__in' => $this->get_roles() ) );
+		$users = get_users( array(
+			'role__in' => $this->get_roles(),
+		) );
 
 		foreach ( $users as $user ) {
 			$this->json['choices'][] = array(
 				'id'     => $user->ID,
 				'name'   => $user->display_name,
-				'avatar' => get_avatar( $user->ID, 70 )
+				'avatar' => get_avatar( $user->ID, 70 ),
 			);
 		}
 	}

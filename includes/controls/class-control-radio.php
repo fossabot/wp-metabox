@@ -33,7 +33,7 @@ class ButterBean_Control_Radio extends ButterBean_Control {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  string  $setting
+	 * @param  string $setting
 	 * @return mixed
 	 */
 	public function get_value( $setting = 'default' ) {

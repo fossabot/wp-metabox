@@ -52,9 +52,9 @@ class ButterBean_Control_Image extends ButterBean_Control {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  object  $manager
-	 * @param  string  $name
-	 * @param  array   $args
+	 * @param  object $manager
+	 * @param  string $name
+	 * @param  array  $args
 	 * @return void
 	 */
 	public function __construct( $manager, $name, $args = array() ) {
@@ -68,7 +68,7 @@ class ButterBean_Control_Image extends ButterBean_Control {
 				'choose'      => esc_html__( 'Choose image',      'butterbean' ),
 				'change'      => esc_html__( 'Change image',      'butterbean' ),
 				'remove'      => esc_html__( 'Remove image',      'butterbean' ),
-				'placeholder' => esc_html__( 'No image selected', 'butterbean' )
+				'placeholder' => esc_html__( 'No image selected', 'butterbean' ),
 			)
 		);
 	}

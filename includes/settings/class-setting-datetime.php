@@ -45,15 +45,16 @@ class ButterBean_Setting_Datetime extends ButterBean_Setting {
 		$day   = ! empty( $_POST[ "{$field_name}_day" ] )   ? zeroise( absint( $_POST[ "{$field_name}_day" ] ),   2 ) : '';
 
 		// Get the posted time.
-		$hour   = ! empty( $_POST[ "{$field_name}_hour" ] )    ? $this->validate_hour(   $_POST[ "{$field_name}_hour" ] )   : '00';
+		$hour   = ! empty( $_POST[ "{$field_name}_hour" ] )    ? $this->validate_hour( $_POST[ "{$field_name}_hour" ] )   : '00';
 		$minute = ! empty( $_POST[ "{$field_name}_minute" ] )  ? $this->validate_minute( $_POST[ "{$field_name}_minute" ] ) : '00';
 		$second = ! empty( $_POST[ "{$field_name}_second" ] )  ? $this->validate_second( $_POST[ "{$field_name}_second" ] ) : '00';
 
 		$date = "{$year}-{$month}-{$day}";
 		$time = "{$hour}:{$minute}:{$second}";
 
-		if ( $year && $month && $day && wp_checkdate( absint( $month ), absint( $day ), absint( $year ), $date ) )
+		if ( $year && $month && $day && wp_checkdate( absint( $month ), absint( $day ), absint( $year ), $date ) ) {
 			return "{$date} {$time}";
+		}
 
 		return '';
 	}
@@ -63,7 +64,7 @@ class ButterBean_Setting_Datetime extends ButterBean_Setting {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  int|string  $hour
+	 * @param  int|string $hour
 	 * @return string
 	 */
 	public function validate_hour( $hour ) {
@@ -78,7 +79,7 @@ class ButterBean_Setting_Datetime extends ButterBean_Setting {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  int|string  $minute
+	 * @param  int|string $minute
 	 * @return string
 	 */
 	public function validate_minute( $minute ) {
@@ -93,7 +94,7 @@ class ButterBean_Setting_Datetime extends ButterBean_Setting {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  int|string  $second
+	 * @param  int|string $second
 	 * @return string
 	 */
 	public function validate_second( $second ) {

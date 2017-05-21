@@ -152,16 +152,17 @@ class ButterBean_Manager {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  string  $name
-	 * @param  array   $args
+	 * @param  string $name
+	 * @param  array  $args
 	 * @return void
 	 */
 	public function __construct( $name, $args = array() ) {
 
 		foreach ( array_keys( get_object_vars( $this ) ) as $key ) {
 
-			if ( isset( $args[ $key ] ) )
+			if ( isset( $args[ $key ] ) ) {
 				$this->$key = $args[ $key ];
+			}
 		}
 
 		// Make sure the post type is an array.
@@ -185,8 +186,8 @@ class ButterBean_Manager {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  object|string  $section
-	 * @param  array          $args
+	 * @param  object|string $section
+	 * @param  array         $args
 	 * @return void
 	 */
 	public function register_section( $section, $args = array() ) {
@@ -198,8 +199,9 @@ class ButterBean_Manager {
 			$section = new $type( $this, $section, $args );
 		}
 
-		if ( ! $this->section_exists( $section->name ) )
+		if ( ! $this->section_exists( $section->name ) ) {
 			$this->sections[ $section->name ] = $section;
+		}
 	}
 
 	/**
@@ -207,8 +209,8 @@ class ButterBean_Manager {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  object|string  $control
-	 * @param  array          $args
+	 * @param  object|string $control
+	 * @param  array         $args
 	 * @return void
 	 */
 	public function register_control( $control, $args = array() ) {
@@ -220,8 +222,9 @@ class ButterBean_Manager {
 			$control = new $type( $this, $control, $args );
 		}
 
-		if ( ! $this->control_exists( $control->name ) )
+		if ( ! $this->control_exists( $control->name ) ) {
 			$this->controls[ $control->name ] = $control;
+		}
 	}
 
 	/**
@@ -229,8 +232,8 @@ class ButterBean_Manager {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  object|string  $setting
-	 * @param  array          $args
+	 * @param  object|string $setting
+	 * @param  array         $args
 	 * @return void
 	 */
 	public function register_setting( $setting, $args = array() ) {
@@ -242,8 +245,9 @@ class ButterBean_Manager {
 			$setting = new $type( $this, $setting, $args );
 		}
 
-		if ( ! $this->setting_exists( $setting->name ) )
+		if ( ! $this->setting_exists( $setting->name ) ) {
 			$this->settings[ $setting->name ] = $setting;
+		}
 	}
 
 	/**
@@ -251,9 +255,9 @@ class ButterBean_Manager {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  string        $name
-	 * @param  object|array  $control  Control object or array of control arguments.
-	 * @param  object|array  $setting  Setting object or array of setting arguments.
+	 * @param  string       $name
+	 * @param  object|array $control  Control object or array of control arguments.
+	 * @param  object|array $setting  Setting object or array of setting arguments.
 	 * @return void
 	 */
 	public function register_field( $name, $control, $setting ) {
@@ -267,13 +271,14 @@ class ButterBean_Manager {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  string  $name
+	 * @param  string $name
 	 * @return void
 	 */
 	public function unregister_section( $name ) {
 
-		if ( $this->section_exists( $name ) )
+		if ( $this->section_exists( $name ) ) {
 			unset( $this->sections[ $name ] );
+		}
 	}
 
 	/**
@@ -281,13 +286,14 @@ class ButterBean_Manager {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  string  $name
+	 * @param  string $name
 	 * @return void
 	 */
 	public function unregister_control( $name ) {
 
-		if ( $this->control_exists( $name ) )
+		if ( $this->control_exists( $name ) ) {
 			unset( $this->controls[ $name ] );
+		}
 	}
 
 	/**
@@ -295,13 +301,14 @@ class ButterBean_Manager {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  string  $name
+	 * @param  string $name
 	 * @return void
 	 */
 	public function unregister_setting( $name ) {
 
-		if ( $this->setting_exists( $name ) )
+		if ( $this->setting_exists( $name ) ) {
 			unset( $this->settings[ $name ] );
+		}
 	}
 
 	/**
@@ -309,7 +316,7 @@ class ButterBean_Manager {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  string  $name
+	 * @param  string $name
 	 * @return void
 	 */
 	public function unregister_field( $name ) {
@@ -323,7 +330,7 @@ class ButterBean_Manager {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  string  $name
+	 * @param  string $name
 	 * @return object|bool
 	 */
 	public function get_section( $name ) {
@@ -336,7 +343,7 @@ class ButterBean_Manager {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  string  $name
+	 * @param  string $name
 	 * @return object|bool
 	 */
 	public function get_control( $name ) {
@@ -349,7 +356,7 @@ class ButterBean_Manager {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  string  $name
+	 * @param  string $name
 	 * @return object|bool
 	 */
 	public function get_setting( $name ) {
@@ -362,7 +369,7 @@ class ButterBean_Manager {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  string  $name
+	 * @param  string $name
 	 * @return object|bool
 	 */
 	public function get_field( $name ) {
@@ -370,7 +377,11 @@ class ButterBean_Manager {
 		$control = $this->get_control( $name );
 		$setting = $this->get_setting( $name );
 
-		$field = array( 'name' => $name, 'control' => $control, 'setting' => $setting );
+		$field = array(
+			'name' => $name,
+			'control' => $control,
+			'setting' => $setting,
+		);
 
 		return $control && $setting ? (object) $field : false;
 	}
@@ -380,7 +391,7 @@ class ButterBean_Manager {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  string  $name
+	 * @param  string $name
 	 * @return bool
 	 */
 	public function section_exists( $name ) {
@@ -393,7 +404,7 @@ class ButterBean_Manager {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  string  $name
+	 * @param  string $name
 	 * @return bool
 	 */
 	public function control_exists( $name ) {
@@ -406,7 +417,7 @@ class ButterBean_Manager {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  string  $name
+	 * @param  string $name
 	 * @return bool
 	 */
 	public function setting_exists( $name ) {
@@ -419,7 +430,7 @@ class ButterBean_Manager {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  string  $name
+	 * @param  string $name
 	 * @return bool
 	 */
 	public function field_exists( $name ) {
@@ -456,8 +467,9 @@ class ButterBean_Manager {
 		$this->json['type'] = $this->type;
 
 		// Get all sections that have controls.
-		foreach ( $this->controls as $control )
+		foreach ( $this->controls as $control ) {
 			$sections_with_controls[] = $control->section;
+		}
 
 		$sections_with_controls = array_unique( $sections_with_controls );
 
@@ -466,18 +478,21 @@ class ButterBean_Manager {
 
 			$caps = $section->check_capabilities();
 
-			if ( $caps && in_array( $section->name, $sections_with_controls ) )
+			if ( $caps && in_array( $section->name, $sections_with_controls ) ) {
 				$this->json['sections'][] = $section->get_json();
+			}
 
-			if ( ! $caps )
+			if ( ! $caps ) {
 				$blocked_sections[] = $section->name;
+			}
 		}
 
 		// Get the JSON data for each control.
 		foreach ( $this->controls as $control ) {
 
-			if ( $control->check_capabilities() && ! in_array( $control->section, $blocked_sections ) )
+			if ( $control->check_capabilities() && ! in_array( $control->section, $blocked_sections ) ) {
 				$this->json['controls'][] = $control->get_json();
+			}
 		}
 	}
 
@@ -490,16 +505,19 @@ class ButterBean_Manager {
 	 */
 	public function save( $post_id ) {
 
-		if ( ! $this->post_id )
+		if ( ! $this->post_id ) {
 			$this->post_id = $post_id;
+		}
 
 		// Verify the nonce for this manager.
-		if ( ! isset( $_POST["butterbean_{$this->name}"] ) || ! wp_verify_nonce( $_POST["butterbean_{$this->name}"], "butterbean_{$this->name}_nonce" ) )
+		if ( ! isset( $_POST[ "butterbean_{$this->name}" ] ) || ! wp_verify_nonce( $_POST[ "butterbean_{$this->name}" ], "butterbean_{$this->name}_nonce" ) ) {
 			return;
+		}
 
 		// Loop through each setting and save it.
-		foreach ( $this->settings as $setting )
+		foreach ( $this->settings as $setting ) {
 			$setting->save();
+		}
 	}
 
 	/**
@@ -511,14 +529,17 @@ class ButterBean_Manager {
 	 */
 	public function check_capabilities() {
 
-		if ( $this->capability && ! call_user_func_array( 'current_user_can', (array) $this->capability ) )
+		if ( $this->capability && ! call_user_func_array( 'current_user_can', (array) $this->capability ) ) {
 			return false;
+		}
 
-		if ( $this->post_type_supports && ! call_user_func_array( 'post_type_supports', array( get_post_type( $this->manager->post_id ), $this->post_type_supports ) ) )
+		if ( $this->post_type_supports && ! call_user_func_array( 'post_type_supports', array( get_post_type( $this->manager->post_id ), $this->post_type_supports ) ) ) {
 			return false;
+		}
 
-		if ( $this->theme_supports && ! call_user_func_array( 'theme_supports', (array) $this->theme_supports ) )
+		if ( $this->theme_supports && ! call_user_func_array( 'theme_supports', (array) $this->theme_supports ) ) {
 			return false;
+		}
 
 		return true;
 	}
@@ -530,7 +551,8 @@ class ButterBean_Manager {
 	 * @access public
 	 * @return void
 	 */
-	public function print_template() { ?>
+	public function print_template() {
+	?>
 
 		<script type="text/html" id="tmpl-butterbean-manager-<?php echo esc_attr( $this->type ); ?>">
 			<?php $this->get_template(); ?>

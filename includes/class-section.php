@@ -150,17 +150,18 @@ class ButterBean_Section {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  object  $manager
-	 * @param  string  $section
-	 * @param  array   $args
+	 * @param  object $manager
+	 * @param  string $section
+	 * @param  array  $args
 	 * @return void
 	 */
 	public function __construct( $manager, $name, $args = array() ) {
 
 		foreach ( array_keys( get_object_vars( $this ) ) as $key ) {
 
-			if ( isset( $args[ $key ] ) )
+			if ( isset( $args[ $key ] ) ) {
 				$this->$key = $args[ $key ];
+			}
 		}
 
 		$this->manager = $manager;
@@ -171,8 +172,9 @@ class ButterBean_Section {
 		$this->instance_number = self::$instance_count;
 
 		// Set the active callback function if not set.
-		if ( ! $this->active_callback )
+		if ( ! $this->active_callback ) {
 			$this->active_callback = array( $this, 'active_callback' );
+		}
 	}
 
 	/**
@@ -226,8 +228,9 @@ class ButterBean_Section {
 
 		$is_active = call_user_func( $this->active_callback, $this );
 
-		if ( $is_active )
+		if ( $is_active ) {
 			$is_active = $this->check_capabilities();
+		}
 
 		return apply_filters( 'butterbean_is_section_active', $is_active, $this );
 	}
@@ -252,14 +255,17 @@ class ButterBean_Section {
 	 */
 	public function check_capabilities() {
 
-		if ( $this->capability && ! call_user_func_array( 'current_user_can', (array) $this->capability ) )
+		if ( $this->capability && ! call_user_func_array( 'current_user_can', (array) $this->capability ) ) {
 			return false;
+		}
 
-		if ( $this->post_type_supports && ! call_user_func_array( 'post_type_supports', array( get_post_type( $this->manager->post_id ), $this->post_type_supports ) ) )
+		if ( $this->post_type_supports && ! call_user_func_array( 'post_type_supports', array( get_post_type( $this->manager->post_id ), $this->post_type_supports ) ) ) {
 			return false;
+		}
 
-		if ( $this->theme_supports && ! call_user_func_array( 'theme_supports', (array) $this->theme_supports ) )
+		if ( $this->theme_supports && ! call_user_func_array( 'theme_supports', (array) $this->theme_supports ) ) {
 			return false;
+		}
 
 		return true;
 	}
@@ -271,7 +277,8 @@ class ButterBean_Section {
 	 * @access public
 	 * @return void
 	 */
-	public function print_template() { ?>
+	public function print_template() {
+	?>
 
 		<script type="text/html" id="tmpl-butterbean-section-<?php echo esc_attr( $this->type ); ?>">
 			<?php $this->get_template(); ?>

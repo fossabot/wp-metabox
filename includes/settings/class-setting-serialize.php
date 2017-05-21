@@ -48,7 +48,7 @@ if ( ! class_exists( 'ButterBean_Setting_Serialize' ) ) {
 
 			if ( is_array( $values ) && ! empty( $values ) ) {
 				return update_post_meta( $this->manager->post_id, $this->manager->name, $values );
-			} else if ( empty( $values ) ) {
+			} elseif ( empty( $values ) ) {
 				return delete_post_meta( $this->manager->post_id, $this->manager->name );
 			}
 		}
@@ -92,4 +92,4 @@ if ( ! class_exists( 'ButterBean_Setting_Serialize' ) ) {
 		}
 	}
 
-}
+}// End if().

@@ -29,15 +29,16 @@ function butterbean_validate_boolean( $value ) {
  *
  * @since  1.0.0
  * @access public
- * @param  string  $color
+ * @param  string $color
  * @return string
  */
 function butterbean_sanitize_hex_color( $color ) {
 
-	if ( function_exists( 'sanitize_hex_color' ) )
+	if ( function_exists( 'sanitize_hex_color' ) ) {
 		return sanitize_hex_color( $color );
+	}
 
-	return $color && preg_match('|^#([A-Fa-f0-9]{3}){1,2}$|', $color ) ? $color : '';
+	return $color && preg_match( '|^#([A-Fa-f0-9]{3}){1,2}$|', $color ) ? $color : '';
 }
 
 /**
@@ -45,18 +46,20 @@ function butterbean_sanitize_hex_color( $color ) {
  *
  * @since  1.0.0
  * @access public
- * @param  string  $color
+ * @param  string $color
  * @return string
  */
 function butterbean_sanitize_hex_color_no_hash( $color ) {
 
-	if ( function_exists( 'sanitize_hex_color_no_hash' ) )
+	if ( function_exists( 'sanitize_hex_color_no_hash' ) ) {
 		return sanitize_hex_color_no_hash( $color );
+	}
 
 	$color = ltrim( $color, '#' );
 
-	if ( '' === $color )
+	if ( '' === $color ) {
 		return '';
+	}
 
 	return butterbean_sanitize_hex_color( '#' . $color ) ? $color : null;
 }
@@ -66,16 +69,18 @@ function butterbean_sanitize_hex_color_no_hash( $color ) {
  *
  * @since  1.0.0
  * @access public
- * @param  string  $color
+ * @param  string $color
  * @return string
  */
 function butterbean_maybe_hash_hex_color( $color ) {
 
-	if ( function_exists( 'maybe_hash_hex_color' ) )
+	if ( function_exists( 'maybe_hash_hex_color' ) ) {
 		return maybe_hash_hex_color( $color );
+	}
 
-	if ( $unhashed = butterbean_sanitize_hex_color_no_hash( $color ) )
+	if ( $unhashed = butterbean_sanitize_hex_color_no_hash( $color ) ) {
 		return '#' . $unhashed;
+	}
 
 	return $color;
 }
@@ -84,7 +89,7 @@ function butterbean_maybe_hash_hex_color( $color ) {
  * Gets Underscore.js templates for managers.
  *
  * @since  1.0.0
- * @param  string  $slug
+ * @param  string $slug
  * @return void
  */
 function butterbean_get_manager_template( $slug = '' ) {
@@ -95,7 +100,7 @@ function butterbean_get_manager_template( $slug = '' ) {
  * Gets Underscore.js templates for navs.
  *
  * @since  1.0.0
- * @param  string  $slug
+ * @param  string $slug
  * @return void
  */
 function butterbean_get_nav_template( $slug = '' ) {
@@ -106,7 +111,7 @@ function butterbean_get_nav_template( $slug = '' ) {
  * Gets Underscore.js templates for sections.
  *
  * @since  1.0.0
- * @param  string  $slug
+ * @param  string $slug
  * @return void
  */
 function butterbean_get_section_template( $slug = '' ) {
@@ -117,7 +122,7 @@ function butterbean_get_section_template( $slug = '' ) {
  * Gets Underscore.js templates for controls.
  *
  * @since  1.0.0
- * @param  string  $slug
+ * @param  string $slug
  * @return void
  */
 function butterbean_get_control_template( $slug = '' ) {
@@ -128,8 +133,8 @@ function butterbean_get_control_template( $slug = '' ) {
  * Helper function for getting Underscore.js templates.
  *
  * @since  1.0.0
- * @param  string  $name
- * @param  string  $slug
+ * @param  string $name
+ * @param  string $slug
  * @return void
  */
 function butterbean_get_template( $name, $slug = '' ) {
@@ -142,8 +147,9 @@ function butterbean_get_template( $name, $slug = '' ) {
 
 		$templates = array();
 
-		if ( $slug )
+		if ( $slug ) {
 			$templates[] = "{$name}-{$slug}.php";
+		}
 
 		$templates[] = "{$name}.php";
 
@@ -164,6 +170,7 @@ function butterbean_get_template( $name, $slug = '' ) {
 	$located = apply_filters( "butterbean_{$name}_template", $located, $slug );
 
 	// Load the template.
-	if ( $located )
+	if ( $located ) {
 		require( $located );
+	}
 }

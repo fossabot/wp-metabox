@@ -49,7 +49,7 @@ class ButterBean_Control_Excerpt extends ButterBean_Control_Textarea {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  string  $setting
+	 * @param  string $setting
 	 * @return string
 	 */
 	public function get_field_name( $setting = 'default' ) {
@@ -61,7 +61,7 @@ class ButterBean_Control_Excerpt extends ButterBean_Control_Textarea {
 	 *
 	 * @since  1.0.0
 	 * @access public
-	 * @param  string  $setting
+	 * @param  string $setting
 	 * @return mixed
 	 */
 	public function get_value( $setting = 'default' ) {
