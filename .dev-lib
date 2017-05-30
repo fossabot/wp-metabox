@@ -1,0 +1,3 @@
+WPCS_GIT_TREE=develop
+DEV_LIB_SKIP=jshint,jscs
+CHECK_SCOPE=all

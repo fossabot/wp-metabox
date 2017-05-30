@@ -4,25 +4,23 @@
  * values are hex colors.  This class also attempts to strip `#` from the hex color.
  * By design, it's recommended to add the `#` on output.
  *
- * @package    ButterBean
- * @author     Justin Tadlock <justin@justintadlock.com>
- * @copyright  Copyright (c) 2015-2016, Justin Tadlock
- * @link       https://github.com/justintadlock/butterbean
- * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * @package Metabox
  */
+
+namespace NineCodes\Metabox;
 
 /**
  * Color control class.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  */
-class ButterBean_Control_Color extends ButterBean_Control {
+class Control_Color extends Control {
 
 	/**
 	 * The type of control.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -35,7 +33,7 @@ class ButterBean_Control_Color extends ButterBean_Control {
 	 *
 	 * @link   http://automattic.github.io/Iris/#options
 	 * @link   https://make.wordpress.org/core/2012/11/30/new-color-picker-in-wp-3-5/
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    array
 	 */
@@ -44,7 +42,7 @@ class ButterBean_Control_Color extends ButterBean_Control {
 	/**
 	 * Enqueue scripts/styles for the control.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return void
 	 */
@@ -57,7 +55,7 @@ class ButterBean_Control_Color extends ButterBean_Control {
 	/**
 	 * Gets the attributes for the control.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return array
 	 */
@@ -66,7 +64,7 @@ class ButterBean_Control_Color extends ButterBean_Control {
 
 		$setting = $this->get_setting();
 
-		$attr['class']              = 'butterbean-color-picker';
+		$attr['class']              = 'ninecodes-metabox-color-picker';
 		$attr['type']               = 'text';
 		$attr['maxlength']          = 7;
 		$attr['data-default-color'] = $setting ? $setting->default : '';
@@ -77,9 +75,9 @@ class ButterBean_Control_Color extends ButterBean_Control {
 	/**
 	 * Get the value for the setting.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
-	 * @param  string $setting
+	 * @param  string $setting The setting name.
 	 * @return mixed
 	 */
 	public function get_value( $setting = 'default' ) {
@@ -92,7 +90,7 @@ class ButterBean_Control_Color extends ButterBean_Control {
 	/**
 	 * Adds custom data to the json array. This data is passed to the Underscore template.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return void
 	 */

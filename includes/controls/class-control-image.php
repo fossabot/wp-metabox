@@ -4,25 +4,23 @@
  * ID the setting, so you'll need a custom control class if you want to store anything else,
  * such as the URL or other data.
  *
- * @package    ButterBean
- * @author     Justin Tadlock <justin@justintadlock.com>
- * @copyright  Copyright (c) 2015-2016, Justin Tadlock
- * @link       https://github.com/justintadlock/butterbean
- * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * @package Metabox\Control
  */
+
+namespace NineCodes\Metabox;
 
 /**
  * Image control class.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  */
-class ButterBean_Control_Image extends ButterBean_Control {
+class Control_Image extends Control {
 
 	/**
 	 * The type of control.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -31,7 +29,7 @@ class ButterBean_Control_Image extends ButterBean_Control {
 	/**
 	 * Array of text labels to use for the media upload frame.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -41,7 +39,7 @@ class ButterBean_Control_Image extends ButterBean_Control {
 	 * Image size to display.  If the size isn't found for the image,
 	 * the full size of the image will be output.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -50,11 +48,12 @@ class ButterBean_Control_Image extends ButterBean_Control {
 	/**
 	 * Creates a new control object.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
-	 * @param  object $manager
-	 * @param  string $name
-	 * @param  array  $args
+	 *
+	 * @param object $manager The manager Object.
+	 * @param string $name The control name.
+	 * @param array  $args The control arguments.
 	 * @return void
 	 */
 	public function __construct( $manager, $name, $args = array() ) {
@@ -63,12 +62,12 @@ class ButterBean_Control_Image extends ButterBean_Control {
 		$this->l10n = wp_parse_args(
 			$this->l10n,
 			array(
-				'upload'      => esc_html__( 'Add image',         'butterbean' ),
-				'set'         => esc_html__( 'Set as image',      'butterbean' ),
-				'choose'      => esc_html__( 'Choose image',      'butterbean' ),
-				'change'      => esc_html__( 'Change image',      'butterbean' ),
-				'remove'      => esc_html__( 'Remove image',      'butterbean' ),
-				'placeholder' => esc_html__( 'No image selected', 'butterbean' ),
+				'upload'      => esc_html__( 'Add image',         'ninecodes_metabox' ),
+				'set'         => esc_html__( 'Set as image',      'ninecodes_metabox' ),
+				'choose'      => esc_html__( 'Choose image',      'ninecodes_metabox' ),
+				'change'      => esc_html__( 'Change image',      'ninecodes_metabox' ),
+				'remove'      => esc_html__( 'Remove image',      'ninecodes_metabox' ),
+				'placeholder' => esc_html__( 'No image selected', 'ninecodes_metabox' ),
 			)
 		);
 	}
@@ -76,7 +75,7 @@ class ButterBean_Control_Image extends ButterBean_Control {
 	/**
 	 * Enqueue scripts/styles for the control.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return void
 	 */
@@ -88,7 +87,7 @@ class ButterBean_Control_Image extends ButterBean_Control {
 	/**
 	 * Adds custom data to the json array.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return void
 	 */
@@ -99,7 +98,9 @@ class ButterBean_Control_Image extends ButterBean_Control {
 		$this->json['size'] = $this->size;
 
 		$value = $this->get_value();
-		$image = $alt = '';
+
+		$alt = '';
+		$image = $alt;
 
 		if ( $value ) {
 			$image = wp_get_attachment_image_src( absint( $value ), $this->size );

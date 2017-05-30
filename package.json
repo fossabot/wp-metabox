@@ -1,14 +1,15 @@
 {
-  "name": "wp-metabox-api",
+  "name": "metabox",
+  "title": "Metabox",
   "version": "0.1.0-alpha.1",
   "description": "A neat little post meta framework",
-  "main": "class-butterbean.php",
+  "main": "metabox.php",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ninecodes/wp-metabox-api.git"
+    "url": "https://github.com/ninecodes/metabox.git"
   },
   "keywords": [
     "wordpress",
@@ -26,21 +27,24 @@
     "Justing Tadlock <justin@justintadlock.com>",
     "Thoriq Firdaus <tfirdaus@outlook.com>"
   ],
+  "wordpress": {
+    "requires_at_least": "4.7",
+    "tested_up_to": "4.7.4"
+  },
   "license": "GPL-2.0",
   "bugs": {
-    "url": "https://github.com/ninecodes/wp-metabox-api/issues"
+    "url": "https://github.com/ninecodes/metabox/issues"
   },
-  "homepage": "https://github.com/ninecodes/wp-metabox-api#readme",
+  "homepage": "https://github.com/ninecodes/metabox#readme",
   "devDependencies": {
     "eslint": "^3.9.1",
     "grunt": "~1.0.1",
-    "grunt-checktextdomain": "~1.0.0",
-    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-clean": "^1.1.0",
     "grunt-contrib-compress": "^1.3.0",
-    "grunt-contrib-copy": "~1.0.0",
+    "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-less": "^1.4.1",
     "grunt-contrib-qunit": "^2.0.0",
-    "grunt-contrib-uglify": "^2.3.0",
+    "grunt-contrib-uglify": "^3.0.1",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-eslint": "^19.0.0",
     "grunt-newer": "^1.3.0",
@@ -48,8 +52,7 @@
     "grunt-rtlcss": "^2.0.1",
     "grunt-shell": "~2.1.0",
     "grunt-text-replace": "^0.4.0",
-    "grunt-wp-i18n": "^1.0.0",
-    "husky": "^0.13.3",
+    "husky": "^0.13.4",
     "less-plugin-autoprefix": "^1.5.1",
     "less-plugin-clean-css": "^1.5.1",
     "less-plugin-group-css-media-queries": "^1.1.1",

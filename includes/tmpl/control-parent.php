@@ -1,6 +1,6 @@
 <label>
 	<# if ( data.label ) { #>
-		<span class="butterbean-label">{{ data.label }}</span>
+		<span class="ninecodes-metabox-label">{{ data.label }}</span>
 	<# } #>
 
 	<select name="{{ data.field_name }}" id="{{ data.field_name }}">
@@ -12,6 +12,6 @@
 	</select>
 
 	<# if ( data.description ) { #>
-		<span class="butterbean-description">{{{ data.description }}}</span>
+		<span class="ninecodes-metabox-description">{{{ data.description }}}</span>
 	<# } #>
 </label>

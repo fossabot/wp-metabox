@@ -3,26 +3,23 @@
  * Base class for handling sections. Sections house groups of controls.  Multiple sections can
  * be added to a manager.
  *
- * @package    ButterBean
- * @subpackage Admin
- * @author     Justin Tadlock <justin@justintadlock.com>
- * @copyright  Copyright (c) 2015-2016, Justin Tadlock
- * @link       https://github.com/justintadlock/butterbean
- * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * @package Metabox
  */
+
+namespace NineCodes\Metabox;
 
 /**
  * Base section class.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  */
-class ButterBean_Section {
+class Section {
 
 	/**
 	 * Stores the project details manager object.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    object
 	 */
@@ -31,7 +28,7 @@ class ButterBean_Section {
 	/**
 	 * Name/ID of the section.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -40,7 +37,7 @@ class ButterBean_Section {
 	/**
 	 * The type of section.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -49,7 +46,7 @@ class ButterBean_Section {
 	/**
 	 * Dashicons icon for the section.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -58,7 +55,7 @@ class ButterBean_Section {
 	/**
 	 * Label for the section.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -67,7 +64,7 @@ class ButterBean_Section {
 	/**
 	 * Description for the section.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -76,7 +73,7 @@ class ButterBean_Section {
 	/**
 	 * Priority (order) the section should be output.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    int
 	 */
@@ -85,7 +82,7 @@ class ButterBean_Section {
 	/**
 	 * The number of instances created.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access protected
 	 * @var    int
 	 */
@@ -94,7 +91,7 @@ class ButterBean_Section {
 	/**
 	 * The instance of the current section.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    int
 	 */
@@ -103,7 +100,7 @@ class ButterBean_Section {
 	/**
 	 * A callback function for deciding if a section is active.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    callable
 	 */
@@ -112,7 +109,7 @@ class ButterBean_Section {
 	/**
 	 * A user role capability required to show the section.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string|array
 	 */
@@ -121,7 +118,7 @@ class ButterBean_Section {
 	/**
 	 * A feature that the current post type must support to show the section.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -130,7 +127,7 @@ class ButterBean_Section {
 	/**
 	 * A feature that the current theme must support to show the section.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string|array
 	 */
@@ -139,20 +136,20 @@ class ButterBean_Section {
 	/**
 	 * Stores the JSON data for the manager.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var array
 	 */
 	public $json = array();
 
 	/**
-	 * Creates a new section object.
+	 * Creates a new section object
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  object $manager
-	 * @param  string $section
-	 * @param  array  $args
+	 * @param object $manager The manager object.
+	 * @param string $name The name of the section.
+	 * @param array  $args The section arguments.
 	 * @return void
 	 */
 	public function __construct( $manager, $name, $args = array() ) {
@@ -165,10 +162,10 @@ class ButterBean_Section {
 		}
 
 		$this->manager = $manager;
-		$this->name    = $name;
+		$this->name = $name;
 
 		// Increment the instance count and set the instance number.
-		self::$instance_count += 1;
+		self::$instance_count++;
 		$this->instance_number = self::$instance_count;
 
 		// Set the active callback function if not set.
@@ -180,7 +177,7 @@ class ButterBean_Section {
 	/**
 	 * Enqueue scripts/styles for the section.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return void
 	 */
@@ -189,7 +186,7 @@ class ButterBean_Section {
 	/**
 	 * Returns the json array.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return array
 	 */
@@ -202,25 +199,25 @@ class ButterBean_Section {
 	/**
 	 * Adds custom data to the json array. This data is passed to the Underscore template.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return void
 	 */
 	public function to_json() {
 
-		$this->json['manager']     = $this->manager->name;
-		$this->json['name']        = $this->name;
-		$this->json['type']        = $this->type;
-		$this->json['icon']        = preg_match( '/dashicons-/', $this->icon ) ? sprintf( 'dashicons %s', sanitize_html_class( $this->icon ) ) : esc_attr( $this->icon );
-		$this->json['label']       = $this->label;
+		$this->json['manager'] = $this->manager->name;
+		$this->json['name'] = $this->name;
+		$this->json['type'] = $this->type;
+		$this->json['icon']  = preg_match( '/dashicons-/', $this->icon ) ? sprintf( 'dashicons %s', sanitize_html_class( $this->icon ) ) : esc_attr( $this->icon );
+		$this->json['label'] = $this->label;
 		$this->json['description'] = $this->description;
-		$this->json['active']      = $this->is_active();
+		$this->json['active'] = $this->is_active();
 	}
 
 	/**
 	 * Returns whether the section is active.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return bool
 	 */
@@ -232,13 +229,13 @@ class ButterBean_Section {
 			$is_active = $this->check_capabilities();
 		}
 
-		return apply_filters( 'butterbean_is_section_active', $is_active, $this );
+		return apply_filters( 'ninecodes_metabox_is_section_active', $is_active, $this );
 	}
 
 	/**
 	 * Default active callback.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return bool
 	 */
@@ -249,7 +246,7 @@ class ButterBean_Section {
 	/**
 	 * Checks if the section should be allowed at all.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return bool
 	 */
@@ -273,14 +270,13 @@ class ButterBean_Section {
 	/**
 	 * Prints Underscore.js template.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return void
 	 */
 	public function print_template() {
 	?>
-
-		<script type="text/html" id="tmpl-butterbean-section-<?php echo esc_attr( $this->type ); ?>">
+		<script type="text/html" id="tmpl-ninecodes-metabox-section-<?php echo esc_attr( $this->type ); ?>">
 			<?php $this->get_template(); ?>
 		</script>
 	<?php }
@@ -288,11 +284,11 @@ class ButterBean_Section {
 	/**
 	 * Gets the Underscore.js template.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return void
 	 */
 	public function get_template() {
-		butterbean_get_section_template( $this->type );
+		get_section_template( $this->type );
 	}
 }

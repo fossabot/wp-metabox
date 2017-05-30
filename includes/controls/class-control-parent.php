@@ -1,29 +1,27 @@
 <?php
 /**
  * Post parent control class.  This class is a specialty class meant for use in unique
- * scenarios where you're not using the core post parent drop-down.  This is often the
+ * scenarios where you're not using the core post parent drop-down. This is often the
  * case with flat post types that have a parent post.  This control is not meant to be
- * used with a setting.  Core WP will store the data in the `post.post_parent` field.
+ * used with a setting. Core WP will store the data in the `post.post_parent` field.
  *
- * @package    ButterBean
- * @author     Justin Tadlock <justin@justintadlock.com>
- * @copyright  Copyright (c) 2015-2016, Justin Tadlock
- * @link       https://github.com/justintadlock/butterbean
- * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * @package Metabox
  */
+
+namespace NineCodes\Metabox;
 
 /**
  * Post parent control class.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  */
-class ButterBean_Control_Parent extends ButterBean_Control {
+class Control_Parent extends Control {
 
 	/**
 	 * The type of control.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -32,7 +30,7 @@ class ButterBean_Control_Parent extends ButterBean_Control {
 	/**
 	 * The post type to select posts from.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -41,9 +39,9 @@ class ButterBean_Control_Parent extends ButterBean_Control {
 	/**
 	 * Returns the HTML field name for the control.
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  string $setting
+	 * @param string $setting The setting name.
 	 * @return array
 	 */
 	public function get_field_name( $setting = 'default' ) {
@@ -54,9 +52,9 @@ class ButterBean_Control_Parent extends ButterBean_Control {
 	/**
 	 * Get the value for the setting.
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  string $setting
+	 * @param string $setting The setting name.
 	 * @return mixed
 	 */
 	public function get_value( $setting = 'default' ) {
@@ -67,7 +65,7 @@ class ButterBean_Control_Parent extends ButterBean_Control {
 	/**
 	 * Adds custom data to the json array. This data is passed to the Underscore template.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return void
 	 */

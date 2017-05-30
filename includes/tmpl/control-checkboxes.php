@@ -1,12 +1,12 @@
 <# if ( data.label ) { #>
-	<span class="butterbean-label">{{ data.label }}</span>
+	<span class="ninecodes-metabox-label">{{ data.label }}</span>
 <# } #>
 
 <# if ( data.description ) { #>
-	<span class="butterbean-description">{{{ data.description }}}</span>
+	<span class="ninecodes-metabox-description">{{{ data.description }}}</span>
 <# } #>
 
-<ul class="butterbean-checkbox-list">
+<ul class="ninecodes-metabox-checkbox-list">
 
 	<# _.each( data.choices, function( label, choice ) { #>
 

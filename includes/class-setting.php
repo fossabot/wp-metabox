@@ -1,27 +1,24 @@
 <?php
 /**
- * Base setting class for the fields manager.
+ * Base setting class for the fields manager
  *
- * @package    ButterBean
- * @subpackage Admin
- * @author     Justin Tadlock <justin@justintadlock.com>
- * @copyright  Copyright (c) 2015-2016, Justin Tadlock
- * @link       https://github.com/justintadlock/butterbean
- * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * @package Metabox
  */
+
+namespace NineCodes\Metabox;
 
 /**
  * Base setting class.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  */
-class ButterBean_Setting {
+class Setting {
 
 	/**
 	 * The type of setting.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -30,7 +27,7 @@ class ButterBean_Setting {
 	/**
 	 * Stores the manager object.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    object
 	 */
@@ -39,7 +36,7 @@ class ButterBean_Setting {
 	/**
 	 * Name/ID of the setting.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -48,7 +45,7 @@ class ButterBean_Setting {
 	/**
 	 * Value of the setting.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -57,7 +54,7 @@ class ButterBean_Setting {
 	/**
 	 * Default value of the setting.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -66,7 +63,7 @@ class ButterBean_Setting {
 	/**
 	 * Sanitization/Validation callback function.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -75,7 +72,7 @@ class ButterBean_Setting {
 	/**
 	 * A user role capability required to save the setting.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string|array
 	 */
@@ -84,7 +81,7 @@ class ButterBean_Setting {
 	/**
 	 * A feature that the current post type must support to save the setting.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -93,20 +90,20 @@ class ButterBean_Setting {
 	/**
 	 * A feature that the current theme must support to save the setting.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string|array
 	 */
 	public $theme_supports = '';
 
 	/**
-	 * Creates a new setting object.
+	 * Creates a new setting object
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  object $manager
-	 * @param  string $cap
-	 * @param  array  $args
+	 * @param Manager $manager The Manager object.
+	 * @param string  $name The setting name.
+	 * @param array   $args The setting arguments.
 	 * @return void
 	 */
 	public function __construct( $manager, $name, $args = array() ) {
@@ -119,17 +116,17 @@ class ButterBean_Setting {
 		}
 
 		$this->manager = $manager;
-		$this->name    = $name;
+		$this->name = $name;
 
 		if ( $this->sanitize_callback ) {
-			add_filter( "butterbean_{$this->manager->name}_sanitize_{$this->name}", $this->sanitize_callback, 10, 2 );
+			add_filter( "ninecodes_metabox_{$this->manager->name}_sanitize_{$this->name}", $this->sanitize_callback, 10, 2 );
 		}
 	}
 
 	/**
 	 * Gets the value of the setting.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return mixed
 	 */
@@ -137,14 +134,15 @@ class ButterBean_Setting {
 
 		$value = get_post_meta( $this->manager->post_id, $this->name, true );
 
-		return ! $value && butterbean()->is_new_post ? $this->default : $value;
+		return ! $value && ninecodes_metabox()->is_new_post ? $this->default : $value;
 	}
 
 	/**
 	 * Gets the posted value of the setting.
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
+	 *
 	 * @return mixed
 	 */
 	public function get_posted_value() {
@@ -161,32 +159,34 @@ class ButterBean_Setting {
 	/**
 	 * Retuns the correct field name for the setting.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
+	 *
 	 * @return string
 	 */
 	public function get_field_name() {
-
-		return "butterbean_{$this->manager->name}_setting_{$this->name}";
+		return "ninecodes_metabox_{$this->manager->name}_setting_{$this->name}";
 	}
 
 	/**
-	 * Sanitizes the value of the setting.
+	 * Sanitizes the value of the setting
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
+	 *
+	 * @param mixed $value Unsanitized value.
 	 * @return mixed
 	 */
 	public function sanitize( $value ) {
-
-		return apply_filters( "butterbean_{$this->manager->name}_sanitize_{$this->name}", $value, $this );
+		return apply_filters( "ninecodes_metabox_{$this->manager->name}_sanitize_{$this->name}", $value, $this );
 	}
 
 	/**
 	 * Saves the value of the setting.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
+	 *
 	 * @return void
 	 */
 	public function save() {
@@ -201,8 +201,7 @@ class ButterBean_Setting {
 		// If we have don't have a new value but do have an old one, delete it.
 		if ( ! $new_value && $old_value ) {
 			delete_post_meta( $this->manager->post_id, $this->name );
-		} // End if().
-		elseif ( $new_value !== $old_value ) {
+		} elseif ( $new_value !== $old_value ) {
 			update_post_meta( $this->manager->post_id, $this->name, $new_value );
 		}
 	}
@@ -210,7 +209,7 @@ class ButterBean_Setting {
 	/**
 	 * Checks if the setting should be saved at all.
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
 	 * @return bool
 	 */

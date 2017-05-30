@@ -5,11 +5,6 @@
 	<rule ref="WordPress-Core"/>
 	<rule ref="WordPress-Docs"/>
 	<rule ref="WordPress-Extra"/>
-	<rule ref="WordPress.WP.I18n">
-		<properties>
-			<property name="text_domain" value="wp-metabox-api"/>
-		</properties>
-	</rule>
 
 	<!-- <link:>https://github.com/squizlabs/PHP_CodeSniffer/issues/870</link:> -->
 	<rule ref="Squiz.Commenting.FunctionComment.ScalarTypeHintMissing">
@@ -20,4 +15,5 @@
 	<exclude-pattern>*/dev-lib/*</exclude-pattern>
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/tmpl/*</exclude-pattern>
 </ruleset>

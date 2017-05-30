@@ -4,26 +4,23 @@
  * WP will save the excerpt.  Also, make sure to disable the core excerpt metabox if using
  * this control.
  *
- * @package    ButterBean
- * @subpackage Admin
- * @author     Justin Tadlock <justin@justintadlock.com>
- * @copyright  Copyright (c) 2015-2016, Justin Tadlock
- * @link       https://github.com/justintadlock/butterbean
- * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * @package Metabox
  */
+
+namespace NineCodes\Metabox;
 
 /**
  * Excerpt control class.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  */
-class ButterBean_Control_Excerpt extends ButterBean_Control_Textarea {
+class Control_Excerpt extends Control_Textarea {
 
 	/**
 	 * The type of control.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -32,7 +29,7 @@ class ButterBean_Control_Excerpt extends ButterBean_Control_Textarea {
 	/**
 	 * Gets the attributes for the control.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return array
 	 */
@@ -47,9 +44,9 @@ class ButterBean_Control_Excerpt extends ButterBean_Control_Textarea {
 	/**
 	 * Returns the HTML field name for the control.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
-	 * @param  string $setting
+	 * @param  string $setting The setting name.
 	 * @return string
 	 */
 	public function get_field_name( $setting = 'default' ) {
@@ -59,24 +56,23 @@ class ButterBean_Control_Excerpt extends ButterBean_Control_Textarea {
 	/**
 	 * Get the value for the setting.
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  string $setting
+	 * @param string $setting The setting name.
 	 * @return mixed
 	 */
 	public function get_value( $setting = 'default' ) {
-
 		return get_post( $this->manager->post_id )->post_excerpt;
 	}
 
 	/**
 	 * Gets the Underscore.js template.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return void
 	 */
 	public function get_template() {
-		butterbean_get_control_template( 'textarea' );
+		get_control_template( 'textarea' );
 	}
 }

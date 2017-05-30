@@ -1,35 +1,32 @@
 <?php
 /**
- * Setting class for storing multiple post meta values for a single key.
+ * Setting class for storing multiple post meta values for a single key
  *
- * @package    ButterBean
- * @author     Justin Tadlock <justin@justintadlock.com>
- * @copyright  Copyright (c) 2015-2016, Justin Tadlock
- * @link       https://github.com/justintadlock/butterbean
- * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * @package Metabox\Setting
  */
+
+namespace NineCodes\Metabox;
 
 /**
- * Multiple setting class.
+ * Multiple setting class
  *
- * @since  1.0.0
- * @access public
+ * @since 0.1.0
  */
-class ButterBean_Setting_Multiple extends ButterBean_Setting {
+final class Setting_Multiple extends Setting {
 
 	/**
-	 * The type of setting.
+	 * The type of setting
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @var    string
+	 * @var string
 	 */
 	public $type = 'multiple';
 
 	/**
-	 * Gets the value of the setting.
+	 * Gets the value of the setting
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
 	 * @return mixed
 	 */
@@ -39,11 +36,12 @@ class ButterBean_Setting_Multiple extends ButterBean_Setting {
 	}
 
 	/**
-	 * Sanitizes the value of the setting.
+	 * Sanitizes the value of the setting
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  array $value
+	 *
+	 * @param array $values Unsanitized values.
 	 * @return array
 	 */
 	public function sanitize( $values ) {
@@ -54,22 +52,22 @@ class ButterBean_Setting_Multiple extends ButterBean_Setting {
 	}
 
 	/**
-	 * Helper function for sanitizing each value of the array.
+	 * Helper function for sanitizing each value of the array
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  mixed $value
+	 *
+	 * @param mixed $value Unsanitized value.
 	 * @return mixed
 	 */
 	public function map( $value ) {
-
-		return apply_filters( "butterbean_{$this->manager->name}_sanitize_{$this->name}", $value, $this );
+		return apply_filters( "ninecodes_metabox_{$this->manager->name}_sanitize_{$this->name}", $value, $this );
 	}
 
 	/**
-	 * Saves the value of the setting.
+	 * Saves the value of the setting
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return void
 	 */
@@ -92,66 +90,67 @@ class ButterBean_Setting_Multiple extends ButterBean_Setting {
 	}
 
 	/**
-	 * Loops through new and old meta values and updates.
+	 * Loops through new and old meta values and updates
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  array $new_values
-	 * @param  array $old_values
+	 *
+	 * @param array $new_values The new value.
+	 * @param array $old_values The old value, obviously.
 	 * @return void
 	 */
 	public function set_values( $new_values, $old_values ) {
 
 		foreach ( $new_values as $new ) {
 
-			if ( ! in_array( $new, $old_values ) ) {
+			if ( ! in_array( $new, $old_values, true ) ) {
 				$this->add_value( $new );
 			}
 		}
 
 		foreach ( $old_values as $old ) {
 
-			if ( ! in_array( $old, $new_values ) ) {
+			if ( ! in_array( $old, $new_values, true ) ) {
 				$this->remove_value( $old );
 			}
 		}
 	}
 
 	/**
-	 * Deletes old meta values.
+	 * Deletes old meta values
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @return void
+	 *
+	 * @return bool True on success, false on failure.
 	 */
 	public function delete_values() {
-
 		return delete_post_meta( $this->manager->post_id, $this->name );
 	}
 
 	/**
-	 * Adds a single meta value.
+	 * Adds a single meta value
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  mixed $value
-	 * @return bool
+	 *
+	 * @param mixed $value The value to add in the post meta.
+	 * @return bool True on success, false on failure.
 	 */
 	public function add_value( $value ) {
-
 		return add_post_meta( $this->manager->post_id, $this->name, $value, false );
 	}
 
 	/**
-	 * Deletes a single meta value.
+	 * Deletes a single meta value
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  mixed $value
-	 * @return bool
+	 *
+	 * @param mixed $value The value to add in the post meta.
+	 * @return bool True on success, false on failure.
 	 */
 	public function remove_value( $value ) {
-
 		return delete_post_meta( $this->manager->post_id, $this->name, $value );
 	}
 }

@@ -5,25 +5,23 @@
  * data is expected to be an array.  This control should be used with a setting type that
  * handles arrays, such as the built-in `array` or `multiple` types.
  *
- * @package    ButterBean
- * @author     Justin Tadlock <justin@justintadlock.com>
- * @copyright  Copyright (c) 2015-2016, Justin Tadlock
- * @link       https://github.com/justintadlock/butterbean
- * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * @package Metabox\Control
  */
+
+namespace NineCodes\Metabox;
 
 /**
  * Multi-avatars control class.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  */
-class ButterBean_Control_Multi_Avatars extends ButterBean_Control {
+class Control_Multi_Avatars extends Control {
 
 	/**
 	 * The type of control.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -32,7 +30,7 @@ class ButterBean_Control_Multi_Avatars extends ButterBean_Control {
 	/**
 	 * Adds custom data to the json array. This data is passed to the Underscore template.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return void
 	 */
@@ -59,7 +57,7 @@ class ButterBean_Control_Multi_Avatars extends ButterBean_Control {
 	 * Returns an array of user roles that are allowed to edit, publish, or create
 	 * posts of the given post type.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @global object  $wp_roles
 	 * @return array

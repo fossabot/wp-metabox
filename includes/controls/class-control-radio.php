@@ -2,28 +2,25 @@
 /**
  * Radio control class that creates a list of radio inputs to choose from.
  *
- * @package    ButterBean
- * @subpackage Admin
- * @author     Justin Tadlock <justin@justintadlock.com>
- * @copyright  Copyright (c) 2015-2016, Justin Tadlock
- * @link       https://github.com/justintadlock/butterbean
- * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * @package Metabox\Control
  */
+
+namespace NineCodes\Metabox;
 
 /**
  * Radio control class.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  */
-class ButterBean_Control_Radio extends ButterBean_Control {
+class Control_Radio extends Control {
 
 	/**
 	 * The type of control.
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @var    string
+	 * @var string
 	 */
 	public $type = 'radio';
 
@@ -31,9 +28,9 @@ class ButterBean_Control_Radio extends ButterBean_Control {
 	 * Radio controls imply that a value should be set.  Therefore, we will return
 	 * the default if there is no value.
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  string $setting
+	 * @param string $setting The setting name.
 	 * @return mixed
 	 */
 	public function get_value( $setting = 'default' ) {

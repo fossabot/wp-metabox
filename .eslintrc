@@ -1,0 +1,10 @@
+{
+	"extends": "./dev-lib/.eslintrc",
+	"globals": {
+		"nineCodesMetaboxData": true,
+		"nineCodesMetabox": true
+	},
+	"rules": {
+		"complexity": 0
+	}
+}

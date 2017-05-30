@@ -3,25 +3,23 @@
  * Base class for handling controls.  Controls are the form fields for the manager.  Each
  * control should be tied to a section.
  *
- * @package    ButterBean
- * @author     Justin Tadlock <justin@justintadlock.com>
- * @copyright  Copyright (c) 2015-2016, Justin Tadlock
- * @link       https://github.com/justintadlock/butterbean
- * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * @package Metabox\Control
  */
+
+namespace NineCodes\Metabox;
 
 /**
  * Base control class.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  */
-class ButterBean_Control {
+class Control {
 
 	/**
 	 * Stores the manager object.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    object
 	 */
@@ -30,7 +28,7 @@ class ButterBean_Control {
 	/**
 	 * Name/ID of the control.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -39,7 +37,7 @@ class ButterBean_Control {
 	/**
 	 * Label for the control.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -48,7 +46,7 @@ class ButterBean_Control {
 	/**
 	 * Description for the control.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -57,7 +55,7 @@ class ButterBean_Control {
 	/**
 	 * ID of the section the control is for.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -68,7 +66,7 @@ class ButterBean_Control {
 	 * Controls can have multiple settings attached to them.  The default
 	 * setting is `default`.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -77,7 +75,7 @@ class ButterBean_Control {
 	/**
 	 * Array of settings if the control has multiple settings.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    array
 	 */
@@ -86,7 +84,7 @@ class ButterBean_Control {
 	/**
 	 * The type of control.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -95,7 +93,7 @@ class ButterBean_Control {
 	/**
 	 * Form field attributes.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    array
 	 */
@@ -104,7 +102,7 @@ class ButterBean_Control {
 	/**
 	 * Choices for fields with multiple choices.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    array
 	 */
@@ -113,7 +111,7 @@ class ButterBean_Control {
 	/**
 	 * Priority (order) the control should be output.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    int
 	 */
@@ -122,7 +120,7 @@ class ButterBean_Control {
 	/**
 	 * The number of instances created.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access protected
 	 * @var    int
 	 */
@@ -131,7 +129,7 @@ class ButterBean_Control {
 	/**
 	 * The instance of the current control.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    int
 	 */
@@ -140,7 +138,7 @@ class ButterBean_Control {
 	/**
 	 * A callback function for deciding if a control is active.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    callable
 	 */
@@ -149,7 +147,7 @@ class ButterBean_Control {
 	/**
 	 * A user role capability required to show the control.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string|array
 	 */
@@ -158,7 +156,7 @@ class ButterBean_Control {
 	/**
 	 * A feature that the current post type must support to show the control.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -167,7 +165,7 @@ class ButterBean_Control {
 	/**
 	 * A feature that the current theme must support to show the control.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string|array
 	 */
@@ -176,7 +174,7 @@ class ButterBean_Control {
 	/**
 	 * Stores the JSON data for the control.
 	 *
-	 * @since 1.0.0
+	 * @since 0.1.0
 	 * @access public
 	 * @var array
 	 */
@@ -185,11 +183,11 @@ class ButterBean_Control {
 	/**
 	 * Creates a new control object.
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  object $manager
-	 * @param  string $name
-	 * @param  array  $args
+	 * @param Manager $manager The Manager object.
+	 * @param string  $name The control name.
+	 * @param array   $args The control arguments.
 	 * @return void
 	 */
 	public function __construct( $manager, $name, $args = array() ) {
@@ -209,7 +207,7 @@ class ButterBean_Control {
 		}
 
 		// Increment the instance count and set the instance number.
-		self::$instance_count += 1;
+		self::$instance_count++;
 		$this->instance_number = self::$instance_count;
 
 		// Set the active callback function if not set.
@@ -221,18 +219,18 @@ class ButterBean_Control {
 	/**
 	 * Enqueue scripts/styles for the control.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return void
 	 */
 	public function enqueue() {}
 
 	/**
-	 * Get the value for the setting.
+	 * Get the value for the setting
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  string $setting
+	 * @param string $setting The setting name.
 	 * @return mixed
 	 */
 	public function get_value( $setting = 'default' ) {
@@ -244,11 +242,11 @@ class ButterBean_Control {
 
 	/**
 	 * Returns the setting object associated with this control. If no setting is
-	 * found, `false` is returned.
+	 * found, `false` is returned
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
-	 * @param  string $setting
+	 * @param string $setting The setting name.
 	 * @return object|bool
 	 */
 	public function get_setting( $setting = 'default' ) {
@@ -259,7 +257,7 @@ class ButterBean_Control {
 	/**
 	 * Gets the attributes for the control.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return array
 	 */
@@ -277,20 +275,19 @@ class ButterBean_Control {
 	/**
 	 * Returns the HTML field name for the control.
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  string $setting
+	 * @param string $setting The setting name.
 	 * @return array
 	 */
 	public function get_field_name( $setting = 'default' ) {
-
-		return "butterbean_{$this->manager->name}_setting_{$this->settings[ $setting ]}";
+		return "ninecodes_metabox_{$this->manager->name}_setting_{$this->settings[ $setting ]}";
 	}
 
 	/**
 	 * Returns the json array.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return array
 	 */
@@ -303,7 +300,7 @@ class ButterBean_Control {
 	/**
 	 * Adds custom data to the json array. This data is passed to the Underscore template.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return void
 	 */
@@ -333,7 +330,7 @@ class ButterBean_Control {
 	/**
 	 * Returns whether the control is active.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return bool
 	 */
@@ -341,13 +338,13 @@ class ButterBean_Control {
 
 		$is_active = call_user_func( $this->active_callback, $this );
 
-		return apply_filters( 'butterbean_is_control_active', $is_active, $this );
+		return apply_filters( 'ninecodes_metabox_is_control_active', $is_active, $this );
 	}
 
 	/**
 	 * Default active callback.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return bool
 	 */
@@ -358,7 +355,7 @@ class ButterBean_Control {
 	/**
 	 * Checks if the control should be allowed at all.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return bool
 	 */
@@ -382,14 +379,14 @@ class ButterBean_Control {
 	/**
 	 * Prints Underscore.js template.
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
+	 *
 	 * @return void
 	 */
 	public function print_template() {
-	?>
-
-		<script type="text/html" id="tmpl-butterbean-control-<?php echo esc_attr( $this->type ); ?>">
+		?>
+		<script type="text/html" id="tmpl-ninecodes-metabox-control-<?php echo esc_attr( $this->type ); ?>">
 			<?php $this->get_template(); ?>
 		</script>
 	<?php }
@@ -397,11 +394,12 @@ class ButterBean_Control {
 	/**
 	 * Gets the Underscore.js template.
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
+	 *
 	 * @return void
 	 */
 	public function get_template() {
-		butterbean_get_control_template( $this->type );
+		get_control_template( $this->type );
 	}
 }

@@ -7,26 +7,22 @@
  * Note that this control should be used in conjunction with the `datetime` setting
  * type or another custom class that can handle the datetime.
  *
- * @package    ButterBean
- * @subpackage Admin
- * @author     Justin Tadlock <justin@justintadlock.com>
- * @copyright  Copyright (c) 2015-2016, Justin Tadlock
- * @link       https://github.com/justintadlock/butterbean
- * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * @package Metabox
  */
+
+namespace NineCodes\Metabox;
 
 /**
  * Datetime control class.
  *
- * @since  1.0.0
- * @access public
+ * @since  0.1.0
  */
-class ButterBean_Control_Datetime extends ButterBean_Control {
+class Control_Datetime extends Control {
 
 	/**
 	 * The type of control.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -34,10 +30,10 @@ class ButterBean_Control_Datetime extends ButterBean_Control {
 
 	/**
 	 * Whether to show the time.  Note that settings, particularly the
-	 * `ButterBean_Setting_Date` class will store the time as `00:00:00` if
+	 * `Setting_Date` class will store the time as `00:00:00` if
 	 * no time is provided.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    bool
 	 */
@@ -46,9 +42,9 @@ class ButterBean_Control_Datetime extends ButterBean_Control {
 	/**
 	 * Adds custom data to the json array. This data is passed to the Underscore template.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
-	 * @globl  object  $wp_locale
+	 *
 	 * @return void
 	 */
 	public function to_json() {
@@ -73,19 +69,19 @@ class ButterBean_Control_Datetime extends ButterBean_Control {
 		$minute = $date ? mysql2date( 'i', $date, false ) : '';
 		$second = $date ? mysql2date( 's', $date, false ) : '';
 
-		// Year
+		// Year.
 		$this->json['year'] = array(
 			'value' => esc_attr( $year ),
-			'label' => esc_html__( 'Year', 'butterbean' ),
+			'label' => esc_html__( 'Year', 'ninecodes_metabox' ),
 			'name'  => esc_attr( "{$field_name}_year" ),
 			'attr'  => sprintf( 'placeholder="%s" size="4" maxlength="4" autocomplete="off"', esc_attr( date_i18n( 'Y' ) ) ),
 		);
 
-		// Month
+		// Month.
 		$this->json['month'] = array(
 			'value'   => esc_attr( $month ),
 			'name'    => esc_attr( "{$field_name}_month" ),
-			'label'   => esc_html__( 'Month', 'butterbean' ),
+			'label'   => esc_html__( 'Month', 'ninecodes_metabox' ),
 			'choices' => array(
 				array(
 					'num'   => '',
@@ -94,7 +90,7 @@ class ButterBean_Control_Datetime extends ButterBean_Control {
 			),
 		);
 
-		for ( $i = 1; $i < 13; $i = $i + 1 ) {
+		for ( $i = 1; $i < 13; $i++ ) {
 
 			$monthnum  = zeroise( $i, 2 );
 			$monthtext = $wp_locale->get_month_abbrev( $wp_locale->get_month( $i ) );
@@ -105,35 +101,35 @@ class ButterBean_Control_Datetime extends ButterBean_Control {
 			);
 		}
 
-		// Day
+		// Day.
 		$this->json['day'] = array(
 			'value' => esc_attr( $day ),
 			'name'  => esc_attr( "{$field_name}_day" ),
-			'label' => esc_html__( 'Day', 'butterbean' ),
+			'label' => esc_html__( 'Day', 'ninecodes_metabox' ),
 			'attr'  => sprintf( 'placeholder="%s" size="2" maxlength="2" autocomplete="off"', esc_attr( date_i18n( 'd' ) ) ),
 		);
 
-		// Hour
+		// Hour.
 		$this->json['hour'] = array(
 			'value' => esc_attr( $hour ),
 			'name'  => esc_attr( "{$field_name}_hour" ),
-			'label' => esc_html__( 'Hour', 'butterbean' ),
+			'label' => esc_html__( 'Hour', 'ninecodes_metabox' ),
 			'attr'  => 'placeholder="00" size="2" maxlength="2" autocomplete="off"',
 		);
 
-		// Minute
+		// Minute.
 		$this->json['minute'] = array(
 			'value' => esc_attr( $minute ),
 			'name'  => esc_attr( "{$field_name}_minute" ),
-			'label' => esc_html__( 'Minute', 'butterbean' ),
+			'label' => esc_html__( 'Minute', 'ninecodes_metabox' ),
 			'attr'  => 'placeholder="00" size="2" maxlength="2" autocomplete="off"',
 		);
 
-		// Second
+		// Second.
 		$this->json['second'] = array(
 			'value' => esc_attr( $second ),
 			'name'  => esc_attr( "{$field_name}_second" ),
-			'label' => esc_html__( 'Second', 'butterbean' ),
+			'label' => esc_html__( 'Second', 'ninecodes_metabox' ),
 			'attr'  => 'placeholder="00" size="2" maxlength="2" autocomplete="off"',
 		);
 	}

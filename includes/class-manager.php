@@ -4,25 +4,23 @@
  * controls + settings.  Managers are output as a metabox.  This essentially allows
  * developers to output multiple post meta fields within a single metabox.
  *
- * @package    ButterBean
- * @author     Justin Tadlock <justin@justintadlock.com>
- * @copyright  Copyright (c) 2015-2016, Justin Tadlock
- * @link       https://github.com/justintadlock/butterbean
- * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * @package NineCodes\Metabox
  */
+
+namespace NineCodes\Metabox;
 
 /**
  * Base manager class.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  */
-class ButterBean_Manager {
+class Manager {
 
 	/**
 	 * The type of manager.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -31,7 +29,7 @@ class ButterBean_Manager {
 	/**
 	 * Name of this instance of the manager.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -40,7 +38,7 @@ class ButterBean_Manager {
 	/**
 	 * Label for the manager.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -49,7 +47,7 @@ class ButterBean_Manager {
 	/**
 	 * Post type this manager is used on.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string|array
 	 */
@@ -58,102 +56,102 @@ class ButterBean_Manager {
 	/**
 	 * Location of the meta box.  Accepted values: 'normal', 'advanced', 'side'.
 	 *
-	 * @link   https://developer.wordpress.org/reference/functions/add_meta_box/
-	 * @since  1.0.0
+	 * @link https://developer.wordpress.org/reference/functions/add_meta_box/
+	 * @since 0.1.0
 	 * @access public
-	 * @var    string
+	 * @var string
 	 */
 	public $context = 'advanced';
 
 	/**
 	 * Priority of the meta box. Accepted values: 'high', 'core', 'default', 'low'.
 	 *
-	 * @link   https://developer.wordpress.org/reference/functions/add_meta_box/
-	 * @since  1.0.0
+	 * @link https://developer.wordpress.org/reference/functions/add_meta_box/
+	 * @since 0.1.0
 	 * @access public
-	 * @var    string
+	 * @var string
 	 */
 	public $priority = 'default';
 
 	/**
 	 * Array of sections.
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @var    array
+	 * @var array
 	 */
 	public $sections = array();
 
 	/**
 	 * Array of controls.
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @var    array
+	 * @var array
 	 */
 	public $controls = array();
 
 	/**
-	 * Array of settings.
+	 * Array of settings
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @var    array
+	 * @var array
 	 */
 	public $settings = array();
 
 	/**
-	 * A user role capability required to show the manager.
+	 * A user role capability required to show the manager
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @var    string|array
+	 * @var string|array
 	 */
 	public $capability = '';
 
 	/**
-	 * A feature that the current post type must support to show the manager.
+	 * A feature that the current post type must support to show the manager
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @var    string
+	 * @var string
 	 */
 	public $post_type_supports = '';
 
 	/**
-	 * A feature that the current theme must support to show the manager.
+	 * A feature that the current theme must support to show the manager
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @var    string|array
+	 * @var string|array
 	 */
 	public $theme_supports = '';
 
 	/**
-	 * Stores the JSON data for the manager.
+	 * Stores the JSON data for the manager
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var array
 	 */
 	public $json = array();
 
 	/**
-	 * ID of the post that's being edited.
+	 * ID of the post that's being edited
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @var    int
+	 * @var int
 	 */
 	public $post_id = 0;
 
 	/**
-	 * Sets up the manager.
+	 * Sets up the manager
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  string $name
-	 * @param  array  $args
+	 * @param string $name The manager name.
+	 * @param array  $args The manager arguments.
 	 * @return void
 	 */
 	public function __construct( $name, $args = array() ) {
@@ -175,8 +173,9 @@ class ButterBean_Manager {
 	/**
 	 * Enqueue scripts/styles for the manager.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
+	 *
 	 * @return void
 	 */
 	public function enqueue() {}
@@ -184,17 +183,19 @@ class ButterBean_Manager {
 	/**
 	 * Register a section.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
-	 * @param  object|string $section
-	 * @param  array         $args
+	 *
+	 * @param  object|string $section The section name or Object.
+	 * @param  array         $args The section arguments.
 	 * @return void
 	 */
 	public function register_section( $section, $args = array() ) {
 
 		if ( ! is_object( $section ) ) {
 
-			$type = isset( $args['type'] ) ? butterbean()->get_section_type( $args['type'] ) : butterbean()->get_section_type( 'default' );
+			$type = isset( $args['type'] ) ? ninecodes_metabox()->get_section_type( $args['type'] ) : ninecodes_metabox()->get_section_type( 'default' );
+			$type = __NAMESPACE__ . '\\' . $type;
 
 			$section = new $type( $this, $section, $args );
 		}
@@ -207,17 +208,18 @@ class ButterBean_Manager {
 	/**
 	 * Register a control.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
-	 * @param  object|string $control
-	 * @param  array         $args
+	 *
+	 * @param  object|string $control The control name or Object.
+	 * @param  array         $args The control arguments.
 	 * @return void
 	 */
 	public function register_control( $control, $args = array() ) {
 
 		if ( ! is_object( $control ) ) {
 
-			$type = isset( $args['type'] ) ? butterbean()->get_control_type( $args['type'] ) : butterbean()->get_control_type( 'default' );
+			$type = isset( $args['type'] ) ? ninecodes_metabox()->get_control_type( $args['type'] ) : ninecodes_metabox()->get_control_type( 'default' );
 
 			$control = new $type( $this, $control, $args );
 		}
@@ -230,17 +232,18 @@ class ButterBean_Manager {
 	/**
 	 * Register a setting.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
-	 * @param  object|string $setting
-	 * @param  array         $args
+	 *
+	 * @param  object|string $setting The setting name or Object.
+	 * @param  array         $args The setting arguments.
 	 * @return void
 	 */
 	public function register_setting( $setting, $args = array() ) {
 
 		if ( ! is_object( $setting ) ) {
 
-			$type = isset( $args['type'] ) ? butterbean()->get_setting_type( $args['type'] ) : butterbean()->get_setting_type( 'default' );
+			$type = isset( $args['type'] ) ? ninecodes_metabox()->get_setting_type( $args['type'] ) : ninecodes_metabox()->get_setting_type( 'default' );
 
 			$setting = new $type( $this, $setting, $args );
 		}
@@ -253,11 +256,12 @@ class ButterBean_Manager {
 	/**
 	 * Register a control and setting object.
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  string       $name
-	 * @param  object|array $control  Control object or array of control arguments.
-	 * @param  object|array $setting  Setting object or array of setting arguments.
+	 *
+	 * @param string       $name The field / control name.
+	 * @param object|array $control Control object or array of control arguments.
+	 * @param object|array $setting Setting object or array of setting arguments.
 	 * @return void
 	 */
 	public function register_field( $name, $control, $setting ) {
@@ -267,11 +271,12 @@ class ButterBean_Manager {
 	}
 
 	/**
-	 * Unregisters a section object.
+	 * Unregisters a section object
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  string $name
+	 *
+	 * @param string $name The section name.
 	 * @return void
 	 */
 	public function unregister_section( $name ) {
@@ -284,9 +289,10 @@ class ButterBean_Manager {
 	/**
 	 * Unregisters a control object.
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  string $name
+	 *
+	 * @param string $name The control name.
 	 * @return void
 	 */
 	public function unregister_control( $name ) {
@@ -299,9 +305,10 @@ class ButterBean_Manager {
 	/**
 	 * Unregisters a setting object.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
-	 * @param  string $name
+	 *
+	 * @param  string $name The setting name.
 	 * @return void
 	 */
 	public function unregister_setting( $name ) {
@@ -312,11 +319,12 @@ class ButterBean_Manager {
 	}
 
 	/**
-	 * Unregisters a control and setting object.
+	 * Unregisters a control and setting object
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  string $name
+	 *
+	 * @param string $name The field / control name.
 	 * @return void
 	 */
 	public function unregister_field( $name ) {
@@ -326,11 +334,12 @@ class ButterBean_Manager {
 	}
 
 	/**
-	 * Returns a section object.
+	 * Returns a section object
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  string $name
+	 *
+	 * @param string $name The section name.
 	 * @return object|bool
 	 */
 	public function get_section( $name ) {
@@ -339,37 +348,38 @@ class ButterBean_Manager {
 	}
 
 	/**
-	 * Returns a control object.
+	 * Returns a control object
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  string $name
+	 *
+	 * @param string $name The control name.
 	 * @return object|bool
 	 */
 	public function get_control( $name ) {
-
 		return $this->control_exists( $name ) ? $this->controls[ $name ] : false;
 	}
 
 	/**
-	 * Returns a setting object.
+	 * Returns a setting object
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  string $name
+	 *
+	 * @param string $name The setting name.
 	 * @return object|bool
 	 */
 	public function get_setting( $name ) {
-
 		return $this->setting_exists( $name ) ? $this->settings[ $name ] : false;
 	}
 
 	/**
-	 * Returns an object that contains both the control and setting objects.
+	 * Returns an object that contains both the control and setting objects
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  string $name
+	 *
+	 * @param string $name The setting name.
 	 * @return object|bool
 	 */
 	public function get_field( $name ) {
@@ -387,61 +397,60 @@ class ButterBean_Manager {
 	}
 
 	/**
-	 * Checks if a section exists.
+	 * Checks if a section exists
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  string $name
+	 *
+	 * @param string $name The section name.
 	 * @return bool
 	 */
 	public function section_exists( $name ) {
-
 		return isset( $this->sections[ $name ] );
 	}
 
 	/**
-	 * Checks if a control exists.
+	 * Checks if a control exists
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  string $name
+	 *
+	 * @param string $name The control name.
 	 * @return bool
 	 */
 	public function control_exists( $name ) {
-
 		return isset( $this->controls[ $name ] );
 	}
 
 	/**
-	 * Checks if a setting exists.
+	 * Checks if a setting exists
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  string $name
+	 *
+	 * @param string $name The section name.
 	 * @return bool
 	 */
 	public function setting_exists( $name ) {
-
 		return isset( $this->settings[ $name ] );
 	}
 
 	/**
-	 * Checks if a both a control and setting exist.
+	 * Checks if a both a control and setting exist
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  string $name
+	 * @param string $name The setting and control name.
 	 * @return bool
 	 */
 	public function field_exists( $name ) {
-
 		return $this->control_exists( $name ) && $this->setting_exists( $name );
 	}
 
 	/**
-	 * Returns the json array.
+	 * Returns the json array
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return array
 	 */
@@ -454,7 +463,7 @@ class ButterBean_Manager {
 	/**
 	 * Adds custom data to the JSON array. This data is passed to the Underscore template.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return void
 	 */
@@ -478,7 +487,7 @@ class ButterBean_Manager {
 
 			$caps = $section->check_capabilities();
 
-			if ( $caps && in_array( $section->name, $sections_with_controls ) ) {
+			if ( $caps && in_array( $section->name, $sections_with_controls, true ) ) {
 				$this->json['sections'][] = $section->get_json();
 			}
 
@@ -490,17 +499,19 @@ class ButterBean_Manager {
 		// Get the JSON data for each control.
 		foreach ( $this->controls as $control ) {
 
-			if ( $control->check_capabilities() && ! in_array( $control->section, $blocked_sections ) ) {
+			if ( $control->check_capabilities() && ! in_array( $control->section, $blocked_sections, true ) ) {
 				$this->json['controls'][] = $control->get_json();
 			}
 		}
 	}
 
 	/**
-	 * Saves each of the settings for the manager.
+	 * Saves each of the settings for the manager
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
+	 *
+	 * @param mixed $post_id The Post ID.
 	 * @return void
 	 */
 	public function save( $post_id ) {
@@ -510,7 +521,7 @@ class ButterBean_Manager {
 		}
 
 		// Verify the nonce for this manager.
-		if ( ! isset( $_POST[ "butterbean_{$this->name}" ] ) || ! wp_verify_nonce( $_POST[ "butterbean_{$this->name}" ], "butterbean_{$this->name}_nonce" ) ) {
+		if ( ! isset( $_POST[ "ninecodes_metabox_{$this->name}" ] ) || ! wp_verify_nonce( $_POST[ "ninecodes_metabox_{$this->name}" ], "ninecodes_metabox_{$this->name}_nonce" ) ) {
 			return;
 		}
 
@@ -523,7 +534,7 @@ class ButterBean_Manager {
 	/**
 	 * Checks if the control should be allowed at all.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return bool
 	 */
@@ -547,26 +558,25 @@ class ButterBean_Manager {
 	/**
 	 * Prints Underscore.js template.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return void
 	 */
 	public function print_template() {
 	?>
-
-		<script type="text/html" id="tmpl-butterbean-manager-<?php echo esc_attr( $this->type ); ?>">
-			<?php $this->get_template(); ?>
-		</script>
+	<script type="text/html" id="tmpl-ninecodes-metabox-manager-<?php echo esc_attr( $this->type ); ?>">
+		<?php $this->get_template(); ?>
+	</script>
 	<?php }
 
 	/**
 	 * Gets the Underscore.js template.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return void
 	 */
 	public function get_template() {
-		butterbean_get_manager_template( $this->type );
+		get_manager_template( $this->type );
 	}
 }

@@ -1,26 +1,24 @@
 <?php
 /**
- * Setting class for storing a single meta value as an array.
+ * Setting class for storing a single meta value as an array
  *
- * @package    ButterBean
- * @author     Justin Tadlock <justin@justintadlock.com>
- * @copyright  Copyright (c) 2015-2016, Justin Tadlock
- * @link       https://github.com/justintadlock/butterbean
- * @license    http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * @package Metabox\Setting
  */
+
+namespace NineCodes\Metabox;
 
 /**
  * Array setting class.
  *
- * @since  1.0.0
+ * @since  0.1.0
  * @access public
  */
-class ButterBean_Setting_Array extends ButterBean_Setting {
+class Setting_Array extends Setting {
 
 	/**
 	 * The type of setting.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @var    string
 	 */
@@ -29,9 +27,10 @@ class ButterBean_Setting_Array extends ButterBean_Setting {
 	/**
 	 * Sanitizes the value of the setting.
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  array $value
+	 *
+	 * @param array $values Unsanitized values.
 	 * @return array
 	 */
 	public function sanitize( $values ) {
@@ -44,20 +43,20 @@ class ButterBean_Setting_Array extends ButterBean_Setting {
 	/**
 	 * Helper function for sanitizing each value of the array.
 	 *
-	 * @since  1.0.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  mixed $value
+	 * @param mixed $value Unsantized value.
 	 * @return mixed
 	 */
 	public function map( $value ) {
 
-		return apply_filters( "butterbean_{$this->manager->name}_sanitize_{$this->name}", $value, $this );
+		return apply_filters( "ninecodes_metabox_{$this->manager->name}_sanitize_{$this->name}", $value, $this );
 	}
 
 	/**
 	 * Saves the value of the setting.
 	 *
-	 * @since  1.0.0
+	 * @since  0.1.0
 	 * @access public
 	 * @return void
 	 */
