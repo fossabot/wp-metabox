@@ -150,7 +150,6 @@ final class Metabox {
 		// Load control sub-classes.
 		require_once( $this->path_dir . 'controls/class-control-checkboxes.php' );
 		require_once( $this->path_dir . 'controls/class-control-color.php' );
-		require_once( $this->path_dir . 'controls/class-control-datetime.php' );
 		require_once( $this->path_dir . 'controls/class-control-image.php' );
 		require_once( $this->path_dir . 'controls/class-control-palette.php' );
 		require_once( $this->path_dir . 'controls/class-control-radio.php' );
@@ -164,7 +163,6 @@ final class Metabox {
 
 		// Load setting sub-classes.
 		require_once( $this->path_dir . 'settings/class-setting-multiple.php' );
-		require_once( $this->path_dir . 'settings/class-setting-datetime.php' );
 		require_once( $this->path_dir . 'settings/class-setting-array.php' );
 		require_once( $this->path_dir . 'settings/class-setting-serialize.php' );
 
@@ -610,7 +608,6 @@ final class Metabox {
 		$this->register_control_type( 'default', __NAMESPACE__ . '\\Control' );
 		$this->register_control_type( 'checkboxes', __NAMESPACE__ . '\\Control_Checkboxes' );
 		$this->register_control_type( 'color', __NAMESPACE__ . '\\Control_Color' );
-		$this->register_control_type( 'datetime', __NAMESPACE__ . '\\Control_Datetime' );
 		$this->register_control_type( 'excerpt', __NAMESPACE__ . '\\Control_Excerpt' );
 		$this->register_control_type( 'image', __NAMESPACE__ . '\\Control_Image' );
 		$this->register_control_type( 'palette', __NAMESPACE__ . '\\Control_Palette' );
@@ -636,7 +633,6 @@ final class Metabox {
 
 		$this->register_setting_type( 'default', __NAMESPACE__ . '\\Setting' );
 		$this->register_setting_type( 'single', __NAMESPACE__ . '\\Setting' );
-		$this->register_setting_type( 'datetime', __NAMESPACE__ . '\\Setting_Datetime' );
 		$this->register_setting_type( 'multiple', __NAMESPACE__ . '\\Setting_Multiple' );
 		$this->register_setting_type( 'array', __NAMESPACE__ . '\\Setting_Array' );
 		$this->register_setting_type( 'serialize',__NAMESPACE__ . '\\Setting_Serialize' );
