@@ -1,4 +1,4 @@
-(function (api) {
+(function (api, $) {
 
 	'use strict';
 
@@ -13,22 +13,29 @@
 			'change input': 'onSelect'
 		},
 
-		// Executed when one of the color palette's value has changed.
-		// These are radio inputs.
+		/**
+		 * Executed when one of the color palette's value has changed.
+		 * These are radio inputs.
+		 *
+		 * @since 0.1.0
+		 *
+		 * @returns {Void} Returns nothing.
+		 */
 		onSelect: function () {
 
 			// Get the value of the input.
-			var value = document.querySelector('#' + this.el.id + ' input:checked').getAttribute('value'),
+			var value = $('#' + this.el.id + ' input:checked').attr('value'),
 				choices = this.model.get('choices');
 
-			// Loop through choices and change the selected value.
 			_.each(choices, function (choice, key) {
 				choice.selected = key === value;
 			});
 
-			// Because `choices` is an array, it's not recognized as a change.  So, we
-			// have to manually trigger a change here so that the view gets re-rendered.
+			/**
+			 * Because `choices` is an array, it's not recognized as a change.
+			 * So, we have to manually trigger a change here so that the view gets re-rendered.
+			 */
 			this.model.set('choices', choices).trigger('change', this.model);
 		}
 	});
-})(nineCodesMetabox);
+})(nineCodesMetabox, jQuery);

@@ -85,10 +85,10 @@ module.exports = function (grunt) {
 				],
 				tasks: ['styles:dev'],
 			},
-			readme: {
-				files: ['readme.txt'],
-				tasks: ['shell:readme'],
-			}
+			// readme: {
+			// 	files: ['readme.txt'],
+			// 	tasks: ['shell:readme'],
+			// }
 		},
 
 		/**

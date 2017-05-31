@@ -94,7 +94,70 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		},
 
 		Nav = {
-			View: {}
+			View: Backbone.View.extend({
+
+				template: api.template.nav,
+
+				tagName: 'li',
+
+				events: {
+					'click a': 'onSelect'
+				},
+
+				/**
+				 * Custom attributes for the control wrapper.
+				 *
+				 * @since 0.1.0
+				 *
+				 * @returns {Object} List of attributes to add in the View.
+				 */
+				attributes: function () {
+					return {
+						'aria-selected': this.model.get('selected')
+					};
+				},
+
+				/**
+				 * Initiazlies the Section view.
+				 *
+				 * @since 0.1.0
+				 *
+				 * @returns {Void} Returns nothing.
+				 */
+				initialize: function () {
+
+					this.model.on('change', this.render, this);
+					this.model.on('change', this.onChange, this);
+				},
+
+				/**
+				 * Renders the Section
+				 *
+				 * @returns {Object} api.metabox.section
+				 */
+				render: function () {
+
+					if (this.model.get('active')) {
+						this.el.innerHTML = this.template(this.model.toJSON());
+					}
+
+					return this;
+				},
+
+				onChange: function () {
+					this.el.setAttribute('aria-selected', this.model.get('selected'));
+				},
+
+				onSelect: function (event) {
+					event.preventDefault();
+
+					_.each(this.model.collection.models, function (model) {
+						model.set('selected', false);
+					}, this);
+
+					this.model.set('selected', true);
+				}
+			})
 		};
 
 	/**
@@ -453,93 +516,23 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 
 		_.each(nineCodesMetaboxData.managers, function (data) {
 
-			var ManagerModel = new Manager.Model(data), // Create a new Manager model with the JSON data for the manager.
+			var ManagerCallback = api.metabox.getManager(data.type),
 
-				Callback = api.metabox.getManager(data.type), // Get the Manager View callback.
-
-				View = new Callback({ // Create a new Manager View.
+				ManagerModel = new Manager.Model(data),
+				ManagerView = new ManagerCallback({
 					model: ManagerModel
-				}),
-
-				metabox = document.getElementById('ninecodes-metabox-ui-' + ManagerModel.get('name')); // Get the meta box element.
+				});
 
 			// Add the `.ninecodes-metabox-ui` class to the meta box.
-			metabox.className += ' ninecodes-metabox-ui';
+			$('#ninecodes-metabox-ui-' + ManagerModel.get('name'))
+				.addClass('ninecodes-metabox-ui')
+					.find('.inside')
+						.append(ManagerView.render().el);
 
-			// Render the manager View.
-			metabox.querySelector('.inside').appendChild(View.render().el);
-
-			// Render the manager subviews.
-			View.subViewRender();
-
-			// Call the View's ready method.
-			View.ready();
+			ManagerView.subViewRender();
+			ManagerView.ready();
 		});
 	};
-
-	/**
-	 * The nav item view for each section.
-	 *
-	 * @since 0.1.0
-	 * @var {Backbone}
-	 */
-	Nav.View = Backbone.View.extend({
-
-		template: api.template.nav,
-
-		// Wrapper element for the nav item.
-		tagName: 'li',
-
-		// Custom events.
-		events: {
-			'click a': 'onSelect'
-		},
-
-		// Sets some custom attributes for the nav item wrapper.
-		attributes: function () {
-			return {
-				'aria-selected': this.model.get('selected')
-			};
-		},
-
-		// Initializes the nav item view.
-		initialize: function () {
-
-			this.model.on('change', this.render, this);
-			this.model.on('change', this.onChange, this);
-		},
-
-		// Renders the nav item.
-		render: function () {
-
-			// Only render template if model is active.
-			if (this.model.get('active')) {
-				this.el.innerHTML = this.template(this.model.toJSON());
-			}
-
-			return this;
-		},
-
-		// Executed when the section model changes.
-		onChange: function () {
-
-			// Set the `aria-selected` attibute based on the model selected state.
-			this.el.setAttribute('aria-selected', this.model.get('selected'));
-		},
-
-		// Executed when the link for the nav item is clicked.
-		onSelect: function (event) {
-			event.preventDefault();
-
-			// Loop through each of the models in the collection and set them to inactive.
-			_.each(this.model.collection.models, function (m) {
-				m.set('selected', false);
-			}, this);
-
-			// Set this view's model to selected.
-			this.model.set('selected', true);
-		}
-	});
 
 	/**
 	 * The default manager view.  Other views can extend this using the
@@ -550,12 +543,13 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 	 */
 	api.metabox.manager['default'] = Backbone.View.extend({
 
-		// Wrapper element for the manager view.
-		tagName: 'div',
-
 		sections: new Section.Collection(),
 
-		// Adds some custom attributes to the wrapper.
+		/**
+		 * Custom attributes for the control wrapper.
+		 *
+		 * @returns {Object} List of attributes to add in the View.
+		 */
 		attributes: function () {
 			return {
 				'id': 'ninecodes-metabox-manager-' + this.model.get('name'),
@@ -563,7 +557,13 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 			};
 		},
 
-		// Initializes the view.
+		/**
+		 * Initiazlies the Section view.
+		 *
+		 * @since 0.1.0
+		 *
+		 * @returns {Void} Returns nothing.
+		 */
 		initialize: function () {
 
 			var type = this.model.get('type');
@@ -573,11 +573,14 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 				api.template.registerManager(type);
 			}
 
-			// Get the manager template.
 			this.template = api.template.getManager(type);
 		},
 
-		// Renders the manager.
+		/**
+		 * Renders the Section
+		 *
+		 * @returns {Object} api.metabox.section
+		 */
 		render: function () {
 			this.el.innerHTML = this.template(this.model.toJSON());
 			return this;
@@ -606,15 +609,12 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 			// Loop through each section in the collection and render its view.
 			_.each(self.sections.models, function (SectionModel, index) {
 
-				var SectionNav = new Nav.View({
+				var SectionCallback = api.metabox.getSection(SectionModel.attributes.type),
+
+					SectionView = new SectionCallback({
 						model: SectionModel
 					}),
-
-					// Get the section view.
-					SectionCallback = api.metabox.getSection(SectionModel.attributes.type),
-
-					// Create a new section view.
-					SectionView = new SectionCallback({
+					SectionNav = new Nav.View({
 						model: SectionModel
 					}),
 
@@ -632,12 +632,8 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 			// Loop through each control for the manager and render its view.
 			_.each(this.model.get('controls'), function (control) {
 
-				var ControlModel = new Control.Model(control),
-
-					// Get the control view callback.
-					ControlCallback = api.metabox.getControl(control.type),
-
-					// Create a new control view.
+				var ControlCallback = api.metabox.getControl(control.type),
+					ControlModel = new Control.Model(control),
 					ControlView = new ControlCallback({
 						model: ControlModel
 					}),
@@ -664,7 +660,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 	});
 
 	/**
-	 * The default section view.  Other views can extend this using the
+	 * The default section view. Other views can extend this using the
 	 * `nineCodesMetabox.views.registerSection()` function.
 	 *
 	 * @since  0.1.0

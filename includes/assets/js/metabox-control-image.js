@@ -1,4 +1,4 @@
-(function ( api ) {
+(function (api) {
 
 	'use strict';
 
@@ -16,8 +16,16 @@
 			'click .ninecodes-metabox-remove-media': 'removeMedia'
 		},
 
-		// Executed when the show modal button is clicked.
+		/**
+		 * Executed when the show modal button is clicked.
+		 *
+		 * @since 0.1.0
+		 *
+		 * @returns {Void} Nothing.
+		 */
 		showModal: function () {
+
+			var self = this;
 
 			// If we already have a media modal, open it.
 			if (!_.isUndefined(this.wpMediaModal)) {
@@ -44,24 +52,28 @@
 			this.wpMediaModal.on('select', function () {
 
 				// Gets the JSON data for the first selection.
-				var media = this.wpMediaModal.state().get('selection').first().toJSON(),
-					size = this.model.attributes.size; // Size of image to display.
+				var media = self.wpMediaModal.state().get('selection').first().toJSON(),
+					size = self.model.attributes.size; // Size of image to display.
 
 				// Updates the model for the view.
-				this.model.set({
+				self.model.set({
 					src: media.sizes[size] ? media.sizes[size]['url'] : media.url,
 					alt: media.alt,
 					value: media.id
 				});
-			}, this);
+			} );
 
 			this.wpMediaModal.open(); // Opens the media modal.
 		},
 
-		// Executed when the remove media button is clicked.
+		/**
+		 * Executed when the remove media button is clicked.
+		 *
+		 * @since 0.1.0
+		 *
+		 * @returns {Void} Returns nothing.
+		 */
 		removeMedia: function () {
-
-			// Updates the model for the view.
 			this.model.set({
 				src: '',
 				alt: '',
@@ -69,5 +81,4 @@
 			});
 		}
 	});
-
-})( nineCodesMetabox );
+})(nineCodesMetabox);

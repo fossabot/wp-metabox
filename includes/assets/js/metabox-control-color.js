@@ -1,4 +1,4 @@
-(function( api, $ ){
+(function (api) {
 
 	'use strict';
 
@@ -7,15 +7,11 @@
 	 *
 	 * @since  0.1.0
 	 */
-	api.metabox.registerControl( 'color', {
-
-		// Calls the core WP color picker for the control's input.
-		ready : function() {
-
-			var options = this.model.attributes.options;
-
-			$( this.$el ).find( '.ninecodes-metabox-color-picker' ).wpColorPicker( options );
+	api.metabox.registerControl('color', {
+		ready: function () {
+			this.$el.find('.ninecodes-metabox-color-picker')
+				.wpColorPicker(this.model.attributes.options);
 		}
-	} );
+	});
 
-})( nineCodesMetabox, jQuery );
+})(nineCodesMetabox);
