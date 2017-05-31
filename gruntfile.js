@@ -74,7 +74,7 @@ module.exports = function (grunt) {
 			},
 			scripts: {
 				files: [
-					'<%= dir.jsPath %>**/*.js',
+					'<%= dir.jsPath %>*.js',
 					'!**/*.min.js',
 				],
 				tasks: ['scripts:dev'],
@@ -119,7 +119,8 @@ module.exports = function (grunt) {
 			},
 			files: [{
 				'<%= dir.jsPath %>metabox.min.js': [
-					'<%= dir.jsPath %>*.js',
+					'<%= dir.jsPath %>metabox.js',
+					'<%= dir.jsPath %>metabox-control-*.js',
 					'!<%= dir.jsPath %>*.min.js',
 				],
 			}],
