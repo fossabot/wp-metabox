@@ -158,7 +158,6 @@ final class Metabox {
 
 		require_once( $this->path_dir . 'controls/class-control-excerpt.php' );
 		require_once( $this->path_dir . 'controls/class-control-multi-avatars.php' );
-		require_once( $this->path_dir . 'controls/class-control-parent.php' );
 
 		// Load setting sub-classes.
 		require_once( $this->path_dir . 'settings/class-setting-multiple.php' );
@@ -614,7 +613,6 @@ final class Metabox {
 		$this->register_control_type( 'select-group', __NAMESPACE__ . '\\Control_Select_Group' );
 		$this->register_control_type( 'textarea', __NAMESPACE__ . '\\Control_Textarea' );
 		$this->register_control_type( 'multi-avatars', __NAMESPACE__ . '\\Control_Multi_Avatars' );
-		$this->register_control_type( 'parent', __NAMESPACE__ . '\\Control_Parent' );
 	}
 
 	/**
