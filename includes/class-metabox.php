@@ -121,8 +121,8 @@ final class Metabox {
 	 */
 	private function setup() {
 
-		$this->path_dir = plugin_dir_path( __FILE__ );
-		$this->path_url = plugin_dir_url( __FILE__ );
+		$this->path_dir = plugin_dir_path( dirname( __FILE__ ) );
+		$this->path_url = plugin_dir_url( dirname( __FILE__ ) );
 		$this->path_tmpl = trailingslashit( $this->path_dir . 'tmpl' );
 	}
 
@@ -141,12 +141,6 @@ final class Metabox {
 			return;
 		}
 
-		// Load base classes.
-		require_once( $this->path_dir . 'class-manager.php' );
-		require_once( $this->path_dir . 'class-section.php' );
-		require_once( $this->path_dir . 'class-control.php' );
-		require_once( $this->path_dir . 'class-setting.php' );
-
 		// Load control sub-classes.
 		require_once( $this->path_dir . 'controls/class-control-checkboxes.php' );
 		require_once( $this->path_dir . 'controls/class-control-color.php' );
@@ -160,9 +154,6 @@ final class Metabox {
 		require_once( $this->path_dir . 'settings/class-setting-multiple.php' );
 		require_once( $this->path_dir . 'settings/class-setting-array.php' );
 		require_once( $this->path_dir . 'settings/class-setting-serialize.php' );
-
-		// Load functions.
-		require_once( $this->path_dir . 'functions-core.php' );
 	}
 
 	/**
@@ -623,7 +614,6 @@ final class Metabox {
 	public function register_setting_types() {
 
 		$this->register_setting_type( 'default', __NAMESPACE__ . '\\Setting' );
-		$this->register_setting_type( 'single', __NAMESPACE__ . '\\Setting' );
 		$this->register_setting_type( 'multiple', __NAMESPACE__ . '\\Setting_Multiple' );
 		$this->register_setting_type( 'array', __NAMESPACE__ . '\\Setting_Array' );
 		$this->register_setting_type( 'serialize',__NAMESPACE__ . '\\Setting_Serialize' );
@@ -650,13 +640,23 @@ final class Metabox {
 	 */
 	public function enqueue() {
 
-		// Enqueue the main plugin script.
+		/**
+		 * Enqueue the main plugin script.
+		 *
+		 * If using the plugin as a module, developers can dequeue this scripts, and instead import
+		 * and compile the file into its own file on the plugin or the theme.
+		 */
 		wp_enqueue_script( 'ninecodes-metabox', $this->path_url . 'assets/js/metabox.min.js', array(
 			'backbone',
 			'wp-util',
 		), null, true );
 
-		// Enqueue the main plugin style.
+		/**
+		 * Enqueue the main plugin style.
+		 *
+		 * If using the plugin as a module, developers can dequeue this scripts, and instead import
+		 * and compile the file into its own file on the plugin or the theme.
+		 */
 		wp_enqueue_style( 'ninecodes-metabox', $this->path_url . 'assets/css/metabox.css' );
 
 		// Loop through the manager and its controls and call each control's `enqueue()` method.
