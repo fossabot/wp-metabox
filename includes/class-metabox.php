@@ -156,8 +156,6 @@ final class Metabox {
 		require_once( $this->path_dir . 'controls/class-control-select-group.php' );
 		require_once( $this->path_dir . 'controls/class-control-textarea.php' );
 
-		require_once( $this->path_dir . 'controls/class-control-excerpt.php' );
-
 		// Load setting sub-classes.
 		require_once( $this->path_dir . 'settings/class-setting-multiple.php' );
 		require_once( $this->path_dir . 'settings/class-setting-array.php' );
@@ -605,7 +603,6 @@ final class Metabox {
 		$this->register_control_type( 'default', __NAMESPACE__ . '\\Control' );
 		$this->register_control_type( 'checkboxes', __NAMESPACE__ . '\\Control_Checkboxes' );
 		$this->register_control_type( 'color', __NAMESPACE__ . '\\Control_Color' );
-		$this->register_control_type( 'excerpt', __NAMESPACE__ . '\\Control_Excerpt' );
 		$this->register_control_type( 'image', __NAMESPACE__ . '\\Control_Image' );
 		$this->register_control_type( 'radio', __NAMESPACE__ . '\\Control_Radio' );
 		$this->register_control_type( 'radio-image', __NAMESPACE__ . '\\Control_Radio_Image' );
