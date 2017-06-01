@@ -1,875 +1,582 @@
 <?php
 /**
- * Primary plugin class.
+ * Base class for handling managers.  Managers are groups of sections, which are groups of
+ * controls + settings.  Managers are output as a metabox.  This essentially allows
+ * developers to output multiple post meta fields within a single metabox.
  *
- * @package Metabox
+ * @package NineCodes\Metabox
  */
 
 namespace NineCodes\Metabox;
 
 /**
- * Main Metabox class.
+ * Base manager class.
  *
- * @since 0.1.0
+ * @since  0.1.0
+ * @access public
  */
-final class Metabox {
+class Metabox {
 
 	/**
-	 * Directory path to the plugin folder.
+	 * The type of manager.
+	 *
+	 * @since  0.1.0
+	 * @access public
+	 * @var    string
+	 */
+	public $type = 'default';
+
+	/**
+	 * Name of this instance of the manager.
+	 *
+	 * @since  0.1.0
+	 * @access public
+	 * @var    string
+	 */
+	public $name = '';
+
+	/**
+	 * Label for the manager.
+	 *
+	 * @since  0.1.0
+	 * @access public
+	 * @var    string
+	 */
+	public $label = '';
+
+	/**
+	 * Post type this manager is used on.
+	 *
+	 * @since  0.1.0
+	 * @access public
+	 * @var    string|array
+	 */
+	public $post_type = 'post';
+
+	/**
+	 * Location of the meta box.  Accepted values: 'normal', 'advanced', 'side'.
+	 *
+	 * @link https://developer.wordpress.org/reference/functions/add_meta_box/
+	 * @since 0.1.0
+	 * @access public
+	 * @var string
+	 */
+	public $context = 'advanced';
+
+	/**
+	 * Priority of the meta box. Accepted values: 'high', 'core', 'default', 'low'.
+	 *
+	 * @link https://developer.wordpress.org/reference/functions/add_meta_box/
+	 * @since 0.1.0
+	 * @access public
+	 * @var string
+	 */
+	public $priority = 'default';
+
+	/**
+	 * Array of sections.
+	 *
+	 * @since 0.1.0
+	 * @access public
+	 * @var array
+	 */
+	public $sections = array();
+
+	/**
+	 * Array of controls.
+	 *
+	 * @since 0.1.0
+	 * @access public
+	 * @var array
+	 */
+	public $controls = array();
+
+	/**
+	 * Array of settings
+	 *
+	 * @since 0.1.0
+	 * @access public
+	 * @var array
+	 */
+	public $settings = array();
+
+	/**
+	 * A user role capability required to show the manager
+	 *
+	 * @since 0.1.0
+	 * @access public
+	 * @var string|array
+	 */
+	public $capability = '';
+
+	/**
+	 * A feature that the current post type must support to show the manager
 	 *
 	 * @since 0.1.0
 	 * @access public
 	 * @var string
 	 */
-	public $path_dir = '';
+	public $post_type_supports = '';
 
 	/**
-	 * Directory URI to the plugin folder.
+	 * A feature that the current theme must support to show the manager
 	 *
 	 * @since 0.1.0
 	 * @access public
-	 * @var string
+	 * @var string|array
 	 */
-	public $path_url = '';
+	public $theme_supports = '';
 
 	/**
-	 * Directory path to the template folder.
-	 *
-	 * @since 0.1.0
-	 * @access public
-	 * @var string
-	 */
-	public $path_tmpl = '';
-
-	/**
-	 * Array of managers.
-	 *
-	 * @since 0.1.0
-	 * @access public
-	 * @var array
-	 */
-	public $managers = array();
-
-	/**
-	 * Array of manager types.
-	 *
-	 * @since 0.1.0
-	 * @access public
-	 * @var array
-	 */
-	public $manager_types = array();
-
-	/**
-	 * Array of section types.
-	 *
-	 * @since 0.1.0
-	 * @access public
-	 * @var array
-	 */
-	public $section_types = array();
-
-	/**
-	 * Array of control types.
-	 *
-	 * @since 0.1.0
-	 * @access public
-	 * @var array
-	 */
-	public $control_types = array();
-
-	/**
-	 * Array of setting types.
-	 *
-	 * @since 0.1.0
-	 * @access public
-	 * @var array
-	 */
-	public $setting_types = array();
-
-	/**
-	 * Whether this is a new post.  Once the post is saved and we're
-	 * no longer on the `post-new.php` screen, this is going to be
-	 * `false`.
-	 *
-	 * @since 0.1.0
-	 * @access public
-	 * @var bool
-	 */
-	public $is_new_post = false;
-
-	/**
-	 * Constructor method.
+	 * Stores the JSON data for the manager
 	 *
 	 * @since  0.1.0
 	 * @access public
-	 * @return void
+	 * @var array
 	 */
-	public function __construct() {
-
-		$this->setup();
-		$this->includes();
-		$this->setup_actions();
-	}
+	public $json = array();
 
 	/**
-	 * Initial plugin setup.
+	 * ID of the post that's being edited
 	 *
-	 * @since  0.1.0
-	 * @access private
-	 *
-	 * @return void
-	 */
-	private function setup() {
-
-		$this->path_dir = plugin_dir_path( dirname( __FILE__ ) );
-		$this->path_url = plugin_dir_url( dirname( __FILE__ ) );
-		$this->path_tmpl = trailingslashit( $this->path_dir . 'tmpl' );
-	}
-
-	/**
-	 * Loads include and admin files for the plugin.
-	 *
-	 * @since  0.1.0
-	 * @access private
-	 *
-	 * @return void
-	 */
-	private function includes() {
-
-		// If not in the admin, bail.
-		if ( ! is_admin() ) {
-			return;
-		}
-
-		// Load control sub-classes.
-		require_once( $this->path_dir . 'controls/class-control-checkboxes.php' );
-		require_once( $this->path_dir . 'controls/class-control-color.php' );
-		require_once( $this->path_dir . 'controls/class-control-image.php' );
-		require_once( $this->path_dir . 'controls/class-control-radio.php' );
-		require_once( $this->path_dir . 'controls/class-control-radio-image.php' );
-		require_once( $this->path_dir . 'controls/class-control-select-group.php' );
-		require_once( $this->path_dir . 'controls/class-control-textarea.php' );
-
-		// Load setting sub-classes.
-		require_once( $this->path_dir . 'settings/class-setting-multiple.php' );
-		require_once( $this->path_dir . 'settings/class-setting-array.php' );
-		require_once( $this->path_dir . 'settings/class-setting-serialize.php' );
-	}
-
-	/**
-	 * Sets up initial actions.
-	 *
-	 * @since  0.1.0
-	 * @access private
-	 *
-	 * @return void
-	 */
-	private function setup_actions() {
-
-		// Call the register function.
-		add_action( 'load-post.php', array( $this, 'register' ), 95 );
-		add_action( 'load-post-new.php', array( $this, 'register' ), 95 );
-
-		// Register default types.
-		add_action( 'ninecodes_metabox_register', array( $this, 'register_manager_types' ), -95 );
-		add_action( 'ninecodes_metabox_register', array( $this, 'register_section_types' ), -95 );
-		add_action( 'ninecodes_metabox_register', array( $this, 'register_control_types' ), -95 );
-		add_action( 'ninecodes_metabox_register', array( $this, 'register_setting_types' ), -95 );
-	}
-
-	/**
-	 * Registration callback. Fires the `ninecodes_metabox_register` action hook to
-	 * allow plugins to register their managers
-	 *
-	 * @since  0.1.0
+	 * @since 0.1.0
 	 * @access public
+	 * @var int
+	 */
+	public $post_id = 0;
+
+	/**
+	 * Sets up the manager
 	 *
+	 * @since 0.1.0
+	 * @access public
+	 * @param string $name The manager name.
+	 * @param array  $args The manager arguments.
 	 * @return void
 	 */
-	public function register() {
+	public function __construct( $name, $args = array() ) {
 
-		// If this is a new post, set the new post boolean.
-		if ( 'load-post-new.php' === current_action() ) {
-			$this->is_new_post = true;
-		}
+		foreach ( array_keys( get_object_vars( $this ) ) as $key ) {
 
-		// Get the current post type.
-		$post_type = get_current_screen()->post_type;
-
-		// Action hook for registering managers.
-		do_action( 'ninecodes_metabox_register', $this, $post_type );
-
-		// Loop through the managers to see if we're using on on this screen.
-		foreach ( $this->managers as $manager ) {
-
-			// If we found a matching post type, add our actions/filters.
-			if ( ! in_array( $post_type, (array) $manager->post_type, true ) ) {
-				$this->unregister_manager( $manager->name );
-				continue;
+			if ( isset( $args[ $key ] ) ) {
+				$this->$key = $args[ $key ];
 			}
-
-			// Sort controls and sections by priority.
-			uasort( $manager->controls, array( $this, 'priority_sort' ) );
-			uasort( $manager->sections, array( $this, 'priority_sort' ) );
 		}
 
-		// If no managers registered, bail.
-		if ( ! $this->managers ) {
-			return;
-		}
+		// Make sure the post type is an array.
+		$this->post_type = (array) $this->post_type;
 
-		// Add meta boxes.
-		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 5 );
-
-		// Save settings.
-		add_action( 'save_post', array( $this, 'update' ) );
-
-		// Load scripts and styles.
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-		add_action( 'ninecodes_metabox_enqueue_scripts', array( $this, 'enqueue' ) );
-
-		// Localize scripts and Undescore templates.
-		add_action( 'admin_footer', array( $this, 'localize_scripts' ) );
-		add_action( 'admin_footer', array( $this, 'print_templates' ) );
-
-		// Renders our Backbone views.
-		add_action( 'admin_print_footer_scripts', array( $this, 'render_views' ), 95 );
+		// Set the manager name.
+		$this->name = sanitize_key( $name );
 	}
 
 	/**
-	 * Register a manager
+	 * Enqueue scripts/styles for the manager.
 	 *
-	 * @since 0.1.0
+	 * @since  0.1.0
 	 * @access public
 	 *
-	 * @param Manager|string $manager The Manager object or the name of the manager.
-	 * @param array          $args The Manager arguments.
-	 * @return object
+	 * @return void
 	 */
-	public function register_manager( $manager, $args = array() ) {
+	public function enqueue() {}
 
-		if ( ! is_object( $manager ) ) {
+	/**
+	 * Register a section.
+	 *
+	 * @since  0.1.0
+	 * @access public
+	 *
+	 * @param  object|string $section The section name or Object.
+	 * @param  array         $args The section arguments.
+	 * @return void
+	 */
+	public function register_section( $section, $args = array() ) {
 
-			$type = isset( $args['type'] ) ? $this->get_manager_type( $args['type'] ) : $this->get_manager_type( 'default' );
+		if ( ! is_object( $section ) ) {
+
+			$type = isset( $args['type'] ) ? ninecodes_metabox()->get_section_type( $args['type'] ) : ninecodes_metabox()->get_section_type( 'default' );
 			$type = __NAMESPACE__ . '\\' . $type;
 
-			$manager = new $type( $manager, $args );
+			$section = new $type( $this, $section, $args );
 		}
 
-		if ( ! $this->manager_exists( $manager->name ) ) {
-			$this->managers[ $manager->name ] = $manager;
+		if ( ! $this->section_exists( $section->name ) ) {
+			$this->sections[ $section->name ] = $section;
 		}
-
-		return $manager;
 	}
 
 	/**
-	 * Unregisters a manager object
+	 * Register a control.
 	 *
 	 * @since  0.1.0
 	 * @access public
 	 *
-	 * @param  string $name The name of the manager object.
+	 * @param  object|string $control The control name or Object.
+	 * @param  array         $args The control arguments.
 	 * @return void
 	 */
-	public function unregister_manager( $name ) {
+	public function register_control( $control, $args = array() ) {
 
-		if ( $this->manager_exists( $name ) ) {
-			unset( $this->managers[ $name ] );
+		if ( ! is_object( $control ) ) {
+
+			$type = isset( $args['type'] ) ? ninecodes_metabox()->get_control_type( $args['type'] ) : ninecodes_metabox()->get_control_type( 'default' );
+
+			$control = new $type( $this, $control, $args );
+		}
+
+		if ( ! $this->control_exists( $control->name ) ) {
+			$this->controls[ $control->name ] = $control;
 		}
 	}
 
 	/**
-	 * Returns a manager object
+	 * Register a setting.
+	 *
+	 * @since  0.1.0
+	 * @access public
+	 *
+	 * @param  object|string $setting The setting name or Object.
+	 * @param  array         $args The setting arguments.
+	 * @return void
+	 */
+	public function register_setting( $setting, $args = array() ) {
+
+		if ( ! is_object( $setting ) ) {
+
+			$type = isset( $args['type'] ) ? ninecodes_metabox()->get_setting_type( $args['type'] ) : ninecodes_metabox()->get_setting_type( 'default' );
+
+			$setting = new $type( $this, $setting, $args );
+		}
+
+		if ( ! $this->setting_exists( $setting->name ) ) {
+			$this->settings[ $setting->name ] = $setting;
+		}
+	}
+
+	/**
+	 * Register a control and setting object.
 	 *
 	 * @since 0.1.0
 	 * @access public
 	 *
-	 * @param string $name The manager name.
+	 * @param string       $name The field / control name.
+	 * @param object|array $control Control object or array of control arguments.
+	 * @param object|array $setting Setting object or array of setting arguments.
+	 * @return void
+	 */
+	public function register_field( $name, $control, $setting ) {
+
+		is_object( $control ) ? $this->register_control( $control ) : $this->register_control( $name, $control );
+		is_object( $setting ) ? $this->register_setting( $setting ) : $this->register_setting( $name, $setting );
+	}
+
+	/**
+	 * Unregisters a section object
+	 *
+	 * @since 0.1.0
+	 * @access public
+	 *
+	 * @param string $name The section name.
+	 * @return void
+	 */
+	public function unregister_section( $name ) {
+
+		if ( $this->section_exists( $name ) ) {
+			unset( $this->sections[ $name ] );
+		}
+	}
+
+	/**
+	 * Unregisters a control object.
+	 *
+	 * @since 0.1.0
+	 * @access public
+	 *
+	 * @param string $name The control name.
+	 * @return void
+	 */
+	public function unregister_control( $name ) {
+
+		if ( $this->control_exists( $name ) ) {
+			unset( $this->controls[ $name ] );
+		}
+	}
+
+	/**
+	 * Unregisters a setting object.
+	 *
+	 * @since  0.1.0
+	 * @access public
+	 *
+	 * @param  string $name The setting name.
+	 * @return void
+	 */
+	public function unregister_setting( $name ) {
+
+		if ( $this->setting_exists( $name ) ) {
+			unset( $this->settings[ $name ] );
+		}
+	}
+
+	/**
+	 * Unregisters a control and setting object
+	 *
+	 * @since 0.1.0
+	 * @access public
+	 *
+	 * @param string $name The field / control name.
+	 * @return void
+	 */
+	public function unregister_field( $name ) {
+
+		$this->unregister_control( $name );
+		$this->unregister_setting( $name );
+	}
+
+	/**
+	 * Returns a section object
+	 *
+	 * @since 0.1.0
+	 * @access public
+	 *
+	 * @param string $name The section name.
 	 * @return object|bool
 	 */
-	public function get_manager( $name ) {
-		return $this->manager_exists( $name ) ? $this->managers[ $name ] : false;
+	public function get_section( $name ) {
+
+		return $this->section_exists( $name ) ? $this->sections[ $name ] : false;
 	}
 
 	/**
-	 * Checks if a manager exists
+	 * Returns a control object
 	 *
 	 * @since 0.1.0
 	 * @access public
 	 *
-	 * @param string $name The manager name.
-	 * @return bool
+	 * @param string $name The control name.
+	 * @return object|bool
 	 */
-	public function manager_exists( $name ) {
-		return isset( $this->managers[ $name ] );
+	public function get_control( $name ) {
+		return $this->control_exists( $name ) ? $this->controls[ $name ] : false;
 	}
 
 	/**
-	 * Registers a manager type
-	 *
-	 * This is just a method of telling Metabox the class of your custom manager type.
-	 * It allows the manager to be called without having to pass an object to `register_manager()`.
+	 * Returns a setting object
 	 *
 	 * @since 0.1.0
 	 * @access public
 	 *
-	 * @param string $type The manager type e.g. 'default'.
-	 * @param string $class The class name to register the manager.
-	 * @return void
+	 * @param string $name The setting name.
+	 * @return object|bool
 	 */
-	public function register_manager_type( $type, $class ) {
-
-		if ( ! $this->manager_type_exists( $type ) ) {
-			$this->manager_types[ $type ] = $class;
-		}
+	public function get_setting( $name ) {
+		return $this->setting_exists( $name ) ? $this->settings[ $name ] : false;
 	}
 
 	/**
-	 * Unregisters a manager type
+	 * Returns an object that contains both the control and setting objects
 	 *
 	 * @since 0.1.0
 	 * @access public
 	 *
-	 * @param string $type The manager type e.g. 'default'.
-	 * @return void
+	 * @param string $name The setting name.
+	 * @return object|bool
 	 */
-	public function unregister_manager_type( $type ) {
+	public function get_field( $name ) {
 
-		if ( $this->manager_type_exists( $type ) ) {
-			unset( $this->manager_types[ $type ] );
-		}
-	}
+		$control = $this->get_control( $name );
+		$setting = $this->get_setting( $name );
 
-	/**
-	 * Returns the class name for the manager type
-	 *
-	 * @since  0.1.0
-	 * @access public
-	 *
-	 * @param string $type The manager type e.g. 'default'.
-	 * @return string
-	 */
-	public function get_manager_type( $type ) {
-		return $this->manager_type_exists( $type ) ? $this->manager_types[ $type ] : $this->manager_types['default'];
-	}
-
-	/**
-	 * Checks if a manager type exists
-	 *
-	 * @since 0.1.0
-	 * @access public
-	 *
-	 * @param string $type The manager type e.g. 'default'.
-	 * @return bool
-	 */
-	public function manager_type_exists( $type ) {
-		return isset( $this->manager_types[ $type ] );
-	}
-
-	/**
-	 * Registers a section type
-	 *
-	 * This is just a method of telling Metabox the class of your custom section type.
-	 * It allows the section to be called without having to pass an object to `register_section()`.
-	 *
-	 * @since 0.1.0
-	 * @access public
-	 *
-	 * @param string $type The section type e.g. 'default'.
-	 * @param string $class The class name to register the section.
-	 * @return void
-	 */
-	public function register_section_type( $type, $class ) {
-
-		if ( ! $this->section_type_exists( $type ) ) {
-			$this->section_types[ $type ] = $class;
-		}
-	}
-
-	/**
-	 * Unregisters a section type
-	 *
-	 * @since 0.1.0
-	 * @access public
-	 *
-	 * @param string $type The section type e.g. 'default'.
-	 * @return void
-	 */
-	public function unregister_section_type( $type ) {
-
-		if ( $this->section_type_exists( $type ) ) {
-			unset( $this->section_types[ $type ] );
-		}
-	}
-
-	/**
-	 * Returns the class name for the section type
-	 *
-	 * @since 0.1.0
-	 * @access public
-	 *
-	 * @param string $type The section type e.g. 'default'.
-	 * @return string
-	 */
-	public function get_section_type( $type ) {
-		return $this->section_type_exists( $type ) ? $this->section_types[ $type ] : $this->section_types['default'];
-	}
-
-	/**
-	 * Checks if a section type exists.
-	 *
-	 * @since 0.1.0
-	 * @access public
-	 *
-	 * @param string $type The section type e.g. 'default'.
-	 * @return bool
-	 */
-	public function section_type_exists( $type ) {
-		return isset( $this->section_types[ $type ] );
-	}
-
-	/**
-	 * Registers a control type.
-	 *
-	 * This is just a method of telling Metabox the class of your custom control type.
-	 * It allows the control to be called without having to pass an object to `register_control()`.
-	 *
-	 * @since 0.1.0
-	 * @access public
-	 *
-	 * @param string $type The section type e.g. 'color', 'radio', 'textarea', etc.
-	 * @param string $class The class name to register the control.
-	 * @return void
-	 */
-	public function register_control_type( $type, $class ) {
-
-		if ( ! $this->control_type_exists( $type ) ) {
-			$this->control_types[ $type ] = $class;
-		}
-	}
-
-	/**
-	 * Unregisters a control type
-	 *
-	 * @since 0.1.0
-	 * @access public
-	 *
-	 * @param string $type The section type e.g. 'color', 'radio', 'textarea', etc.
-	 * @return void
-	 */
-	public function unregister_control_type( $type ) {
-
-		if ( $this->control_type_exists( $type ) ) {
-			unset( $this->control_types[ $type ] );
-		}
-	}
-
-	/**
-	 * Returns the class name for the control type
-	 *
-	 * @since 0.1.0
-	 * @access public
-	 *
-	 * @param string $type The section type e.g. 'color', 'radio', 'textarea', etc.
-	 * @return string
-	 */
-	public function get_control_type( $type ) {
-		return $this->control_type_exists( $type ) ? $this->control_types[ $type ] : $this->control_types['default'];
-	}
-
-	/**
-	 * Checks if a control type exists
-	 *
-	 * @since 0.1.0
-	 * @access public
-	 *
-	 * @param string $type The section type e.g. 'color', 'radio', 'textarea', etc.
-	 * @return bool
-	 */
-	public function control_type_exists( $type ) {
-		return isset( $this->control_types[ $type ] );
-	}
-
-	/**
-	 * Registers a setting type
-	 *
-	 * This is just a method of telling Metabox the class of your custom setting type.
-	 * It allows the setting to be called without having to pass an object to `register_setting()`.
-	 *
-	 * @since 0.1.0
-	 * @access public
-	 *
-	 * @param string $type The setting type e.g. 'serialize', 'single', etc.
-	 * @param string $class The class name to register the setting.
-	 * @return void
-	 */
-	public function register_setting_type( $type, $class ) {
-
-		if ( ! $this->setting_type_exists( $type ) ) {
-			$this->setting_types[ $type ] = $class;
-		}
-	}
-
-	/**
-	 * Unregisters a setting type
-	 *
-	 * @since 0.1.0
-	 * @access public
-	 *
-	 * @param string $type The setting type e.g. 'serialize', 'single', etc.
-	 * @return void
-	 */
-	public function unregister_setting_type( $type ) {
-
-		if ( $this->setting_type_exists( $type ) ) {
-			unset( $this->setting_types[ $type ] );
-		}
-	}
-
-	/**
-	 * Returns the class name for the setting type
-	 *
-	 * @since 0.1.0
-	 * @access public
-	 *
-	 * @param string $type The setting type e.g. 'serialize', 'single', etc.
-	 * @return string
-	 */
-	public function get_setting_type( $type ) {
-		return $this->setting_type_exists( $type ) ? $this->setting_types[ $type ] : $this->setting_types['default'];
-	}
-
-	/**
-	 * Checks if a setting type exists.
-	 *
-	 * @since 0.1.0
-	 * @access public
-	 *
-	 * @param string $type The setting type e.g. 'serialize', 'single', etc.
-	 * @return bool
-	 */
-	public function setting_type_exists( $type ) {
-		return isset( $this->setting_types[ $type ] );
-	}
-
-	/**
-	 * Registers our manager types so that devs don't have to directly instantiate
-	 * the class each time they register a manager. Instead, they can use the
-	 * `type` argument.
-	 *
-	 * @since  0.1.0
-	 * @access public
-	 * @return void
-	 */
-	public function register_manager_types() {
-		$this->register_manager_type( 'default', 'Manager' );
-	}
-
-	/**
-	 * Registers our section types so that devs don't have to directly instantiate
-	 * the class each time they register a section. Instead, they can use the
-	 * `type` argument.
-	 *
-	 * @since  0.1.0
-	 * @access public
-	 * @return void
-	 */
-	public function register_section_types() {
-		$this->register_section_type( 'default', 'Section' );
-	}
-
-	/**
-	 * Registers our control types so that devs don't have to directly instantiate
-	 * the class each time they register a control. Instead, they can use the
-	 * `type` argument.
-	 *
-	 * @since 0.1.0
-	 * @access public
-	 *
-	 * @return void
-	 */
-	public function register_control_types() {
-
-		$this->register_control_type( 'default', __NAMESPACE__ . '\\Control' );
-		$this->register_control_type( 'checkboxes', __NAMESPACE__ . '\\Control_Checkboxes' );
-		$this->register_control_type( 'color', __NAMESPACE__ . '\\Control_Color' );
-		$this->register_control_type( 'image', __NAMESPACE__ . '\\Control_Image' );
-		$this->register_control_type( 'radio', __NAMESPACE__ . '\\Control_Radio' );
-		$this->register_control_type( 'radio-image', __NAMESPACE__ . '\\Control_Radio_Image' );
-		$this->register_control_type( 'select-group', __NAMESPACE__ . '\\Control_Select_Group' );
-		$this->register_control_type( 'textarea', __NAMESPACE__ . '\\Control_Textarea' );
-	}
-
-	/**
-	 * Registers our setting types so that devs don't have to directly instantiate
-	 * the class each time they register a setting.  Instead, they can use the
-	 * `type` argument.
-	 *
-	 * @since  0.1.0
-	 * @access public
-	 *
-	 * @return void
-	 */
-	public function register_setting_types() {
-
-		$this->register_setting_type( 'default', __NAMESPACE__ . '\\Setting' );
-		$this->register_setting_type( 'multiple', __NAMESPACE__ . '\\Setting_Multiple' );
-		$this->register_setting_type( 'array', __NAMESPACE__ . '\\Setting_Array' );
-		$this->register_setting_type( 'serialize',__NAMESPACE__ . '\\Setting_Serialize' );
-	}
-
-	/**
-	 * Fires an action hook to register/enqueue scripts/styles.
-	 *
-	 * @since  0.1.0
-	 * @access public
-	 * @return void
-	 */
-	public function enqueue_scripts() {
-		do_action( 'ninecodes_metabox_enqueue_scripts' );
-	}
-
-	/**
-	 * Loads scripts and styles.
-	 *
-	 * @since  0.1.0
-	 * @access public
-	 *
-	 * @return void
-	 */
-	public function enqueue() {
-
-		/**
-		 * Enqueue the main plugin script.
-		 *
-		 * If using the plugin as a module, developers can dequeue this scripts, and instead import
-		 * and compile the file into its own file on the plugin or the theme.
-		 */
-		wp_enqueue_script( 'ninecodes-metabox', $this->path_url . 'assets/js/metabox.min.js', array(
-			'backbone',
-			'wp-util',
-		), null, true );
-
-		/**
-		 * Enqueue the main plugin style.
-		 *
-		 * If using the plugin as a module, developers can dequeue this scripts, and instead import
-		 * and compile the file into its own file on the plugin or the theme.
-		 */
-		wp_enqueue_style( 'ninecodes-metabox', $this->path_url . 'assets/css/metabox.css' );
-
-		// Loop through the manager and its controls and call each control's `enqueue()` method.
-		foreach ( $this->managers as $manager ) {
-
-			$manager->enqueue();
-
-			foreach ( $manager->sections as $section ) {
-				$section->enqueue();
-			}
-
-			foreach ( $manager->controls as $control ) {
-				$control->enqueue();
-			}
-		}
-	}
-
-	/**
-	 * Callback function for adding meta boxes. This function adds a meta box
-	 * for each of the managers.
-	 *
-	 * @since 0.1.0
-	 * @access public
-	 *
-	 * @param string $post_type The current post type.
-	 * @return void
-	 */
-	public function add_meta_boxes( $post_type ) {
-
-		foreach ( $this->managers as $manager ) {
-
-			// If the manager is registered for the current post type, add a meta box.
-			if ( in_array( $post_type, (array) $manager->post_type, true ) && $manager->check_capabilities() ) {
-
-				add_meta_box(
-					"ninecodes-metabox-ui-{$manager->name}",
-					$manager->label,
-					array( $this, 'meta_box' ),
-					$post_type,
-					$manager->context,
-					$manager->priority,
-					array(
-						'manager' => $manager,
-					)
-				);
-			}
-		}
-	}
-
-	/**
-	 * Displays the meta box. Note that the actual content of the meta box is
-	 * handled via Underscore.js templates. The only thing we're outputting here
-	 * is the nonce field.
-	 *
-	 * @since 0.1.0
-	 * @access public
-	 *
-	 * @param object $post The WP_Post object.
-	 * @param array  $metabox The metabox arguments.
-	 * @return void
-	 */
-	public function meta_box( $post, $metabox ) {
-
-		$manager = $metabox['args']['manager'];
-
-		$this->post_id = $post->ID;
-
-		$manager->post_id = $this->post_id;
-
-		// Nonce field to validate on save.
-		wp_nonce_field( "ninecodes_metabox_{$manager->name}_nonce", "ninecodes_metabox_{$manager->name}" );
-	}
-
-	/**
-	 * Passes the appropriate section and control json data to the JS file.
-	 *
-	 * @since 0.1.0
-	 * @access public
-	 *
-	 * @return void
-	 */
-	public function localize_scripts() {
-
-		$json = array(
-			'managers' => array(),
+		$field = array(
+			'name' => $name,
+			'control' => $control,
+			'setting' => $setting,
 		);
 
-		foreach ( $this->managers as $manager ) {
-
-			if ( $manager->check_capabilities() ) {
-				$json['managers'][] = $manager->get_json();
-			}
-		}
-
-		wp_localize_script( 'ninecodes-metabox', 'nineCodesMetaboxData', $json );
+		return $control && $setting ? (object) $field : false;
 	}
 
 	/**
-	 * Prints the Underscore.js templates
+	 * Checks if a section exists
 	 *
 	 * @since 0.1.0
 	 * @access public
 	 *
+	 * @param string $name The section name.
+	 * @return bool
+	 */
+	public function section_exists( $name ) {
+		return isset( $this->sections[ $name ] );
+	}
+
+	/**
+	 * Checks if a control exists
+	 *
+	 * @since 0.1.0
+	 * @access public
+	 *
+	 * @param string $name The control name.
+	 * @return bool
+	 */
+	public function control_exists( $name ) {
+		return isset( $this->controls[ $name ] );
+	}
+
+	/**
+	 * Checks if a setting exists
+	 *
+	 * @since 0.1.0
+	 * @access public
+	 *
+	 * @param string $name The section name.
+	 * @return bool
+	 */
+	public function setting_exists( $name ) {
+		return isset( $this->settings[ $name ] );
+	}
+
+	/**
+	 * Checks if a both a control and setting exist
+	 *
+	 * @since 0.1.0
+	 * @access public
+	 * @param string $name The setting and control name.
+	 * @return bool
+	 */
+	public function field_exists( $name ) {
+		return $this->control_exists( $name ) && $this->setting_exists( $name );
+	}
+
+	/**
+	 * Returns the json array
+	 *
+	 * @since  0.1.0
+	 * @access public
+	 * @return array
+	 */
+	public function get_json() {
+		$this->to_json();
+
+		return $this->json;
+	}
+
+	/**
+	 * Adds custom data to the JSON array. This data is passed to the Underscore template.
+	 *
+	 * @since  0.1.0
+	 * @access public
 	 * @return void
 	 */
-	public function print_templates() {
+	public function to_json() {
 
-		$m_templates = array();
-		$s_templates = array();
-		$c_templates = array(); ?>
+		$sections_with_controls = array();
+		$blocked_sections       = array();
 
-		<script type="text/html" id="tmpl-ninecodes-metabox-nav">
-			<?php get_nav_template(); ?>
-		</script>
+		$this->json['name'] = $this->name;
+		$this->json['type'] = $this->type;
 
-		<?php
-		foreach ( $this->managers as $manager ) {
+		// Get all sections that have controls.
+		foreach ( $this->controls as $control ) {
+			$sections_with_controls[] = $control->section;
+		}
 
-			if ( ! $manager->check_capabilities() ) {
-				continue;
+		$sections_with_controls = array_unique( $sections_with_controls );
+
+		// Get the JSON data for each section.
+		foreach ( $this->sections as $section ) {
+
+			$caps = $section->check_capabilities();
+
+			if ( $caps && in_array( $section->name, $sections_with_controls, true ) ) {
+				$this->json['sections'][] = $section->get_json();
 			}
 
-			if ( ! in_array( $manager->type, $m_templates, true ) ) {
-				$m_templates[] = $manager->type;
-
-				$manager->print_template();
+			if ( ! $caps ) {
+				$blocked_sections[] = $section->name;
 			}
+		}
 
-			foreach ( $manager->sections as $section ) {
+		// Get the JSON data for each control.
+		foreach ( $this->controls as $control ) {
 
-				if ( ! in_array( $section->type, $s_templates, true ) ) {
-					$s_templates[] = $section->type;
-
-					$section->print_template();
-				}
-			}
-
-			foreach ( $manager->controls as $control ) {
-
-				if ( ! in_array( $control->type, $c_templates, true ) ) {
-					$c_templates[] = $control->type;
-
-					$control->print_template();
-				}
+			if ( $control->check_capabilities() && ! in_array( $control->section, $blocked_sections, true ) ) {
+				$this->json['controls'][] = $control->get_json();
 			}
 		}
 	}
 
 	/**
-	 * Renders our Backbone views. We're calling this late in the page load so
-	 * that other scripts have an opportunity to extend with their own, custom
-	 * views for custom controls and such
+	 * Saves each of the settings for the manager
 	 *
 	 * @since 0.1.0
 	 * @access public
 	 *
+	 * @param mixed $post_id The Post ID.
 	 * @return void
 	 */
-	public function render_views() {
+	public function save( $post_id ) {
+
+		if ( ! $this->post_id ) {
+			$this->post_id = $post_id;
+		}
+
+		// Verify the nonce for this manager.
+		if ( ! isset( $_POST[ "ninecodes_metabox_{$this->name}" ] ) || ! wp_verify_nonce( $_POST[ "ninecodes_metabox_{$this->name}" ], "ninecodes_metabox_{$this->name}_nonce" ) ) {
+			return;
+		}
+
+		// Loop through each setting and save it.
+		foreach ( $this->settings as $setting ) {
+			$setting->save();
+		}
+	}
+
+	/**
+	 * Checks if the control should be allowed at all.
+	 *
+	 * @since  0.1.0
+	 * @access public
+	 * @return bool
+	 */
+	public function check_capabilities() {
+
+		if ( $this->capability && ! call_user_func_array( 'current_user_can', (array) $this->capability ) ) {
+			return false;
+		}
+
+		if ( $this->post_type_supports && ! call_user_func_array( 'post_type_supports', array( get_post_type( $this->manager->post_id ), $this->post_type_supports ) ) ) {
+			return false;
+		}
+
+		if ( $this->theme_supports && ! call_user_func_array( 'theme_supports', (array) $this->theme_supports ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Prints Underscore.js template.
+	 *
+	 * @since  0.1.0
+	 * @access public
+	 * @return void
+	 */
+	public function print_template() {
 	?>
-	<script type="text/javascript">
-		( function( api ) {
-			if ( _.isObject( api ) && _.isFunction( api.render ) ) {
-				api.render();
-			}
-		}( nineCodesMetabox ) );
+	<script type="text/html" id="tmpl-ninecodes-metabox-manager-<?php echo esc_attr( $this->type ); ?>">
+		<?php $this->get_template(); ?>
 	</script>
 	<?php }
 
 	/**
-	 * Saves the settings
+	 * Gets the Underscore.js template.
 	 *
-	 * @since 0.1.0
-	 * @param integer $post_id The Post ID.
-	 *
+	 * @since  0.1.0
+	 * @access public
 	 * @return void
 	 */
-	public function update( $post_id ) {
-
-		$post_id = absint( $post_id );
-
-		$do_autosave = defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE;
-		$is_autosave = wp_is_post_autosave( $post_id );
-		$is_revision = wp_is_post_revision( $post_id );
-
-		if ( $do_autosave || $is_autosave || $is_revision ) {
-			return;
-		}
-
-		foreach ( $this->managers as $manager ) {
-
-			if ( $manager->check_capabilities() ) {
-				$manager->save( $post_id );
-			}
-		}
-	}
-
-	/**
-	 * Helper method for sorting sections and controls by priority
-	 *
-	 * @since 0.1.0
-	 * @access protected
-	 *
-	 * @param object $a The section or control object.
-	 * @param object $b The section or control object.
-	 * @return int
-	 */
-	protected function priority_sort( $a, $b ) {
-
-		if ( $a->priority === $b->priority ) {
-			return $a->instance_number - $b->instance_number;
-		}
-
-		return $a->priority - $b->priority;
+	public function get_template() {
+		get_manager_template( $this->type );
 	}
 }

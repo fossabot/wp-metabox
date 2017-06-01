@@ -45,7 +45,7 @@ if ( ! function_exists( __NAMESPACE__ . '\\ninecodes_metabox' ) ) :
 		static $plugin;
 
 		if ( is_null( $plugin ) ) {
-			$plugin = new Metabox();
+			$plugin = new Plugin();
 		}
 
 		return $plugin;
@@ -59,11 +59,11 @@ if ( ! function_exists( __NAMESPACE__ . '\\ninecodes_metabox' ) ) :
 			define( 'WP_METABOX_API_LOADED', true );
 
 			// Load base classes.
-			require_once( plugin_dir_path( __FILE__ ) . 'includes/class-manager.php' );
+			require_once( plugin_dir_path( __FILE__ ) . 'includes/class-metabox.php' );
 			require_once( plugin_dir_path( __FILE__ ) . 'includes/class-section.php' );
 			require_once( plugin_dir_path( __FILE__ ) . 'includes/class-control.php' );
 			require_once( plugin_dir_path( __FILE__ ) . 'includes/class-setting.php' );
-			require_once( plugin_dir_path( __FILE__ ) . 'includes/class-metabox.php' );
+			require_once( plugin_dir_path( __FILE__ ) . 'includes/class-plugin.php' );
 
 			// Load functions.
 			require_once( plugin_dir_path( __FILE__ ) . 'includes/functions-core.php' );
