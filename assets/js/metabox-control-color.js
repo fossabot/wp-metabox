@@ -7,10 +7,10 @@
 	 *
 	 * @since  0.1.0
 	 */
-	api.metabox.registerControl('color', {
+	api.registerControl('color', {
 		ready: function () {
 			this.$el.find('.ninecodes-metabox-color-picker')
-				.wpColorPicker(this.model.attributes.options);
+			.wpColorPicker(this.model.attributes.options);
 		}
 	});
 

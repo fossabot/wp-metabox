@@ -1,7 +1,7 @@
 <?php
 /**
  * Base class for handling sections. Sections house groups of controls.  Multiple sections can
- * be added to a manager.
+ * be added to a metabox.
  *
  * @package Metabox
  */
@@ -17,13 +17,13 @@ namespace NineCodes\Metabox;
 class Section {
 
 	/**
-	 * Stores the project details manager object.
+	 * Stores the project details metabox object.
 	 *
 	 * @since  0.1.0
 	 * @access public
 	 * @var    object
 	 */
-	public $manager;
+	public $metabox;
 
 	/**
 	 * Name/ID of the section.
@@ -134,7 +134,7 @@ class Section {
 	public $theme_supports = '';
 
 	/**
-	 * Stores the JSON data for the manager.
+	 * Stores the JSON data for the metabox.
 	 *
 	 * @since  0.1.0
 	 * @access public
@@ -147,12 +147,12 @@ class Section {
 	 *
 	 * @since 0.1.0
 	 * @access public
-	 * @param object $manager The manager object.
+	 * @param object $metabox The metabox object.
 	 * @param string $name The name of the section.
 	 * @param array  $args The section arguments.
 	 * @return void
 	 */
-	public function __construct( $manager, $name, $args = array() ) {
+	public function __construct( $metabox, $name, $args = array() ) {
 
 		foreach ( array_keys( get_object_vars( $this ) ) as $key ) {
 
@@ -161,7 +161,7 @@ class Section {
 			}
 		}
 
-		$this->manager = $manager;
+		$this->metabox = $metabox;
 		$this->name = $name;
 
 		// Increment the instance count and set the instance number.
@@ -205,7 +205,7 @@ class Section {
 	 */
 	public function to_json() {
 
-		$this->json['manager'] = $this->manager->name;
+		$this->json['metabox'] = $this->metabox->name;
 		$this->json['name'] = $this->name;
 		$this->json['type'] = $this->type;
 		$this->json['icon']  = preg_match( '/dashicons-/', $this->icon ) ? sprintf( 'dashicons %s', sanitize_html_class( $this->icon ) ) : esc_attr( $this->icon );
@@ -256,7 +256,7 @@ class Section {
 			return false;
 		}
 
-		if ( $this->post_type_supports && ! call_user_func_array( 'post_type_supports', array( get_post_type( $this->manager->post_id ), $this->post_type_supports ) ) ) {
+		if ( $this->post_type_supports && ! call_user_func_array( 'post_type_supports', array( get_post_type( $this->metabox->post_id ), $this->post_type_supports ) ) ) {
 			return false;
 		}
 

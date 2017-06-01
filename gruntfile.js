@@ -20,8 +20,8 @@ module.exports = function (grunt) {
 		 */
 		dir: {
 			pluginPath: '/srv/www/wordpress-develop/public_html/src/wp-content/plugins/<%= pkg.name %>',
-			cssPath: './includes/assets/css/',
-			jsPath: './includes/assets/js/',
+			cssPath: './assets/css/',
+			jsPath: './assets/js/',
 		},
 
 		/**

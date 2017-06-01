@@ -10,7 +10,7 @@
 namespace NineCodes\Metabox;
 
 /**
- * Base manager class.
+ * Base metabox class.
  *
  * @since  0.1.0
  * @access public
@@ -18,7 +18,7 @@ namespace NineCodes\Metabox;
 class Metabox {
 
 	/**
-	 * The type of manager.
+	 * The type of metabox.
 	 *
 	 * @since  0.1.0
 	 * @access public
@@ -27,7 +27,7 @@ class Metabox {
 	public $type = 'default';
 
 	/**
-	 * Name of this instance of the manager.
+	 * Name of this instance of the metabox.
 	 *
 	 * @since  0.1.0
 	 * @access public
@@ -36,7 +36,7 @@ class Metabox {
 	public $name = '';
 
 	/**
-	 * Label for the manager.
+	 * Label for the metabox.
 	 *
 	 * @since  0.1.0
 	 * @access public
@@ -45,7 +45,7 @@ class Metabox {
 	public $label = '';
 
 	/**
-	 * Post type this manager is used on.
+	 * Post type this metabox is used on.
 	 *
 	 * @since  0.1.0
 	 * @access public
@@ -101,7 +101,7 @@ class Metabox {
 	public $settings = array();
 
 	/**
-	 * A user role capability required to show the manager
+	 * A user role capability required to show the metabox
 	 *
 	 * @since 0.1.0
 	 * @access public
@@ -110,7 +110,7 @@ class Metabox {
 	public $capability = '';
 
 	/**
-	 * A feature that the current post type must support to show the manager
+	 * A feature that the current post type must support to show the metabox
 	 *
 	 * @since 0.1.0
 	 * @access public
@@ -119,7 +119,7 @@ class Metabox {
 	public $post_type_supports = '';
 
 	/**
-	 * A feature that the current theme must support to show the manager
+	 * A feature that the current theme must support to show the metabox
 	 *
 	 * @since 0.1.0
 	 * @access public
@@ -128,7 +128,7 @@ class Metabox {
 	public $theme_supports = '';
 
 	/**
-	 * Stores the JSON data for the manager
+	 * Stores the JSON data for the metabox
 	 *
 	 * @since  0.1.0
 	 * @access public
@@ -146,12 +146,12 @@ class Metabox {
 	public $post_id = 0;
 
 	/**
-	 * Sets up the manager
+	 * Sets up the metabox
 	 *
 	 * @since 0.1.0
 	 * @access public
-	 * @param string $name The manager name.
-	 * @param array  $args The manager arguments.
+	 * @param string $name The metabox name.
+	 * @param array  $args The metabox arguments.
 	 * @return void
 	 */
 	public function __construct( $name, $args = array() ) {
@@ -166,12 +166,12 @@ class Metabox {
 		// Make sure the post type is an array.
 		$this->post_type = (array) $this->post_type;
 
-		// Set the manager name.
+		// Set the metabox name.
 		$this->name = sanitize_key( $name );
 	}
 
 	/**
-	 * Enqueue scripts/styles for the manager.
+	 * Enqueue scripts/styles for the metabox.
 	 *
 	 * @since  0.1.0
 	 * @access public
@@ -506,7 +506,7 @@ class Metabox {
 	}
 
 	/**
-	 * Saves each of the settings for the manager
+	 * Saves each of the settings for the metabox
 	 *
 	 * @since 0.1.0
 	 * @access public
@@ -520,7 +520,7 @@ class Metabox {
 			$this->post_id = $post_id;
 		}
 
-		// Verify the nonce for this manager.
+		// Verify the nonce for this metabox.
 		if ( ! isset( $_POST[ "ninecodes_metabox_{$this->name}" ] ) || ! wp_verify_nonce( $_POST[ "ninecodes_metabox_{$this->name}" ], "ninecodes_metabox_{$this->name}_nonce" ) ) {
 			return;
 		}
@@ -544,7 +544,7 @@ class Metabox {
 			return false;
 		}
 
-		if ( $this->post_type_supports && ! call_user_func_array( 'post_type_supports', array( get_post_type( $this->manager->post_id ), $this->post_type_supports ) ) ) {
+		if ( $this->post_type_supports && ! call_user_func_array( 'post_type_supports', array( get_post_type( $this->metabox->post_id ), $this->post_type_supports ) ) ) {
 			return false;
 		}
 
@@ -564,7 +564,7 @@ class Metabox {
 	 */
 	public function print_template() {
 	?>
-	<script type="text/html" id="tmpl-ninecodes-metabox-manager-<?php echo esc_attr( $this->type ); ?>">
+	<script type="text/html" id="tmpl-ninecodes-metabox-<?php echo esc_attr( $this->type ); ?>">
 		<?php $this->get_template(); ?>
 	</script>
 	<?php }

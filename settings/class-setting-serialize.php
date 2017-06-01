@@ -40,9 +40,9 @@ final class Setting_Serialize extends Setting {
 		$values[ $this->name ] = $this->get_posted_value();
 
 		if ( is_array( $values ) && ! empty( $values ) ) {
-			return update_post_meta( $this->manager->post_id, $this->manager->name, $values );
+			return update_post_meta( $this->metabox->post_id, $this->metabox->name, $values );
 		} elseif ( empty( $values ) ) {
-			return delete_post_meta( $this->manager->post_id, $this->manager->name );
+			return delete_post_meta( $this->metabox->post_id, $this->metabox->name );
 		}
 	}
 
@@ -79,7 +79,7 @@ final class Setting_Serialize extends Setting {
 	 */
 	public function get_serialized_value() {
 
-		$value = get_post_meta( $this->manager->post_id, $this->manager->name, true );
+		$value = get_post_meta( $this->metabox->post_id, $this->metabox->name, true );
 
 		return ! $value || ninecodes_metabox()->is_new_post ? null : $value;
 	}

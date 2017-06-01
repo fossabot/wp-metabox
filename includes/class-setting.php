@@ -1,6 +1,6 @@
 <?php
 /**
- * Base setting class for the fields manager
+ * Base setting class for the fields metabox
  *
  * @package Metabox
  */
@@ -25,13 +25,13 @@ class Setting {
 	public $type = 'default';
 
 	/**
-	 * Stores the manager object.
+	 * Stores the metabox object.
 	 *
 	 * @since  0.1.0
 	 * @access public
 	 * @var    object
 	 */
-	public $manager;
+	public $metabox;
 
 	/**
 	 * Name/ID of the setting.
@@ -101,12 +101,12 @@ class Setting {
 	 *
 	 * @since 0.1.0
 	 * @access public
-	 * @param Manager $manager The Manager object.
+	 * @param Manager $metabox The Manager object.
 	 * @param string  $name The setting name.
 	 * @param array   $args The setting arguments.
 	 * @return void
 	 */
-	public function __construct( $manager, $name, $args = array() ) {
+	public function __construct( $metabox, $name, $args = array() ) {
 
 		foreach ( array_keys( get_object_vars( $this ) ) as $key ) {
 
@@ -115,11 +115,11 @@ class Setting {
 			}
 		}
 
-		$this->manager = $manager;
+		$this->metabox = $metabox;
 		$this->name = $name;
 
 		if ( $this->sanitize_callback ) {
-			add_filter( "ninecodes_metabox_{$this->manager->name}_sanitize_{$this->name}", $this->sanitize_callback, 10, 2 );
+			add_filter( "ninecodes_metabox_{$this->metabox->name}_sanitize_{$this->name}", $this->sanitize_callback, 10, 2 );
 		}
 	}
 
@@ -132,7 +132,7 @@ class Setting {
 	 */
 	public function get_value() {
 
-		$value = get_post_meta( $this->manager->post_id, $this->name, true );
+		$value = get_post_meta( $this->metabox->post_id, $this->name, true );
 
 		return ! $value && ninecodes_metabox()->is_new_post ? $this->default : $value;
 	}
@@ -165,7 +165,7 @@ class Setting {
 	 * @return string
 	 */
 	public function get_field_name() {
-		return "ninecodes_metabox_{$this->manager->name}_setting_{$this->name}";
+		return "ninecodes_metabox_{$this->metabox->name}_setting_{$this->name}";
 	}
 
 	/**
@@ -178,7 +178,7 @@ class Setting {
 	 * @return mixed
 	 */
 	public function sanitize( $value ) {
-		return apply_filters( "ninecodes_metabox_{$this->manager->name}_sanitize_{$this->name}", $value, $this );
+		return apply_filters( "ninecodes_metabox_{$this->metabox->name}_sanitize_{$this->name}", $value, $this );
 	}
 
 	/**
@@ -200,9 +200,9 @@ class Setting {
 
 		// If we have don't have a new value but do have an old one, delete it.
 		if ( ! $new_value && $old_value ) {
-			delete_post_meta( $this->manager->post_id, $this->name );
+			delete_post_meta( $this->metabox->post_id, $this->name );
 		} elseif ( $new_value !== $old_value ) {
-			update_post_meta( $this->manager->post_id, $this->name, $new_value );
+			update_post_meta( $this->metabox->post_id, $this->name, $new_value );
 		}
 	}
 
@@ -219,7 +219,7 @@ class Setting {
 			return false;
 		}
 
-		if ( $this->post_type_supports && ! call_user_func_array( 'post_type_supports', array( get_post_type( $this->manager->post_id ), $this->post_type_supports ) ) ) {
+		if ( $this->post_type_supports && ! call_user_func_array( 'post_type_supports', array( get_post_type( $this->metabox->post_id ), $this->post_type_supports ) ) ) {
 			return false;
 		}
 

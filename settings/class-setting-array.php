@@ -50,7 +50,7 @@ class Setting_Array extends Setting {
 	 */
 	public function map( $value ) {
 
-		return apply_filters( "ninecodes_metabox_{$this->manager->name}_sanitize_{$this->name}", $value, $this );
+		return apply_filters( "ninecodes_metabox_{$this->metabox->name}_sanitize_{$this->name}", $value, $this );
 	}
 
 	/**
@@ -71,10 +71,10 @@ class Setting_Array extends Setting {
 
 		// If there's an array of posted values, set them.
 		if ( $new_values && is_array( $new_values ) && $new_values !== $old_values ) {
-			return update_post_meta( $this->manager->post_id, $this->name, $new_values );
+			return update_post_meta( $this->metabox->post_id, $this->name, $new_values );
 		} // End if().
 		elseif ( $old_values && ! $new_values ) {
-			return delete_post_meta( $this->manager->post_id, $this->name );
+			return delete_post_meta( $this->metabox->post_id, $this->name );
 		}
 	}
 }

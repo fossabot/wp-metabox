@@ -10,7 +10,7 @@
  * Requires at least: 4.7
  * Tested up to: 4.7.3
  *
- * Text Domain: ninecodes-social-manager
+ * Text Domain: ninecodes-social-metabox
  * Domain Path: /languages
  *
  * Copyright (c) 2017 NineCodes (https://ninecodes.com/)

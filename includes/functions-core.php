@@ -31,7 +31,7 @@ function validate_boolean( $value ) {
  * @return void
  */
 function get_manager_template( $slug = '' ) {
-	get_template( 'manager', $slug );
+	get_template( 'metabox', $slug );
 }
 
 /**

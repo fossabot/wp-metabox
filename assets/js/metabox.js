@@ -18,8 +18,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 	 * @since 0.1.0
 	 * @var {Object}
 	 */
-	var api = nineCodesMetabox = {
-			metabox: {},
+	var api = {
 			template: {
 				nav: wp.template('ninecodes-metabox-nav'),
 			}
@@ -44,7 +43,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 					label: '',
 					description: '',
 					icon: '',
-					manager: '',
+					metabox: '',
 					active: '',
 					selected: false
 				}
@@ -64,7 +63,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 					choices: {},
 					attr: '',
 					active: '',
-					manager: '',
+					metabox: '',
 					section: '',
 					setting: ''
 				}
@@ -139,14 +138,14 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		};
 
 	/**
-	 * Houses the manager, section, and control views based on the `type`.
+	 * Houses the metabox, section, and control views based on the `type`.
 	 *
 	 * @since 0.1.0
 	 * @var {Object}
 	 */
-	api.metabox = {
+	api = {
 
-		manager: [],
+		metabox: [],
 		section: [],
 		control: [],
 
@@ -162,7 +161,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		registerManager: function (type, args) {
 
 			if ('default' !== type) {
-				this.manager[type] = this.manager.default.extend(args);
+				this.metabox[type] = this.metabox.default.extend(args);
 			}
 		},
 
@@ -178,14 +177,14 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		getManager: function (type) {
 
 			if (this.managerExists(type)) {
-				return this.manager[type];
+				return this.metabox[type];
 			}
 
-			return this.manager.default;
+			return this.metabox.default;
 		},
 
 		/**
-		 * Removes a manager view.
+		 * Removes a metabox view.
 		 *
 		 * @since 0.1.0
 		 *
@@ -195,7 +194,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		unregisterManager: function (type) {
 
 			if ('default' !== type && this.managerExists(type)) {
-				delete this.manager[type];
+				delete this.metabox[type];
 			}
 		},
 
@@ -209,7 +208,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 */
 		managerExists: function (type) {
 
-			return this.manager.hasOwnProperty(type);
+			return this.metabox.hasOwnProperty(type);
 		},
 
 		/**
@@ -335,14 +334,14 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 	};
 
 	/**
-	 * Houses the manager, section, and control templates based on the `type`.
+	 * Houses the metabox, section, and control templates based on the `type`.
 	 *
 	 * @since  0.1.0
 	 * @var {Object}
 	 */
 	api.template = {
 
-		manager: [],
+		metabox: [],
 		section: [],
 		control: [],
 
@@ -356,7 +355,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 */
 		registerManager: function (type) {
 
-			this.manager[type] = wp.template('ninecodes-metabox-manager-' + type);
+			this.metabox[type] = wp.template('ninecodes-metabox-' + type);
 		},
 
 		/**
@@ -369,11 +368,11 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 */
 		getManager: function (type) {
 
-			return this.managerExists(type) ? this.manager[type] : false;
+			return this.managerExists(type) ? this.metabox[type] : false;
 		},
 
 		/**
-		 * Removes a manager template
+		 * Removes a metabox template
 		 *
 		 * @since 0.1.0
 		 *
@@ -383,7 +382,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		unregisterManager: function (type) {
 
 			if (this.managerExists(type)) {
-				delete this.manager[type];
+				delete this.metabox[type];
 			}
 		},
 
@@ -397,7 +396,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 */
 		managerExists: function (type) {
 
-			return this.manager.hasOwnProperty(type);
+			return this.metabox.hasOwnProperty(type);
 		},
 
 		/**
@@ -520,7 +519,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 
 		_.each(nineCodesMetaboxData.managers, function (data) {
 
-			var ManagerCallback = api.metabox.getManager(data.type),
+			var ManagerCallback = api.getManager(data.type),
 
 				ManagerModel = new Manager.Model(data),
 				ManagerView = new ManagerCallback({
@@ -539,13 +538,13 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 	};
 
 	/**
-	 * The default manager view.  Other views can extend this using the
+	 * The default metabox view.  Other views can extend this using the
 	 * `nineCodesMetabox.views.registerManager()` function.
 	 *
 	 * @since  0.1.0
 	 * @var    object
 	 */
-	api.metabox.manager['default'] = Backbone.View.extend({
+	api.metabox['default'] = Backbone.View.extend({
 
 		sections: new Section.Collection(),
 
@@ -556,8 +555,8 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 */
 		attributes: function () {
 			return {
-				'id': 'ninecodes-metabox-manager-' + this.model.get('name'),
-				'class': 'ninecodes-metabox-manager ninecodes-metabox-manager-' + this.model.get('type')
+				'id': 'ninecodes-metabox-' + this.model.get('name'),
+				'class': 'ninecodes-metabox ninecodes-metabox-' + this.model.get('type')
 			};
 		},
 
@@ -572,7 +571,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 
 			var type = this.model.get('type');
 
-			// If there's not yet a template for this manager type, create it.
+			// If there's not yet a template for this metabox type, create it.
 			if (!api.template.managerExists(type)) {
 				api.template.registerManager(type);
 			}
@@ -583,7 +582,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		/**
 		 * Renders the Section
 		 *
-		 * @returns {Object} api.metabox.section
+		 * @returns {Object} api.section
 		 */
 		render: function () {
 			this.el.innerHTML = this.template(this.model.toJSON());
@@ -591,10 +590,10 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		},
 
 		/**
-		 * Renders the manager's sections and controls.
+		 * Renders the metabox's sections and controls.
 		 *
 		 * Important! This may change drastically in the future, possibly even
-		 * taken out of the manager view altogether.  It's for this reason that
+		 * taken out of the metabox view altogether.  It's for this reason that
 		 * it's not recommended to create custom views for managers right now.
 		 *
 		 * @since 0.1.0
@@ -613,7 +612,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 			// Loop through each section in the collection and render its view.
 			_.each(self.sections.models, function (SectionModel, index) {
 
-				var SectionCallback = api.metabox.getSection(SectionModel.attributes.type),
+				var SectionCallback = api.getSection(SectionModel.attributes.type),
 
 					SectionView = new SectionCallback({
 						model: SectionModel
@@ -622,7 +621,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 						model: SectionModel
 					}),
 
-					$metaboxManager = $('#ninecodes-metabox-ui-' + SectionModel.get('manager')),
+					$metaboxManager = $('#ninecodes-metabox-ui-' + SectionModel.get('metabox')),
 					$metaboxNav = $metaboxManager.find('.ninecodes-metabox-nav'),
 					$metaboxContent = $metaboxManager.find('.ninecodes-metabox-content');
 
@@ -633,16 +632,16 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 				SectionModel.set('selected', 0 === index); // If the first model, set it to selected.
 			});
 
-			// Loop through each control for the manager and render its view.
+			// Loop through each control for the metabox and render its view.
 			_.each(this.model.get('controls'), function (control) {
 
-				var ControlCallback = api.metabox.getControl(control.type),
+				var ControlCallback = api.getControl(control.type),
 					ControlModel = new Control.Model(control),
 					ControlView = new ControlCallback({
 						model: ControlModel
 					}),
 
-					$metaboxSection = $('#ninecodes-metabox-' + ControlModel.get('manager') + '-section-' + ControlModel.get('section'));
+					$metaboxSection = $('#ninecodes-metabox-' + ControlModel.get('metabox') + '-section-' + ControlModel.get('section'));
 
 				$metaboxSection.append(ControlView.render().el); // Render the control view.
 
@@ -670,7 +669,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 	 * @since  0.1.0
 	 * @var    object
 	 */
-	api.metabox.section['default'] = Backbone.View.extend({
+	api.section['default'] = Backbone.View.extend({
 
 		model: new Section.Model(),
 
@@ -681,7 +680,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 */
 		attributes: function () {
 			return {
-				'id': 'ninecodes-metabox-' + this.model.get('manager') + '-section-' + this.model.get('name'),
+				'id': 'ninecodes-metabox-' + this.model.get('metabox') + '-section-' + this.model.get('name'),
 				'class': 'ninecodes-metabox-section ninecodes-metabox-section-' + this.model.get('type'),
 				'aria-hidden': !this.model.get('selected')
 			};
@@ -709,7 +708,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		/**
 		 * Renders the Section
 		 *
-		 * @returns {Object} api.metabox.section
+		 * @returns {Object} api.section
 		 */
 		render: function () {
 
@@ -755,7 +754,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 	 * @since  0.1.0
 	 * @var    object
 	 */
-	api.metabox.control['default'] = Backbone.View.extend({
+	api.control['default'] = Backbone.View.extend({
 
 		/**
 		 * Custom attributes for the control wrapper.
@@ -820,4 +819,8 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 */
 		ready: function () {}
 	});
+
+	// Merge the api Object to window.nineCodesMetabox.
+	_.extend( nineCodesMetabox, api );
+
 })(jQuery);

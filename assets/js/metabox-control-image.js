@@ -7,7 +7,7 @@
 	 *
 	 * @since  0.1.0
 	 */
-	api.metabox.registerControl('image', {
+	api.registerControl('image', {
 
 		// Adds custom events.
 		events: {

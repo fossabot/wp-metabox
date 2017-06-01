@@ -51,13 +51,13 @@ class Control_Image extends Control {
 	 * @since  0.1.0
 	 * @access public
 	 *
-	 * @param object $manager The manager Object.
+	 * @param object $metabox The metabox Object.
 	 * @param string $name The control name.
 	 * @param array  $args The control arguments.
 	 * @return void
 	 */
-	public function __construct( $manager, $name, $args = array() ) {
-		parent::__construct( $manager, $name, $args );
+	public function __construct( $metabox, $name, $args = array() ) {
+		parent::__construct( $metabox, $name, $args );
 
 		$this->l10n = wp_parse_args(
 			$this->l10n,

@@ -1,6 +1,6 @@
 <?php
 /**
- * Base class for handling controls.  Controls are the form fields for the manager.  Each
+ * Base class for handling controls.  Controls are the form fields for the metabox.  Each
  * control should be tied to a section.
  *
  * @package Metabox\Control
@@ -17,13 +17,13 @@ namespace NineCodes\Metabox;
 class Control {
 
 	/**
-	 * Stores the manager object.
+	 * Stores the metabox object.
 	 *
 	 * @since  0.1.0
 	 * @access public
 	 * @var    object
 	 */
-	public $manager;
+	public $metabox;
 
 	/**
 	 * Name/ID of the control.
@@ -185,12 +185,12 @@ class Control {
 	 *
 	 * @since 0.1.0
 	 * @access public
-	 * @param Manager $manager The Manager object.
+	 * @param Manager $metabox The Manager object.
 	 * @param string  $name The control name.
 	 * @param array   $args The control arguments.
 	 * @return void
 	 */
-	public function __construct( $manager, $name, $args = array() ) {
+	public function __construct( $metabox, $name, $args = array() ) {
 
 		foreach ( array_keys( get_object_vars( $this ) ) as $key ) {
 
@@ -199,7 +199,7 @@ class Control {
 			}
 		}
 
-		$this->manager = $manager;
+		$this->metabox = $metabox;
 		$this->name    = $name;
 
 		if ( empty( $args['settings'] ) || ! is_array( $args['settings'] ) ) {
@@ -251,7 +251,7 @@ class Control {
 	 */
 	public function get_setting( $setting = 'default' ) {
 
-		return $this->manager->get_setting( $this->settings[ $setting ] );
+		return $this->metabox->get_setting( $this->settings[ $setting ] );
 	}
 
 	/**
@@ -281,7 +281,7 @@ class Control {
 	 * @return array
 	 */
 	public function get_field_name( $setting = 'default' ) {
-		return "ninecodes_metabox_{$this->manager->name}_setting_{$this->settings[ $setting ]}";
+		return "ninecodes_metabox_{$this->metabox->name}_setting_{$this->settings[ $setting ]}";
 	}
 
 	/**
@@ -306,7 +306,7 @@ class Control {
 	 */
 	public function to_json() {
 
-		$this->json['manager']     = $this->manager->name;
+		$this->json['metabox']     = $this->metabox->name;
 		$this->json['section']     = $this->section;
 		$this->json['setting']     = $this->setting;
 		$this->json['settings']    = $this->settings;
@@ -365,7 +365,7 @@ class Control {
 			return false;
 		}
 
-		if ( $this->post_type_supports && ! call_user_func_array( 'post_type_supports', array( get_post_type( $this->manager->post_id ), $this->post_type_supports ) ) ) {
+		if ( $this->post_type_supports && ! call_user_func_array( 'post_type_supports', array( get_post_type( $this->metabox->post_id ), $this->post_type_supports ) ) ) {
 			return false;
 		}
 
