@@ -10,7 +10,7 @@ namespace NineCodes\Metabox;
 /**
  * Array setting class.
  *
- * @since  0.1.0
+ * @since 0.1.0
  * @access public
  */
 class Setting_Array extends Setting {
@@ -18,9 +18,9 @@ class Setting_Array extends Setting {
 	/**
 	 * The type of setting.
 	 *
-	 * @since  0.1.0
+	 * @since 0.1.0
 	 * @access public
-	 * @var    string
+	 * @var string
 	 */
 	public $type = 'array';
 

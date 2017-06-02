@@ -149,7 +149,8 @@ class Setting {
 
 		$value = '';
 
-		if ( isset( $_POST[ $this->get_field_name() ] ) ) {
+		if ( isset( $_POST[ $this->get_field_name() ] ) &&
+			wp_verify_nonce( $_POST[ "ninecodes_metabox_{$this->metabox->name}" ], "ninecodes_metabox_{$this->metabox->name}_nonce" ) ) {
 			$value = $_POST[ $this->get_field_name() ];
 		}
 

@@ -823,4 +823,4 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 	// Merge the api Object to window.nineCodesMetabox.
 	_.extend(nineCodesMetabox, api);
 
-})(jQuery, bb);
+})(jQuery, Backbone);

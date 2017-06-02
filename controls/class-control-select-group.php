@@ -19,16 +19,16 @@ class Control_Select_Group extends Control {
 	/**
 	 * The type of control.
 	 *
-	 * @since  0.1.0
+	 * @since 0.1.0
 	 * @access public
-	 * @var    string
+	 * @var string
 	 */
 	public $type = 'select-group';
 
 	/**
 	 * Adds custom data to the json array.
 	 *
-	 * @since  0.1.0
+	 * @since 0.1.0
 	 * @access public
 	 * @return void
 	 */

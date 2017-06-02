@@ -20,18 +20,18 @@ class Control_Image extends Control {
 	/**
 	 * The type of control.
 	 *
-	 * @since  0.1.0
+	 * @since 0.1.0
 	 * @access public
-	 * @var    string
+	 * @var string
 	 */
 	public $type = 'image';
 
 	/**
 	 * Array of text labels to use for the media upload frame.
 	 *
-	 * @since  0.1.0
+	 * @since 0.1.0
 	 * @access public
-	 * @var    string
+	 * @var string
 	 */
 	public $l10n = array();
 
@@ -39,16 +39,16 @@ class Control_Image extends Control {
 	 * Image size to display.  If the size isn't found for the image,
 	 * the full size of the image will be output.
 	 *
-	 * @since  0.1.0
+	 * @since 0.1.0
 	 * @access public
-	 * @var    string
+	 * @var string
 	 */
 	public $size = 'large';
 
 	/**
 	 * Creates a new control object.
 	 *
-	 * @since  0.1.0
+	 * @since 0.1.0
 	 * @access public
 	 *
 	 * @param object $metabox The metabox Object.
@@ -62,12 +62,12 @@ class Control_Image extends Control {
 		$this->l10n = wp_parse_args(
 			$this->l10n,
 			array(
-				'upload'      => esc_html__( 'Add image',         'ninecodes_metabox' ),
-				'set'         => esc_html__( 'Set as image',      'ninecodes_metabox' ),
-				'choose'      => esc_html__( 'Choose image',      'ninecodes_metabox' ),
-				'change'      => esc_html__( 'Change image',      'ninecodes_metabox' ),
-				'remove'      => esc_html__( 'Remove image',      'ninecodes_metabox' ),
-				'placeholder' => esc_html__( 'No image selected', 'ninecodes_metabox' ),
+				'upload' => __( 'Add image', 'ninecodes-metabox' ),
+				'set' => __( 'Set as image', 'ninecodes-metabox' ),
+				'choose' => __( 'Choose image', 'ninecodes-metabox' ),
+				'change' => __( 'Change image', 'ninecodes-metabox' ),
+				'remove' => __( 'Remove image', 'ninecodes-metabox' ),
+				'placeholder' => __( 'No image selected', 'ninecodes-metabox' ),
 			)
 		);
 	}
@@ -75,8 +75,9 @@ class Control_Image extends Control {
 	/**
 	 * Enqueue scripts/styles for the control.
 	 *
-	 * @since  0.1.0
+	 * @since 0.1.0
 	 * @access public
+	 *
 	 * @return void
 	 */
 	public function enqueue() {
@@ -87,8 +88,9 @@ class Control_Image extends Control {
 	/**
 	 * Adds custom data to the json array.
 	 *
-	 * @since  0.1.0
+	 * @since 0.1.0
 	 * @access public
+	 *
 	 * @return void
 	 */
 	public function to_json() {

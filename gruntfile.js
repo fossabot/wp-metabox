@@ -119,7 +119,7 @@ module.exports = function (grunt) {
 			},
 			files: [{
 				'<%= dir.jsPath %>metabox.min.js': [
-					'<%= dir.jsPath %>metabox.js',
+					'<%= dir.jsPath %>metabox-core.js',
 					'<%= dir.jsPath %>metabox-control-*.js',
 					'!<%= dir.jsPath %>*.min.js',
 				],
@@ -217,6 +217,7 @@ module.exports = function (grunt) {
 			version: {
 				src: [
 					'./readme.txt',
+					'./<%= pkg.name %>.php',
 					'./composer.json',
 				],
 				overwrite: true,
@@ -238,15 +239,122 @@ module.exports = function (grunt) {
 				}, {
 					from: /Tested up to: (.*)/g,
 					to: 'Tested up to: <%= pkg.wordpress.tested_up_to %>'
-				},
-				{
-					from: /\"version\": \"(.*)\"/g,
-					to: '"version": "<%= pkg.version %>"'
-				},
-				{
-					from: /public \$version\s=\s\'(.*)\'/g,
-					to: 'public \$version = \'<%= pkg.version %>\''
 				}]
+			}
+		},
+
+		/**
+		 * Add text domain to PHP files.
+		 *
+		 * @see {@link https://github.com/cedaro/grunt-wp-i18n}
+		 * @type {Object}
+		 */
+		addtextdomain: {
+			target: {
+				options: {
+					textdomain: '<%= pkg.name %>', // Project text domain.
+				},
+				files: {
+					src: '<%= php %>'
+				}
+			}
+		},
+
+		/**
+		 * Check textdomain errors.
+		 *
+		 * @see {@link https://github.com/stephenharris/grunt-checktextdomain}
+		 * @type {Object}
+		 */
+		checktextdomain: {
+			options: {
+				text_domain: '<%= pkg.name %>',
+				keywords: [
+					'__:1,2d',
+					'_e:1,2d',
+					'_x:1,2c,3d',
+					'esc_html__:1,2d',
+					'esc_html_e:1,2d',
+					'esc_html_x:1,2c,3d',
+					'esc_attr__:1,2d',
+					'esc_attr_e:1,2d',
+					'esc_attr_x:1,2c,3d',
+					'_ex:1,2c,3d',
+					'_n:1,2,4d',
+					'_nx:1,2,4c,5d',
+					'_n_noop:1,2,3d',
+					'_nx_noop:1,2,3c,4d'
+				]
+			},
+			files: {
+				src: '<%= php %>',
+				expand: true
+			}
+		},
+
+		/**
+		 * Create .pot files for i18n.
+		 *
+		 * @see {@link https://github.com/cedaro/grunt-wp-i18n}
+		 * @type {Object}
+		 */
+		makepot: {
+			target: {
+				options: {
+					cwd: './',
+					type: 'wp-plugin',
+					domainPath: './languages',
+					updateTimestamp: false,
+					mainFile: '<%= pkg.name %>.php',
+					potFilename: '<%= pkg.name %>.pot',
+					potHeaders: {
+						'poedit': true, // Includes common Poedit headers.
+						'x-poedit-keywordslist': true // Include a list of all possible gettext functions.
+					},
+					include: [
+						'includes/.*',
+						'controls/.*',
+						'settings/.*',
+						'tmpl/.*',
+						'<%= pkg.name %>.php'
+					],
+					exclude: [
+						'.js',
+						'admin/js/.*',
+						'public/js/.*',
+						'node_modules/.*',
+						'build/.*',
+						'dev-lib/.*',
+						'public/partials/ogp/.*',
+						'admin/partials/metabox/.*',
+						'admin/partials/settings/.*'
+					],
+					processPot: function (pot) {
+
+						var translation,
+							excluded_meta = [
+								'Plugin Name of the plugin/theme',
+								'Plugin URI of the plugin/theme',
+								'Author of the plugin/theme',
+								'Author URI of the plugin/theme'
+							];
+
+						for (translation in pot.translations['']) {
+							if ('undefined' !== typeof pot.translations[''][translation].comments.extracted) {
+								if (excluded_meta.indexOf(pot.translations[''][translation].comments.extracted) >= 0) {
+									console.log('Excluded meta: ' + pot.translations[''][translation].comments.extracted);
+									delete pot.translations[''][translation];
+								}
+							}
+						}
+
+						pot.headers['report-msgid-bugs-to'] = 'https://github.com/ninecodes/social-manager/issues';
+						pot.headers['last-translator'] = 'NineCodes <admin@ninecodes.com>';
+						pot.headers['language-team'] = 'NineCodes <admin@ninecodes.com>';
+
+						return pot;
+					}
+				}
 			}
 		},
 
@@ -257,20 +365,25 @@ module.exports = function (grunt) {
 		 * @type {Object}
 		 */
 		copy: {
-			build: {
+			dist: {
 				src: [
 					'*.php',
 					'includes/**',
 					'languages/**',
+					'controls/**',
+					'settings/**',
+					'tmpl/**',
+					'assets/**',
 					'readme.txt',
 					'!**/*.less',
 					'!**/*.map',
 					'!**/changelog.md',
 					'!**/readme.md',
 					'!**/README.md',
-					'!**/contributing.md'
+					'!**/contributing.md',
+					'!assets/js/metabox-*.js',
 				],
-				dest: './build/',
+				dest: './dist/',
 				expand: true,
 				dot: false
 			}
@@ -283,13 +396,13 @@ module.exports = function (grunt) {
 		 * @type {Object}
 		 */
 		compress: {
-			build: {
+			dist: {
 				options: {
 					archive: '<%= pkg.name %>-<%= pkg.version %>.zip'
 				},
 				files: [{
 					expand: true,
-					cwd: './build/',
+					cwd: './dist/',
 					src: ['**'],
 					dest: './<%= pkg.name %>/' // The directory name when the `.zip` file is uncompressed.
 				}]
@@ -303,7 +416,7 @@ module.exports = function (grunt) {
 		 * @type {Object}
 		 */
 		clean: {
-			build: ['./build/'],
+			dist: ['./dist/'],
 			zip: ['./<%= pkg.name %>*.zip']
 		},
 
@@ -326,9 +439,11 @@ module.exports = function (grunt) {
 
 	// Load tasks
 	grunt.loadNpmTasks('grunt-shell');
+	grunt.loadNpmTasks('grunt-checktextdomain');
 	grunt.loadNpmTasks('grunt-eslint');
 	grunt.loadNpmTasks('grunt-rtlcss');
 	grunt.loadNpmTasks('grunt-text-replace');
+	grunt.loadNpmTasks('grunt-wp-i18n');
 	grunt.loadNpmTasks('grunt-notify');
 	grunt.loadNpmTasks('grunt-newer');
 	grunt.loadNpmTasks('grunt-contrib-qunit');
@@ -341,11 +456,56 @@ module.exports = function (grunt) {
 
 	grunt.task.run('notify_hooks');
 
-		// Register grunt default tasks.
+	// Register grunt default tasks.
 	grunt.registerTask('default', [
 		'styles:dev',
 		'scripts:dev',
 		'watch'
+	]);
+
+	// Version bump.
+	grunt.registerTask('version', [
+		'replace:version',
+		'shell:readme'
+	]);
+
+	// Build the plugin.
+	grunt.registerTask('dist', [
+		'clean:dist',
+		'styles',
+		'scripts',
+		'wordpress',
+		'version',
+		'copy:dist'
+	]);
+
+	// Build and package the plugin into a .zip file.
+	grunt.registerTask('dist:zip', [
+		'dist',
+		'compress:dist',
+		'clean:dist'
+	]);
+
+	/**
+	 * ==================================================
+	 * Register Test specific tasks
+	 * ==================================================
+	 */
+
+	// Run "phpunit" in Vagrant container.
+	grunt.registerTask('phpunit', [
+		'shell:phpunit',
+	]);
+
+	// Run Unit Test.
+	grunt.registerTask('test', [
+		'phpunit',
+		'qunit'
+	]);
+
+	// Run Lint.
+	grunt.registerTask('lint', [
+		'newer:eslint'
 	]);
 
 	/**
@@ -382,5 +542,20 @@ module.exports = function (grunt) {
 	grunt.registerTask('scripts', [
 		'newer:eslint',
 		'newer:uglify:build'
+	]);
+
+	/**
+	 * ==================================================
+	 * Register WordPress specific tasks
+	 * ==================================================e
+	 */
+
+	// Check and compile WordPress files.
+	grunt.registerTask('wordpress', [
+		'phpunit',
+		'newer:addtextdomain',
+		'newer:checktextdomain',
+		'version',
+		'makepot'
 	]);
 };
