@@ -44,6 +44,7 @@ composer.lock
 # Grunt #
 ######################
 /build/
+/dist/
 /node_modules/
 npm-debug.log
 
