@@ -18,16 +18,16 @@ class Control_Textarea extends Control {
 	/**
 	 * The type of control.
 	 *
-	 * @since  0.1.0
+	 * @since 0.1.0
 	 * @access public
-	 * @var    string
+	 * @var string
 	 */
 	public $type = 'textarea';
 
 	/**
 	 * Adds custom data to the json array. This data is passed to the Underscore template.
 	 *
-	 * @since  0.1.0
+	 * @since 0.1.0
 	 * @access public
 	 * @return void
 	 */

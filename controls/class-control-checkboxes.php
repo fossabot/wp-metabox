@@ -1,6 +1,8 @@
 <?php
 /**
- * Multiple checkbox control class.  This is for array-type settings, so you'll need
+ * Multiple checkbox control class.
+ *
+ * This is for array-type settings, so you'll need
  * to utilize a setting type that handles arrays.  Both the `array` and `multiple`
  * setting types will do this.
  *
@@ -22,7 +24,7 @@ class Control_CheckBoxes extends Control {
 	 *
 	 * @since  0.1.0
 	 * @access public
-	 * @var    string
+	 * @var string
 	 */
 	public $type = 'checkboxes';
 

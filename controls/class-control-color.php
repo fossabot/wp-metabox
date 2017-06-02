@@ -1,7 +1,9 @@
 <?php
 /**
- * Color control class.  This class uses the core WordPress color picker.  Expected
- * values are hex colors.  This class also attempts to strip `#` from the hex color.
+ * Color control class.
+ *
+ * This class uses the core WordPress color picker.  Expected
+ * values are hex colors. This class also attempts to strip `#` from the hex color.
  * By design, it's recommended to add the `#` on output.
  *
  * @package Metabox
@@ -31,19 +33,22 @@ class Control_Color extends Control {
 	 * `iris()`, which is bundled with core WP.  However, if they change pickers
 	 * in the future, it may correspond to a different script.
 	 *
-	 * @link   http://automattic.github.io/Iris/#options
-	 * @link   https://make.wordpress.org/core/2012/11/30/new-color-picker-in-wp-3-5/
-	 * @since  0.1.0
+	 * @link http://automattic.github.io/Iris/#options
+	 * @link https://make.wordpress.org/core/2012/11/30/new-color-picker-in-wp-3-5/
+	 *
+	 * @since 0.1.0
+	 *
 	 * @access public
-	 * @var    array
+	 * @var array
 	 */
 	public $options = array();
 
 	/**
 	 * Enqueue scripts/styles for the control.
 	 *
-	 * @since  0.1.0
+	 * @since 0.1.0
 	 * @access public
+	 *
 	 * @return void
 	 */
 	public function enqueue() {
@@ -55,8 +60,9 @@ class Control_Color extends Control {
 	/**
 	 * Gets the attributes for the control.
 	 *
-	 * @since  0.1.0
+	 * @since 0.1.0
 	 * @access public
+	 *
 	 * @return array
 	 */
 	public function get_attr() {
@@ -64,9 +70,9 @@ class Control_Color extends Control {
 
 		$setting = $this->get_setting();
 
-		$attr['class']              = 'ninecodes-metabox-color-picker';
-		$attr['type']               = 'text';
-		$attr['maxlength']          = 7;
+		$attr['class'] = 'ninecodes-metabox-color-picker';
+		$attr['type'] = 'text';
+		$attr['maxlength'] = 7;
 		$attr['data-default-color'] = $setting ? $setting->default : '';
 
 		return $attr;
@@ -75,9 +81,10 @@ class Control_Color extends Control {
 	/**
 	 * Get the value for the setting.
 	 *
-	 * @since  0.1.0
+	 * @since 0.1.0
 	 * @access public
-	 * @param  string $setting The setting name.
+	 *
+	 * @param string $setting The setting name.
 	 * @return mixed
 	 */
 	public function get_value( $setting = 'default' ) {
@@ -90,8 +97,9 @@ class Control_Color extends Control {
 	/**
 	 * Adds custom data to the json array. This data is passed to the Underscore template.
 	 *
-	 * @since  0.1.0
+	 * @since 0.1.0
 	 * @access public
+	 *
 	 * @return void
 	 */
 	public function to_json() {

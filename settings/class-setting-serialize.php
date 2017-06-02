@@ -17,9 +17,9 @@ final class Setting_Serialize extends Setting {
 	/**
 	 * The type of setting
 	 *
-	 * @since  0.1.0
+	 * @since 0.1.0
 	 * @access public
-	 * @var    string
+	 * @var string
 	 */
 	public $type = 'serialize';
 
@@ -49,7 +49,7 @@ final class Setting_Serialize extends Setting {
 	/**
 	 * Gets the value of the setting
 	 *
-	 * @since  0.1.0
+	 * @since 0.1.0
 	 * @access public
 	 * @return mixed
 	 */
@@ -73,7 +73,7 @@ final class Setting_Serialize extends Setting {
 	/**
 	 * Gets the serialized value of the setting
 	 *
-	 * @since  0.1.0
+	 * @since 0.1.0
 	 * @access public
 	 * @return mixed
 	 */

@@ -1,11 +1,12 @@
 {
-  "name": "metabox",
+  "name": "ninecodes-metabox",
   "title": "Metabox",
   "version": "0.1.0-alpha.1",
   "description": "A neat little post meta framework",
-  "main": "metabox.php",
+  "main": "ninecodes-metabox.php",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "commitmsg": "validate-commit-msg",
+    "precommit": "dev-lib/pre-commit"
   },
   "repository": {
     "type": "git",
@@ -16,7 +17,7 @@
     "framework",
     "metaboxes",
     "backbone",
-    "underscores"
+    "underscore"
   ],
   "author": {
     "name": "NineCodes",
@@ -39,12 +40,13 @@
   "devDependencies": {
     "eslint": "^3.9.1",
     "grunt": "~1.0.1",
-    "grunt-contrib-clean": "^1.1.0",
+    "grunt-checktextdomain": "~1.0.0",
+    "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-compress": "^1.3.0",
-    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-copy": "~1.0.0",
     "grunt-contrib-less": "^1.4.1",
     "grunt-contrib-qunit": "^2.0.0",
-    "grunt-contrib-uglify": "^3.0.1",
+    "grunt-contrib-uglify": "^2.3.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-eslint": "^19.0.0",
     "grunt-newer": "^1.3.0",
@@ -52,7 +54,8 @@
     "grunt-rtlcss": "^2.0.1",
     "grunt-shell": "~2.1.0",
     "grunt-text-replace": "^0.4.0",
-    "husky": "^0.13.4",
+    "grunt-wp-i18n": "^1.0.0",
+    "husky": "^0.13.3",
     "less-plugin-autoprefix": "^1.5.1",
     "less-plugin-clean-css": "^1.5.1",
     "less-plugin-group-css-media-queries": "^1.1.1",
