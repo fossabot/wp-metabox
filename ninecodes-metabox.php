@@ -51,7 +51,7 @@ if ( ! function_exists( __NAMESPACE__ . '\\ninecodes_metabox' ) ) :
 		return $plugin;
 	}
 
-	add_action( 'init', function() {
+	add_action( 'admin_init', function() {
 
 		global $wp_version;
 
