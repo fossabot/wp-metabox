@@ -42,13 +42,13 @@ final class Plugin {
 	public $path_tmpl = '';
 
 	/**
-	 * Array of managers.
+	 * Array of metaboxes.
 	 *
 	 * @since 0.1.0
 	 * @access public
 	 * @var array
 	 */
-	public $managers = array();
+	public $metaboxes = array();
 
 	/**
 	 * Array of metabox types.
@@ -57,7 +57,7 @@ final class Plugin {
 	 * @access public
 	 * @var array
 	 */
-	public $manager_types = array();
+	public $metabox_types = array();
 
 	/**
 	 * Array of section types.
@@ -171,7 +171,7 @@ final class Plugin {
 		add_action( 'load-post-new.php', array( $this, 'register' ), 95 );
 
 		// Register default types.
-		add_action( 'ninecodes_metabox_register', array( $this, 'register_manager_types' ), -95 );
+		add_action( 'ninecodes_metabox_register', array( $this, 'register_metabox_types' ), -95 );
 		add_action( 'ninecodes_metabox_register', array( $this, 'register_section_types' ), -95 );
 		add_action( 'ninecodes_metabox_register', array( $this, 'register_control_types' ), -95 );
 		add_action( 'ninecodes_metabox_register', array( $this, 'register_setting_types' ), -95 );
@@ -179,7 +179,7 @@ final class Plugin {
 
 	/**
 	 * Registration callback. Fires the `ninecodes_metabox_register` action hook to
-	 * allow plugins to register their managers
+	 * allow plugins to register their metaboxes
 	 *
 	 * @since  0.1.0
 	 * @access public
@@ -196,15 +196,15 @@ final class Plugin {
 		// Get the current post type.
 		$post_type = get_current_screen()->post_type;
 
-		// Action hook for registering managers.
+		// Action hook for registering metaboxes.
 		do_action( 'ninecodes_metabox_register', $this, $post_type );
 
-		// Loop through the managers to see if we're using on on this screen.
-		foreach ( $this->managers as $metabox ) {
+		// Loop through the metaboxes to see if we're using on on this screen.
+		foreach ( $this->metaboxes as $metabox ) {
 
 			// If we found a matching post type, add our actions/filters.
 			if ( ! in_array( $post_type, (array) $metabox->post_type, true ) ) {
-				$this->unregister_manager( $metabox->name );
+				$this->unregister_metabox( $metabox->name );
 				continue;
 			}
 
@@ -213,8 +213,8 @@ final class Plugin {
 			uasort( $metabox->sections, array( $this, 'priority_sort' ) );
 		}
 
-		// If no managers registered, bail.
-		if ( ! $this->managers ) {
+		// If no metaboxes registered, bail.
+		if ( ! $this->metaboxes ) {
 			return;
 		}
 
@@ -242,22 +242,22 @@ final class Plugin {
 	 * @since 0.1.0
 	 * @access public
 	 *
-	 * @param Manager|string $metabox The Manager object or the name of the metabox.
-	 * @param array          $args The Manager arguments.
+	 * @param Metabox|string $metabox The Metabox object or the name of the metabox.
+	 * @param array          $args The Metabox arguments.
 	 * @return object
 	 */
-	public function register_manager( $metabox, $args = array() ) {
+	public function register_metabox( $metabox, $args = array() ) {
 
 		if ( ! is_object( $metabox ) ) {
 
-			$type = isset( $args['type'] ) ? $this->get_manager_type( $args['type'] ) : $this->get_manager_type( 'default' );
+			$type = isset( $args['type'] ) ? $this->get_metabox_type( $args['type'] ) : $this->get_metabox_type( 'default' );
 			$type = __NAMESPACE__ . '\\' . $type;
 
 			$metabox = new $type( $metabox, $args );
 		}
 
-		if ( ! $this->manager_exists( $metabox->name ) ) {
-			$this->managers[ $metabox->name ] = $metabox;
+		if ( ! $this->metabox_exists( $metabox->name ) ) {
+			$this->metaboxes[ $metabox->name ] = $metabox;
 		}
 
 		return $metabox;
@@ -272,10 +272,10 @@ final class Plugin {
 	 * @param  string $name The name of the metabox object.
 	 * @return void
 	 */
-	public function unregister_manager( $name ) {
+	public function unregister_metabox( $name ) {
 
-		if ( $this->manager_exists( $name ) ) {
-			unset( $this->managers[ $name ] );
+		if ( $this->metabox_exists( $name ) ) {
+			unset( $this->metaboxes[ $name ] );
 		}
 	}
 
@@ -288,8 +288,8 @@ final class Plugin {
 	 * @param string $name The metabox name.
 	 * @return object|bool
 	 */
-	public function get_manager( $name ) {
-		return $this->manager_exists( $name ) ? $this->managers[ $name ] : false;
+	public function get_metabox( $name ) {
+		return $this->metabox_exists( $name ) ? $this->metaboxes[ $name ] : false;
 	}
 
 	/**
@@ -301,15 +301,15 @@ final class Plugin {
 	 * @param string $name The metabox name.
 	 * @return bool
 	 */
-	public function manager_exists( $name ) {
-		return isset( $this->managers[ $name ] );
+	public function metabox_exists( $name ) {
+		return isset( $this->metaboxes[ $name ] );
 	}
 
 	/**
 	 * Registers a metabox type
 	 *
 	 * This is just a method of telling Metabox the class of your custom metabox type.
-	 * It allows the metabox to be called without having to pass an object to `register_manager()`.
+	 * It allows the metabox to be called without having to pass an object to `register_metabox()`.
 	 *
 	 * @since 0.1.0
 	 * @access public
@@ -318,10 +318,10 @@ final class Plugin {
 	 * @param string $class The class name to register the metabox.
 	 * @return void
 	 */
-	public function register_manager_type( $type, $class ) {
+	public function register_metabox_type( $type, $class ) {
 
-		if ( ! $this->manager_type_exists( $type ) ) {
-			$this->manager_types[ $type ] = $class;
+		if ( ! $this->metabox_type_exists( $type ) ) {
+			$this->metabox_types[ $type ] = $class;
 		}
 	}
 
@@ -334,10 +334,10 @@ final class Plugin {
 	 * @param string $type The metabox type e.g. 'default'.
 	 * @return void
 	 */
-	public function unregister_manager_type( $type ) {
+	public function unregister_metabox_type( $type ) {
 
-		if ( $this->manager_type_exists( $type ) ) {
-			unset( $this->manager_types[ $type ] );
+		if ( $this->metabox_type_exists( $type ) ) {
+			unset( $this->metabox_types[ $type ] );
 		}
 	}
 
@@ -350,8 +350,8 @@ final class Plugin {
 	 * @param string $type The metabox type e.g. 'default'.
 	 * @return string
 	 */
-	public function get_manager_type( $type ) {
-		return $this->manager_type_exists( $type ) ? $this->manager_types[ $type ] : $this->manager_types['default'];
+	public function get_metabox_type( $type ) {
+		return $this->metabox_type_exists( $type ) ? $this->metabox_types[ $type ] : $this->metabox_types['default'];
 	}
 
 	/**
@@ -363,8 +363,8 @@ final class Plugin {
 	 * @param string $type The metabox type e.g. 'default'.
 	 * @return bool
 	 */
-	public function manager_type_exists( $type ) {
-		return isset( $this->manager_types[ $type ] );
+	public function metabox_type_exists( $type ) {
+		return isset( $this->metabox_types[ $type ] );
 	}
 
 	/**
@@ -562,8 +562,8 @@ final class Plugin {
 	 * @access public
 	 * @return void
 	 */
-	public function register_manager_types() {
-		$this->register_manager_type( 'default', 'Metabox' );
+	public function register_metabox_types() {
+		$this->register_metabox_type( 'default', 'Metabox' );
 	}
 
 	/**
@@ -660,7 +660,7 @@ final class Plugin {
 		wp_enqueue_style( 'ninecodes-metabox', $this->path_url . 'assets/css/metabox.css' );
 
 		// Loop through the metabox and its controls and call each control's `enqueue()` method.
-		foreach ( $this->managers as $metabox ) {
+		foreach ( $this->metaboxes as $metabox ) {
 
 			$metabox->enqueue();
 
@@ -676,7 +676,7 @@ final class Plugin {
 
 	/**
 	 * Callback function for adding meta boxes. This function adds a meta box
-	 * for each of the managers.
+	 * for each of the metaboxes.
 	 *
 	 * @since 0.1.0
 	 * @access public
@@ -686,7 +686,7 @@ final class Plugin {
 	 */
 	public function add_meta_boxes( $post_type ) {
 
-		foreach ( $this->managers as $metabox ) {
+		foreach ( $this->metaboxes as $metabox ) {
 
 			// If the metabox is registered for the current post type, add a meta box.
 			if ( in_array( $post_type, (array) $metabox->post_type, true ) && $metabox->check_capabilities() ) {
@@ -741,13 +741,13 @@ final class Plugin {
 	public function localize_scripts() {
 
 		$json = array(
-			'managers' => array(),
+			'metaboxes' => array(),
 		);
 
-		foreach ( $this->managers as $metabox ) {
+		foreach ( $this->metaboxes as $metabox ) {
 
 			if ( $metabox->check_capabilities() ) {
-				$json['managers'][] = $metabox->get_json();
+				$json['metaboxes'][] = $metabox->get_json();
 			}
 		}
 
@@ -773,7 +773,7 @@ final class Plugin {
 		</script>
 
 		<?php
-		foreach ( $this->managers as $metabox ) {
+		foreach ( $this->metaboxes as $metabox ) {
 
 			if ( ! $metabox->check_capabilities() ) {
 				continue;
@@ -846,7 +846,7 @@ final class Plugin {
 			return;
 		}
 
-		foreach ( $this->managers as $metabox ) {
+		foreach ( $this->metaboxes as $metabox ) {
 
 			if ( $metabox->check_capabilities() ) {
 				$metabox->save( $post_id );

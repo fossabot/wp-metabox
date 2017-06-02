@@ -21,7 +21,7 @@
 		 *
 		 * @since 0.1.0
 		 *
-		 * @returns {Void} Nothing.
+		 * @returns {void}
 		 */
 		showModal: function () {
 
@@ -71,7 +71,7 @@
 		 *
 		 * @since 0.1.0
 		 *
-		 * @returns {Void} Returns nothing.
+		 * @returns {void}
 		 */
 		removeMedia: function () {
 			this.model.set({

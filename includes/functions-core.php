@@ -23,14 +23,14 @@ function validate_boolean( $value ) {
 }
 
 /**
- * Gets Underscore.js templates for managers
+ * Gets Underscore.js templates for metaboxes
  *
  * @since 0.1.0
  * @param string $slug Template part slug.
  *
  * @return void
  */
-function get_manager_template( $slug = '' ) {
+function get_metabox_template( $slug = '' ) {
 	get_template( 'metabox', $slug );
 }
 

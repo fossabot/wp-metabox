@@ -185,7 +185,7 @@ class Control {
 	 *
 	 * @since 0.1.0
 	 * @access public
-	 * @param Manager $metabox The Manager object.
+	 * @param Metabox $metabox The Metabox object.
 	 * @param string  $name The control name.
 	 * @param array   $args The control arguments.
 	 * @return void

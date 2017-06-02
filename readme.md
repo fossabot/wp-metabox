@@ -40,16 +40,16 @@ add_action( 'ninecodes_metabox_register', 'th_register', 10, 2 );
 
 function th_register( $ninecodes_metabox, $post_type ) {
 
-        // Register managers, sections, controls, and settings here.
+        // Register metaboxes, sections, controls, and settings here.
 }
 ```
 
-#### Registering a manager
+#### Registering a metabox
 
-A **manager** is a group of sections, controls, and settings.  It's displayed as a single meta box.  There can be multiple managers per screen (don't try multiples yet).
+A **metabox** is a group of sections, controls, and settings.  It's displayed as a single meta box.  There can be multiple metaboxes per screen (don't try multiples yet).
 
 ```
-$ninecodes_metabox->register_manager(
+$ninecodes_metabox->register_metabox(
         'example',
         array(
         	'label'     => esc_html__( 'Example', 'your-textdomain' ),
@@ -59,15 +59,15 @@ $ninecodes_metabox->register_manager(
         )
 );
 
-$manager = $ninecodes_metabox->get_manager( 'example' );
+$metabox = $ninecodes_metabox->get_metabox( 'example' );
 ```
 
 #### Registering a section
 
-A **section** is a group of controls within a manager.  They are presented as "tabbed" sections in the UI.
+A **section** is a group of controls within a metabox.  They are presented as "tabbed" sections in the UI.
 
 ```
-$manager->register_section(
+$metabox->register_section(
         'section_1',
         array(
         	'label' => esc_html__( 'Section 1', 'your-textdomain' ),
@@ -81,7 +81,7 @@ $manager->register_section(
 A **control** is essentially a form field. It's the field(s) that a user enters data into.  Each control belongs to a section.  Each control should also be tied to a setting (below).
 
 ```
-$manager->register_control(
+$metabox->register_control(
         'abc_xyz', // Same as setting name.
         array(
         	'type'    => 'text',
@@ -97,7 +97,7 @@ $manager->register_control(
 A **setting** is nothing more than some post metadata and how it gets stored.  A setting belongs to a specific control.
 
 ```
-$manager->register_setting(
+$metabox->register_setting(
         'abc_xyz', // Same as control name.
         array(
         	'sanitize_callback' => 'wp_filter_nohtml_kses'

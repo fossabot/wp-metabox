@@ -1,7 +1,7 @@
 <?php
 /**
- * Base class for handling managers.  Managers are groups of sections, which are groups of
- * controls + settings.  Managers are output as a metabox.  This essentially allows
+ * Base class for handling metaboxes.  Metaboxs are groups of sections, which are groups of
+ * controls + settings.  Metaboxs are output as a metabox.  This essentially allows
  * developers to output multiple post meta fields within a single metabox.
  *
  * @package NineCodes\Metabox
@@ -577,6 +577,6 @@ class Metabox {
 	 * @return void
 	 */
 	public function get_template() {
-		get_manager_template( $this->type );
+		get_metabox_template( $this->type );
 	}
 }

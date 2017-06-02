@@ -101,7 +101,7 @@ class Setting {
 	 *
 	 * @since 0.1.0
 	 * @access public
-	 * @param Manager $metabox The Manager object.
+	 * @param Metabox $metabox The Metabox object.
 	 * @param string  $name The setting name.
 	 * @param array   $args The setting arguments.
 	 * @return void

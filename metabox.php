@@ -10,7 +10,7 @@
  * Requires at least: 4.7
  * Tested up to: 4.7.3
  *
- * Text Domain: ninecodes-social-metabox
+ * Text Domain: ninecodes-metabox
  * Domain Path: /languages
  *
  * Copyright (c) 2017 NineCodes (https://ninecodes.com/)
@@ -30,45 +30,45 @@
 
 namespace NineCodes\Metabox;
 
-if ( ! function_exists( __NAMESPACE__ . '\\ninecodes_metabox' ) ) :
+/**
+ * Init function
+ *
+ * @since 0.1.0
+ * @access public
+ *
+ * @return Metabox
+ */
+function ninecodes_metabox() {
 
-	/**
-	 * Init function
-	 *
-	 * @since 0.1.0
-	 * @access public
-	 *
-	 * @return Metabox
-	 */
-	function ninecodes_metabox() {
+	static $plugin;
 
-		static $plugin;
-
-		if ( is_null( $plugin ) ) {
-			$plugin = new Plugin();
-		}
-
-		return $plugin;
+	if ( is_null( $plugin ) ) {
+		$plugin = new Plugin();
 	}
 
-	add_action( 'init', function() {
+	return $plugin;
+}
 
-		global $wp_version;
+add_action( 'init', function() {
 
-		if ( ! defined( 'WP_METABOX_API_LOADED' ) && version_compare( $wp_version, '4.7', '>=' ) ) {
-			define( 'WP_METABOX_API_LOADED', true );
+	global $wp_version;
 
-			// Load base classes.
-			require_once( plugin_dir_path( __FILE__ ) . 'includes/class-metabox.php' );
-			require_once( plugin_dir_path( __FILE__ ) . 'includes/class-section.php' );
-			require_once( plugin_dir_path( __FILE__ ) . 'includes/class-control.php' );
-			require_once( plugin_dir_path( __FILE__ ) . 'includes/class-setting.php' );
-			require_once( plugin_dir_path( __FILE__ ) . 'includes/class-plugin.php' );
+	if ( ! defined( 'WP_METABOX_API_LOADED' ) && version_compare( $wp_version, '4.7', '>=' ) ) {
 
-			// Load functions.
-			require_once( plugin_dir_path( __FILE__ ) . 'includes/functions-core.php' );
+		define( 'WP_METABOX_API_LOADED', true );
 
-			ninecodes_metabox();
-		}
-	} );
-endif;
+		$path_dir = plugin_dir_path( __FILE__ );
+
+		// Load base classes.
+		require_once( $path_dir . 'includes/class-metabox.php' );
+		require_once( $path_dir . 'includes/class-section.php' );
+		require_once( $path_dir . 'includes/class-control.php' );
+		require_once( $path_dir . 'includes/class-setting.php' );
+		require_once( $path_dir . 'includes/class-plugin.php' );
+
+		// Load functions.
+		require_once( $path_dir . 'includes/functions-core.php' );
+
+		ninecodes_metabox();
+	}
+}, 900 );
