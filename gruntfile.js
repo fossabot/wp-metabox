@@ -463,6 +463,11 @@ module.exports = function (grunt) {
 		'watch'
 	]);
 
+	grunt.registerTask('build', [
+		'styles',
+		'scripts',
+	]);
+
 	// Version bump.
 	grunt.registerTask('version', [
 		'replace:version',
@@ -472,8 +477,7 @@ module.exports = function (grunt) {
 	// Build the plugin.
 	grunt.registerTask('dist', [
 		'clean:dist',
-		'styles',
-		'scripts',
+		'build',
 		'wordpress',
 		'version',
 		'copy:dist'
