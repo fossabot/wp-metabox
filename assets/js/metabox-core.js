@@ -2,6 +2,8 @@
 
 window.nineCodesMetabox = window.nineCodesMetabox || {};
 
+console.log(nineCodesMetaboxData);
+
 (function ($, bb) {
 
 	'use strict';
@@ -546,8 +548,6 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 	 */
 	api.metabox['default'] = bb.View.extend({
 
-		sections: new Section.Collection(),
-
 		/**
 		 * Custom attributes for the control wrapper.
 		 *
@@ -602,34 +602,44 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 */
 		subViewRender: function () {
 
-			var self = this;
+			var Sections = new Section.Collection();
 
 			// Loop through each section and add it to the collection.
 			_.each(this.model.get('sections'), function (data) {
-				self.sections.add(new Section.Model(data));
+				Sections.add(new Section.Model(data));
 			});
 
 			// Loop through each section in the collection and render its view.
-			_.each(self.sections.models, function (SectionModel, index) {
+			_.each(Sections.models, function (SectionModel, i) {
 
-				var SectionCallback = api.getSection(SectionModel.attributes.type),
-
-					SectionView = new SectionCallback({
-						model: SectionModel
-					}),
-					SectionNav = new Nav.View({
+				// Create a new nav item view for the section.
+				var NavView = new Nav.View({
 						model: SectionModel
 					}),
 
-					$metaboxMetabox = $('#ninecodes-metabox-ui-' + SectionModel.get('metabox')),
-					$metaboxNav = $metaboxMetabox.find('.ninecodes-metabox-nav'),
-					$metaboxContent = $metaboxMetabox.find('.ninecodes-metabox-content');
+					// Get the section view callback.
+					Callback = api.getSection(SectionModel.attributes.type),
 
-				$metaboxNav.append(SectionNav.render().el); // Render the nav item view.
-				$metaboxContent.append(SectionView.render().el); // Render the Section view.
+					// Create a new section view.
+					View = new Callback({
+						model: SectionModel
+					});
 
-				SectionView.ready(); // Call the Section view's ready method.
-				SectionModel.set('selected', 0 === index); // If the first model, set it to selected.
+				// Render the nav item view.
+				$('#ninecodes-metabox-ui-' + SectionModel.get('metabox') + ' .ninecodes-metabox-nav').append(function () {
+					return NavView.render().el;
+				});
+
+				// Render the section view.
+				$('#ninecodes-metabox-ui-' + SectionModel.get('metabox') + ' .ninecodes-metabox-content').append(function () {
+					return View.render().el;
+				});
+
+				// Call the section view's ready method.
+				View.ready();
+
+				// If the first model, set it to selected.
+				SectionModel.set('selected', 0 === i);
 			});
 
 			// Loop through each control for the metabox and render its view.
