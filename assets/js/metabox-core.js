@@ -2,8 +2,6 @@
 
 window.nineCodesMetabox = window.nineCodesMetabox || {};
 
-console.log(nineCodesMetaboxData);
-
 (function ($, bb) {
 
 	'use strict';
