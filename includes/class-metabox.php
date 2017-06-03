@@ -195,7 +195,7 @@ class Metabox {
 		if ( ! is_object( $section ) ) {
 
 			$type = isset( $args['type'] ) ? ninecodes_metabox()->get_section_type( $args['type'] ) : ninecodes_metabox()->get_section_type( 'default' );
-			$type = __NAMESPACE__ . '\\' . $type;
+			$type = $type;
 
 			$section = new $type( $this, $section, $args );
 		}

@@ -576,7 +576,7 @@ final class Plugin {
 	 * @return void
 	 */
 	public function register_section_types() {
-		$this->register_section_type( 'default', 'Section' );
+		$this->register_section_type( 'default', __NAMESPACE__ . '\\Section' );
 	}
 
 	/**
