@@ -647,11 +647,12 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 					ControlModel = new Control.Model(control),
 					ControlView = new ControlCallback({
 						model: ControlModel
-					}),
+					});
 
-					$metaboxSection = $('#ninecodes-metabox-' + ControlModel.get('metabox') + '-section-' + ControlModel.get('section'));
-
-				$metaboxSection.append(ControlView.render().el); // Render the control view.
+				// Render the control view.
+				$('#ninecodes-metabox-' + ControlModel.get('metabox') + '-section-' + ControlModel.get('section')).append(function() {
+					return ControlView.render().el;
+				});
 
 				ControlView.ready();
 			});
