@@ -14,4 +14,4 @@
 		}
 	});
 
-})(nineCodesMetabox);
+})(ninecodes.metabox);

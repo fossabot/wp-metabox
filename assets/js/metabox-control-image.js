@@ -81,4 +81,4 @@
 			});
 		}
 	});
-})(nineCodesMetabox);
+})(ninecodes.metabox);

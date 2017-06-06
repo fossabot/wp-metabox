@@ -32,7 +32,7 @@ final class Setting_Multiple extends Setting {
 	 */
 	public function get_value() {
 
-		return get_post_meta( $this->metabox->post_id, $this->name );
+		return get_post_meta( $this->manager ->post_id, $this->name );
 	}
 
 	/**
@@ -61,7 +61,7 @@ final class Setting_Multiple extends Setting {
 	 * @return mixed
 	 */
 	public function map( $value ) {
-		return apply_filters( "ninecodes_metabox_{$this->metabox->name}_sanitize_{$this->name}", $value, $this );
+		return apply_filters( "ninecodes_metabox_{$this->manager ->name}_sanitize_{$this->name}", $value, $this );
 	}
 
 	/**
@@ -125,7 +125,7 @@ final class Setting_Multiple extends Setting {
 	 * @return bool True on success, false on failure.
 	 */
 	public function delete_values() {
-		return delete_post_meta( $this->metabox->post_id, $this->name );
+		return delete_post_meta( $this->manager ->post_id, $this->name );
 	}
 
 	/**
@@ -138,7 +138,7 @@ final class Setting_Multiple extends Setting {
 	 * @return bool True on success, false on failure.
 	 */
 	public function add_value( $value ) {
-		return add_post_meta( $this->metabox->post_id, $this->name, $value, false );
+		return add_post_meta( $this->manager ->post_id, $this->name, $value, false );
 	}
 
 	/**
@@ -151,6 +151,6 @@ final class Setting_Multiple extends Setting {
 	 * @return bool True on success, false on failure.
 	 */
 	public function remove_value( $value ) {
-		return delete_post_meta( $this->metabox->post_id, $this->name, $value );
+		return delete_post_meta( $this->manager ->post_id, $this->name, $value );
 	}
 }

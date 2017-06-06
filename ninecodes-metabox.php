@@ -62,7 +62,7 @@ if ( ! function_exists( __NAMESPACE__ . '\\ninecodes_metabox' ) ) :
 			$path_dir = plugin_dir_path( __FILE__ );
 
 			// Load base classes.
-			require_once( $path_dir . 'includes/class-metabox.php' );
+			require_once( $path_dir . 'includes/class-manager.php' );
 			require_once( $path_dir . 'includes/class-section.php' );
 			require_once( $path_dir . 'includes/class-control.php' );
 			require_once( $path_dir . 'includes/class-setting.php' );

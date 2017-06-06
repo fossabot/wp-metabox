@@ -1,10 +1,11 @@
 /* no-unused-vars: ["error", { "vars": "local", "varsIgnorePattern": "^nineCodesMetabox" }] */
 
-window.nineCodesMetabox = window.nineCodesMetabox || {};
-
 (function ($, bb) {
 
 	'use strict';
+
+	window.ninecodes = window.ninecodes || {};
+	ninecodes.metabox = ninecodes.metabox || {};
 
 	// Bail if we don't have the JSON, which is passed in via `wp_localize_script()`.
 	if (_.isUndefined(nineCodesMetaboxData)) {
@@ -12,19 +13,16 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 	}
 
 	/**
-	 * Our global object. The `nineCodesMetabox` object is just a wrapper to house everything
-	 * in a single namespace.
+	 * Our global object
 	 *
 	 * @since 0.1.0
-	 * @var {Object}
+	 * @var {object}
 	 */
 	var api = {
-			template: {
-				nav: wp.template('ninecodes-metabox-nav'),
-			}
+			template: {}
 		},
 
-		Metabox = {
+		Manager = {
 			Model: bb.Model.extend({
 				defaults: {
 					name: '',
@@ -43,7 +41,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 					label: '',
 					description: '',
 					icon: '',
-					metabox: '',
+					manager: '',
 					active: '',
 					selected: false
 				}
@@ -63,7 +61,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 					choices: {},
 					attr: '',
 					active: '',
-					metabox: '',
+					manager: '',
 					section: '',
 					setting: ''
 				}
@@ -73,7 +71,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		Nav = {
 			View: bb.View.extend({
 
-				template: api.template.nav,
+				template: wp.template('ninecodes-metabox-nav'),
 
 				tagName: 'li',
 
@@ -86,7 +84,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 				 *
 				 * @since 0.1.0
 				 *
-				 * @returns {Object} List of attributes to add in the View.
+				 * @returns {object} List of attributes to add in the View.
 				 */
 				attributes: function () {
 					return {
@@ -99,7 +97,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 				 *
 				 * @since 0.1.0
 				 *
-				 * @returns {void} Returns nothing.
+				 * @returns {void}
 				 */
 				initialize: function () {
 
@@ -110,7 +108,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 				/**
 				 * Renders the Section
 				 *
-				 * @returns {Object} section
+				 * @returns {object} section
 				 */
 				render: function () {
 
@@ -141,46 +139,46 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 	 * Houses the metabox, section, and control views based on the `type`.
 	 *
 	 * @since 0.1.0
-	 * @var {Object}
+	 * @var {object}
 	 */
 	api = {
 
-		metabox: [],
+		manager: [],
 		section: [],
 		control: [],
 
 		/**
-		 * Creates a new Metabox view
+		 * Creates a new Manager view
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param {String} type Metabox type.
-		 * @param {Object} args Metabox arguments.
-		 * @return {void} Returns nothing.
+		 * @param {string} type Manager type.
+		 * @param {object} args Manager arguments.
+		 * @return {void}
 		 */
-		registerMetabox: function (type, args) {
+		registerManager: function (type, args) {
 
 			if ('default' !== type) {
-				this.metabox[type] = this.metabox.default.extend(args);
+				this.manager[type] = this.manager.default.extend(args);
 			}
 		},
 
 		/**
-		 * Returns a Metabox view
+		 * Returns a Manager view
 		 *
 
 		* @since 0.1.0
 		*
-		* @param {String} type Metabox type.
-		* @return {Object} The Metabox instance.
+		* @param {string} type Manager type.
+		* @return {object} The Manager instance.
 		*/
-		getMetabox: function (type) {
+		getManager: function (type) {
 
-			if (this.metaboxExists(type)) {
-				return this.metabox[type];
+			if (this.managerExists(type)) {
+				return this.manager[type];
 			}
 
-			return this.metabox.default;
+			return this.manager.default;
 		},
 
 		/**
@@ -188,27 +186,27 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param {String} type Metabox type.
-		 * @return {void} Returns nothing.
+		 * @param {string} type Manager type.
+		 * @return {void}
 		 */
-		unregisterMetabox: function (type) {
+		unregisterManager: function (type) {
 
-			if ('default' !== type && this.metaboxExists(type)) {
-				delete this.metabox[type];
+			if ('default' !== type && this.managerExists(type)) {
+				delete this.manager[type];
 			}
 		},
 
 		/**
-		 * Checks if a Metabox view exists
+		 * Checks if a Manager view exists
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param {String} type Metabox type.
-		 * @return {Boolean} Returns `true` if the Metabox of the given type exists.
+		 * @param {string} type Manager type.
+		 * @return {boolean} Returns `true` if the Manager of the given type exists.
 		 */
-		metaboxExists: function (type) {
+		managerExists: function (type) {
 
-			return this.metabox.hasOwnProperty(type);
+			return this.manager.hasOwnProperty(type);
 		},
 
 		/**
@@ -216,9 +214,9 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param {String} type The new Section type to register.
-		 * @param {Object} args The Section arguments.
-		 * @return {void} Returns nothing.
+		 * @param {string} type The new Section type to register.
+		 * @param {object} args The Section arguments.
+		 * @return {void}
 		 */
 		registerSection: function (type, args) {
 
@@ -232,8 +230,8 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param {String} type Section type.
-		 * @return {Object} Section instance.
+		 * @param {string} type Section type.
+		 * @return {object} Section instance.
 		 */
 		getSection: function (type) {
 
@@ -249,8 +247,8 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * @since  0.1.0
 		 *
-		 * @param {String} type Section type.
-		 * @return {void} Returns nothing.
+		 * @param {string} type Section type.
+		 * @return {void}
 		 */
 		unregisterSection: function (type) {
 
@@ -264,8 +262,8 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param {String} type Section type.
-		 * @return {Boolean} Returns `true` if the Section exists.
+		 * @param {string} type Section type.
+		 * @return {boolean} Returns `true` if the Section exists.
 		 */
 		sectionExists: function (type) {
 			return this.section.hasOwnProperty(type);
@@ -276,9 +274,9 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param {String} type A new Control type to register.
-		 * @param {Object} args Control arguments.
-		 * @return {void} Returns nothing.
+		 * @param {string} type A new Control type to register.
+		 * @param {object} args Control arguments.
+		 * @return {void}
 		 */
 		registerControl: function (type, args) {
 
@@ -292,8 +290,8 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param {String} type Control type.
-		 * @return {Object} Control instance.
+		 * @param {string} type Control type.
+		 * @return {object} Control instance.
 		 */
 		getControl: function (type) {
 
@@ -309,8 +307,8 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param {String} type Control type.
-		 * @return {void} Returns nothing.
+		 * @param {string} type Control type.
+		 * @return {void}
 		 */
 		unregisterControl: function (type) {
 
@@ -324,8 +322,8 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param {String} type Control type.
-		 * @return {Boolean} Returns `true` if the Control of the given type exists.
+		 * @param {string} type Control type.
+		 * @return {boolean} Returns `true` if the Control of the given type exists.
 		 */
 		controlExists: function (type) {
 
@@ -337,38 +335,38 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 	 * Houses the metabox, section, and control templates based on the `type`.
 	 *
 	 * @since  0.1.0
-	 * @var {Object}
+	 * @var {object}
 	 */
 	api.template = {
 
-		metabox: [],
+		manager: [],
 		section: [],
 		control: [],
 
 		/**
-		 * Creates a new Metabox template
+		 * Creates a new Manager template
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param {String} type Metabox type.
-		 * @return {void} Returns nothing.
+		 * @param {string} type Manager type.
+		 * @return {void}
 		 */
-		registerMetabox: function (type) {
+		registerManager: function (type) {
 
-			this.metabox[type] = wp.template('ninecodes-metabox-' + type);
+			this.manager[type] = wp.template('ninecodes-metabox-' + type);
 		},
 
 		/**
-		 * Returns a Metabox template
+		 * Returns a Manager template
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param {String} type Metabox type.
-		 * @return {Function} A function that lazily-compiles the template requested.
+		 * @param {string} type Manager type.
+		 * @return {function} A function that lazily-compiles the template requested.
 		 */
-		getMetabox: function (type) {
+		getManager: function (type) {
 
-			return this.metaboxExists(type) ? this.metabox[type] : false;
+			return this.managerExists(type) ? this.manager[type] : false;
 		},
 
 		/**
@@ -376,27 +374,27 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param {String} type Metabox type.
-		 * @return {void} Returns nothing.
+		 * @param {string} type Manager type.
+		 * @return {void}
 		 */
-		unregisterMetabox: function (type) {
+		unregisterManager: function (type) {
 
-			if (this.metaboxExists(type)) {
-				delete this.metabox[type];
+			if (this.managerExists(type)) {
+				delete this.manager[type];
 			}
 		},
 
 		/**
-		 * Checks if a Metabox template exists
+		 * Checks if a Manager template exists
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param {String} type Metabox type.
-		 * @return {Boolean} Returns true if the Metabox template of the given type exists.
+		 * @param {string} type Manager type.
+		 * @return {boolean} Returns true if the Manager template of the given type exists.
 		 */
-		metaboxExists: function (type) {
+		managerExists: function (type) {
 
-			return this.metabox.hasOwnProperty(type);
+			return this.manager.hasOwnProperty(type);
 		},
 
 		/**
@@ -404,8 +402,8 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param {String} type Section type.
-		 * @return {void} Returns nothing.
+		 * @param {string} type Section type.
+		 * @return {void}
 		 */
 		registerSection: function (type) {
 
@@ -417,8 +415,8 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param {String} type Metabox type.
-		 * @return {Function} A function that lazily-compiles the template requested.
+		 * @param {string} type Manager type.
+		 * @return {function} A function that lazily-compiles the template requested.
 		 */
 		getSection: function (type) {
 
@@ -430,8 +428,8 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param {String} type Section type
-		 * @return {void} Returns nothing.
+		 * @param {string} type Section type
+		 * @return {void}
 		 */
 		unregisterSection: function (type) {
 
@@ -445,8 +443,8 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param {String} type Section type.
-		 * @return {Boolean} Returns `true` if the Section template of the given type exists.
+		 * @param {string} type Section type.
+		 * @return {boolean} Returns `true` if the Section template of the given type exists.
 		 */
 		sectionExists: function (type) {
 
@@ -458,8 +456,8 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param {String} type Control type.
-		 * @return {void} Returns nothing.
+		 * @param {string} type Control type.
+		 * @return {void}
 		 */
 		registerControl: function (type) {
 
@@ -471,8 +469,8 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param {String} type Control type.
-		 * @return {Function} A function that lazily-compiles the template requested.
+		 * @param {string} type Control type.
+		 * @return {function} A function that lazily-compiles the template requested.
 		 */
 		getControl: function (type) {
 
@@ -484,8 +482,8 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param {String} type Control type.
-		 * @return {void} Returns nothing.
+		 * @param {string} type Control type.
+		 * @return {void}
 		 */
 		unregisterControl: function (type) {
 
@@ -499,8 +497,8 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param {String} type Control type.
-		 * @return {Boolean} Returns `true` if the Control template of the given type exists.
+		 * @param {string} type Control type.
+		 * @return {boolean} Returns `true` if the Control template of the given type exists.
 		 */
 		controlExists: function (type) {
 
@@ -509,47 +507,49 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 	};
 
 	/**
-	 * Renders our Metaboxs, Sections, and Controls
+	 * Renders our Managers, Sections, and Controls
 	 *
 	 * @since 0.1.0
 	 *
-	 * @return {void} Returns nothing.
+	 * @return {void}
 	 */
 	api.render = function () {
 
-		_.each(nineCodesMetaboxData.metaboxes, function (data) {
+		_.each(nineCodesMetaboxData.managers, function (data) {
 
-			var MetaboxCallback = api.getMetabox(data.type),
+			var ManagerCallback = api.getManager(data.type),
 
-				MetaboxModel = new Metabox.Model(data),
-				MetaboxView = new MetaboxCallback({
-					model: MetaboxModel
+				ManagerModel = new Manager.Model(data),
+				ManagerView = new ManagerCallback({
+					model: ManagerModel
 				});
 
 			// Add the `.ninecodes-metabox-ui` class to the meta box.
-			$('#ninecodes-metabox-ui-' + MetaboxModel.get('name'))
+			$('#ninecodes-metabox-ui-' + ManagerModel.get('name'))
 				.addClass('ninecodes-metabox-ui')
 				.find('.inside')
-				.append(MetaboxView.render().el);
+				.append(ManagerView.render().el);
 
-			MetaboxView.subViewRender();
-			MetaboxView.ready();
+			ManagerView.subViewRender();
+			ManagerView.ready();
 		});
 	};
 
 	/**
-	 * The default metabox view.  Other views can extend this using the
-	 * `nineCodesMetabox.views.registerMetabox()` function.
+	 * The default metabox view.
 	 *
-	 * @since  0.1.0
-	 * @var    object
+	 * Other views can extend this using the
+	 * `nineCodesMetabox.views.registerManager()` function.
+	 *
+	 * @since 0.1.0
+	 * @var object
 	 */
-	api.metabox['default'] = bb.View.extend({
+	api.manager['default'] = bb.View.extend({
 
 		/**
 		 * Custom attributes for the control wrapper.
 		 *
-		 * @returns {Object} List of attributes to add in the View.
+		 * @returns {object} List of attributes to add in the View.
 		 */
 		attributes: function () {
 			return {
@@ -563,24 +563,24 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * @since 0.1.0
 		 *
-		 * @returns {void} Returns nothing.
+		 * @returns {void}
 		 */
 		initialize: function () {
 
 			var type = this.model.get('type');
 
 			// If there's not yet a template for this metabox type, create it.
-			if (!api.template.metaboxExists(type)) {
-				api.template.registerMetabox(type);
+			if (!api.template.managerExists(type)) {
+				api.template.registerManager(type);
 			}
 
-			this.template = api.template.getMetabox(type);
+			this.template = api.template.getManager(type);
 		},
 
 		/**
 		 * Renders the Section
 		 *
-		 * @returns {Object} api.section
+		 * @returns {object} api.section
 		 */
 		render: function () {
 			this.el.innerHTML = this.template(this.model.toJSON());
@@ -592,11 +592,11 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * Important! This may change drastically in the future, possibly even
 		 * taken out of the metabox view altogether.  It's for this reason that
-		 * it's not recommended to create custom views for metaboxes right now.
+		 * it's not recommended to create custom views for managers right now.
 		 *
 		 * @since 0.1.0
 		 *
-		 * @returns {void} Returns nothing.
+		 * @returns {void}
 		 */
 		subViewRender: function () {
 
@@ -623,13 +623,15 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 						model: SectionModel
 					});
 
+				console.log( SectionModel );
+
 				// Render the nav item view.
-				$('#ninecodes-metabox-ui-' + SectionModel.get('metabox') + ' .ninecodes-metabox-nav').append(function () {
+				$('#ninecodes-metabox-ui-' + SectionModel.get('manager') + ' .ninecodes-metabox-nav').append(function () {
 					return NavView.render().el;
 				});
 
 				// Render the section view.
-				$('#ninecodes-metabox-ui-' + SectionModel.get('metabox') + ' .ninecodes-metabox-content').append(function () {
+				$('#ninecodes-metabox-ui-' + SectionModel.get('manager') + ' .ninecodes-metabox-content').append(function () {
 					return View.render().el;
 				});
 
@@ -650,7 +652,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 					});
 
 				// Render the control view.
-				$('#ninecodes-metabox-' + ControlModel.get('metabox') + '-section-' + ControlModel.get('section')).append(function() {
+				$('#ninecodes-metabox-' + ControlModel.get('manager') + '-section-' + ControlModel.get('section')).append(function() {
 					return ControlView.render().el;
 				});
 
@@ -666,7 +668,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * @since 0.1.0
 		 *
-		 * @returns {Void|Mixed} Returns nothing or it depends on the Subviews.
+		 * @returns {void|mixed} Returns nothing or it depends on the Subviews.
 		 */
 		ready: function () {}
 	});
@@ -685,11 +687,11 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		/**
 		 * Custom attributes for the control wrapper.
 		 *
-		 * @returns {Object} List of attributes to add in the View.
+		 * @returns {object} List of attributes to add in the View.
 		 */
 		attributes: function () {
 			return {
-				'id': 'ninecodes-metabox-' + this.model.get('metabox') + '-section-' + this.model.get('name'),
+				'id': 'ninecodes-metabox-' + this.model.get('manager') + '-section-' + this.model.get('name'),
 				'class': 'ninecodes-metabox-section ninecodes-metabox-section-' + this.model.get('type'),
 				'aria-hidden': !this.model.get('selected')
 			};
@@ -700,7 +702,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * @since 0.1.0
 		 *
-		 * @returns {void} Returns nothing.
+		 * @returns {void}
 		 */
 		initialize: function () {
 
@@ -717,7 +719,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		/**
 		 * Renders the Section
 		 *
-		 * @returns {Object} api.section
+		 * @returns {object} api.section
 		 */
 		render: function () {
 
@@ -733,7 +735,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * @since 0.1.0
 		 *
-		 * @return {void} Returns nothing.
+		 * @return {void}
 		 */
 		onChange: function () {
 
@@ -750,7 +752,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * @since 0.1.0
 		 *
-		 * @returns {Void|Mixed} Returns nothing or it depends on the Subviews.
+		 * @returns {void|mixed} Returns nothing or it depends on the Subviews.
 		 */
 		ready: function () {}
 	});
@@ -768,7 +770,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		/**
 		 * Custom attributes for the control wrapper.
 		 *
-		 * @returns {Object} List of attributes to add in the View.
+		 * @returns {object} List of attributes to add in the View.
 		 */
 		attributes: function () {
 			return {
@@ -782,7 +784,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * @since 0.1.0
 		 *
-		 * @returns {void} Returns nothing.
+		 * @returns {void}
 		 */
 		initialize: function () {
 
@@ -806,7 +808,7 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * @since 0.1.0
 		 *
-		 * @returns {Object} control
+		 * @returns {object} control
 		 */
 		render: function () {
 
@@ -824,12 +826,12 @@ window.nineCodesMetabox = window.nineCodesMetabox || {};
 		 *
 		 * @since 0.1.0
 		 *
-		 * @returns {Void|Mixed} Returns nothing or it depends on the Subviews.
+		 * @returns {void|mixed} Returns nothing or it depends on the Subviews.
 		 */
 		ready: function () {}
 	});
 
-	// Merge the api Object to window.nineCodesMetabox.
-	_.extend(nineCodesMetabox, api);
+	// Merge the api Object to window.ninecodes.metabox.
+	_.extend(ninecodes.metabox, api);
 
 })(jQuery, Backbone);

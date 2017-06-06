@@ -1,6 +1,7 @@
 {
 	"extends": "./dev-lib/.eslintrc",
 	"globals": {
+		"ninecodes": true,
 		"nineCodesMetaboxData": true,
 		"nineCodesMetabox": true
 	},

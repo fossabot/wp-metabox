@@ -119,6 +119,7 @@ module.exports = function (grunt) {
 			},
 			files: [{
 				'<%= dir.jsPath %>metabox.min.js': [
+					'<%= dir.jsPath %>app.js',
 					'<%= dir.jsPath %>metabox-core.js',
 					'<%= dir.jsPath %>metabox-control-*.js',
 					'!<%= dir.jsPath %>*.min.js',

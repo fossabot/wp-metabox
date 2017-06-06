@@ -1,8 +1,9 @@
 <?php
 /**
- * Base class for handling metaboxes.  Metaboxs are groups of sections, which are groups of
- * controls + settings.  Metaboxs are output as a metabox.  This essentially allows
- * developers to output multiple post meta fields within a single metabox.
+ * Base class for handling managers
+ *
+ * Managers are groups of sections, which are groups of
+ * controls + settings.
  *
  * @package NineCodes\Metabox
  */
@@ -10,51 +11,51 @@
 namespace NineCodes\Metabox;
 
 /**
- * Base metabox class.
+ * Base Manager class
  *
  * @since  0.1.0
  * @access public
  */
-class Metabox {
+class Manager {
 
 	/**
-	 * The type of metabox.
+	 * The type of manager
 	 *
-	 * @since  0.1.0
+	 * @since 0.1.0
 	 * @access public
-	 * @var    string
+	 * @var string
 	 */
 	public $type = 'default';
 
 	/**
-	 * Name of this instance of the metabox.
+	 * Name of this instance of the manager
 	 *
-	 * @since  0.1.0
+	 * @since 0.1.0
 	 * @access public
-	 * @var    string
+	 * @var string
 	 */
 	public $name = '';
 
 	/**
-	 * Label for the metabox.
+	 * Label for the manager
 	 *
-	 * @since  0.1.0
+	 * @since 0.1.0
 	 * @access public
-	 * @var    string
+	 * @var string
 	 */
 	public $label = '';
 
 	/**
-	 * Post type this metabox is used on.
+	 * Post type this manager is used on
 	 *
-	 * @since  0.1.0
+	 * @since 0.1.0
 	 * @access public
-	 * @var    string|array
+	 * @var string|array
 	 */
 	public $post_type = 'post';
 
 	/**
-	 * Location of the meta box.  Accepted values: 'normal', 'advanced', 'side'.
+	 * Location of the meta box. Accepted values: 'normal', 'advanced', 'side'.
 	 *
 	 * @link https://developer.wordpress.org/reference/functions/add_meta_box/
 	 * @since 0.1.0
@@ -74,7 +75,7 @@ class Metabox {
 	public $priority = 'default';
 
 	/**
-	 * Array of sections.
+	 * Array of sections
 	 *
 	 * @since 0.1.0
 	 * @access public
@@ -83,7 +84,7 @@ class Metabox {
 	public $sections = array();
 
 	/**
-	 * Array of controls.
+	 * Array of controls
 	 *
 	 * @since 0.1.0
 	 * @access public
@@ -101,7 +102,7 @@ class Metabox {
 	public $settings = array();
 
 	/**
-	 * A user role capability required to show the metabox
+	 * A user role capability required to show the manager
 	 *
 	 * @since 0.1.0
 	 * @access public
@@ -110,7 +111,7 @@ class Metabox {
 	public $capability = '';
 
 	/**
-	 * A feature that the current post type must support to show the metabox
+	 * A feature that the current post type must support to show the manager
 	 *
 	 * @since 0.1.0
 	 * @access public
@@ -119,7 +120,7 @@ class Metabox {
 	public $post_type_supports = '';
 
 	/**
-	 * A feature that the current theme must support to show the metabox
+	 * A feature that the current theme must support to show the manager
 	 *
 	 * @since 0.1.0
 	 * @access public
@@ -128,7 +129,7 @@ class Metabox {
 	public $theme_supports = '';
 
 	/**
-	 * Stores the JSON data for the metabox
+	 * Stores the JSON data for the manager
 	 *
 	 * @since  0.1.0
 	 * @access public
@@ -146,12 +147,12 @@ class Metabox {
 	public $post_id = 0;
 
 	/**
-	 * Sets up the metabox
+	 * Constructor
 	 *
 	 * @since 0.1.0
 	 * @access public
-	 * @param string $name The metabox name.
-	 * @param array  $args The metabox arguments.
+	 * @param string $name The manager name.
+	 * @param array  $args The manager arguments.
 	 * @return void
 	 */
 	public function __construct( $name, $args = array() ) {
@@ -171,7 +172,7 @@ class Metabox {
 	}
 
 	/**
-	 * Enqueue scripts/styles for the metabox.
+	 * Enqueue scripts/styles for the manager
 	 *
 	 * @since  0.1.0
 	 * @access public
@@ -470,7 +471,7 @@ class Metabox {
 	public function to_json() {
 
 		$sections_with_controls = array();
-		$blocked_sections       = array();
+		$blocked_sections = array();
 
 		$this->json['name'] = $this->name;
 		$this->json['type'] = $this->type;
@@ -520,7 +521,7 @@ class Metabox {
 			$this->post_id = $post_id;
 		}
 
-		// Verify the nonce for this metabox.
+		// Verify the nonce for this manager.
 		if ( ! isset( $_POST[ "ninecodes_metabox_{$this->name}" ] ) || ! wp_verify_nonce( $_POST[ "ninecodes_metabox_{$this->name}" ], "ninecodes_metabox_{$this->name}_nonce" ) ) {
 			return;
 		}
@@ -544,7 +545,7 @@ class Metabox {
 			return false;
 		}
 
-		if ( $this->post_type_supports && ! call_user_func_array( 'post_type_supports', array( get_post_type( $this->metabox->post_id ), $this->post_type_supports ) ) ) {
+		if ( $this->post_type_supports && ! call_user_func_array( 'post_type_supports', array( get_post_type( $this->manager->post_id ), $this->post_type_supports ) ) ) {
 			return false;
 		}
 
@@ -577,6 +578,6 @@ class Metabox {
 	 * @return void
 	 */
 	public function get_template() {
-		get_metabox_template( $this->type );
+		get_manager_template( $this->type );
 	}
 }
