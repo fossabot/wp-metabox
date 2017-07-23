@@ -1,4 +1,6 @@
 # ButterBean
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Fninecodes%2Fwp-metabox.svg?type=shield)](https://app.fossa.io/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Fninecodes%2Fwp-metabox?ref=badge_shield)
+
 
 ButterBean is a neat little post meta box framework built on [Backbone.js](http://backbonejs.org) and [Underscore.js](http://underscorejs.org). You can run it as a standalone plugin or drop it into your own plugins.
 
@@ -150,3 +152,6 @@ Various ideas from different projects have made their way into ButterBean.  A fe
 This project is licensed under the [GNU GPL](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html), version 2 or later.
 
 2015-2016 &copy; [Justin Tadlock](http://justintadlock.com).
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Fninecodes%2Fwp-metabox.svg?type=large)](https://app.fossa.io/projects/git%2Bhttps%3A%2F%2Fgithub.com%2Fninecodes%2Fwp-metabox?ref=badge_large)
